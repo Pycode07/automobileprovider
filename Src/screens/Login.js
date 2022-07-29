@@ -13,6 +13,7 @@ import {
 import {COLOR} from '../utils/Colors';
 import {ImagePath} from '../utils/ImagePath';
 const {height, width} = Dimensions.get('window');
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const Login = props => {
   const [Email, setEmail] = useState('');
@@ -160,6 +161,7 @@ const Login = props => {
             }}>
             <Text style={{fontSize: 11, color: '#898b8c'}}>Password</Text>
           </View>
+
           <TextInput
             placeholder="password"
             placeholderTextColor="#02024A"
@@ -219,7 +221,7 @@ const Login = props => {
           <Text style={{fontSize: 12, color: COLOR.POST_TXT}}>New user ?</Text>
           <TouchableOpacity
             onPress={() => props.navigation.navigate('Register')}>
-            <Text style={{fontSize: 12, color: 'green'}}> {" "}Register Now</Text>
+            <Text style={{fontSize: 12, color: 'green'}}> Register Now</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity

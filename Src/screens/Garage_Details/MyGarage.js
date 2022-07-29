@@ -12,10 +12,13 @@ import {
 import {COLOR} from '../../utils/Colors';
 import {ImagePath} from '../../utils/ImagePath';
 const {height, width} = Dimensions.get('window');
+// let count = 1
+// let remain = 0
+const MyGarage = props => {
+  const [count, setCount] = useState(0);
+  const [remain, setRemain] = useState(0);
 
-const MyGarage = () => {
-  const [count, setCounter] = useState(0);
-  const [Remen, setRemen] = useState(0);
+  useEffect(() => {}, [count, remain]);
 
   const DATA = [
     {
@@ -82,70 +85,77 @@ const MyGarage = () => {
     },
   ];
   const renderItem = ({item}) => (
-    <View style={styles.item}>
-      <View style={styles.imgData}>
-        <Image
-          source={item.IMG}
-          style={{height: 140, width: 140}}
-          resizeMode="contain"
-        />
-      </View>
-      <View style={styles.content}>
-        <View style={styles.cmntxt}>
-          <Text style={{fontSize: 13, color: 'black', fontWeight: '500'}}>
-            {item.text}
-          </Text>
+    <TouchableOpacity
+      onPress={() => props.navigation.navigate('OrderTracking')}>
+      <View style={styles.item}>
+        <View style={styles.imgData}>
+          <Image
+            source={item.IMG}
+            style={{height: 140, width: 140}}
+            resizeMode="contain"
+          />
         </View>
-        <View
-          style={{
-            height: height * 0.03,
-            width: width * 0.4,
-            flexDirection: 'row',
-            // borderWidth: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-            {item.carno}
-          </Text>
-          <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-            {' '}
-            {item.OilType}
-          </Text>
-        </View>
+        <View style={styles.content}>
+          <View style={styles.cmntxt}>
+            <Text style={{fontSize: 13, color: 'black', fontWeight: '500'}}>
+              {item.text}
+            </Text>
+          </View>
+          <View
+            style={{
+              height: height * 0.03,
+              width: width * 0.4,
+              flexDirection: 'row',
+              // borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+              {item.carno}
+            </Text>
+            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+              {' '}
+              {item.OilType}
+            </Text>
+          </View>
 
-        <View
-          style={{
-            height: height * 0.03,
-            width: width * 0.4,
-            flexDirection: 'row',
-            // borderWidth: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{fontSize: 11, color: COLOR.BACK_BORDER, fontWeight: '500'}}>
-            {item.service}
-          </Text>
-          <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-            {item.type}
-          </Text>
-        </View>
-        <View
-          style={{
-            height: height * 0.03,
-            width: width * 0.4,
-            flexDirection: 'row',
-            // borderWidth: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-            {item.loction}
-          </Text>
+          <View
+            style={{
+              height: height * 0.03,
+              width: width * 0.4,
+              flexDirection: 'row',
+              // borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                fontSize: 11,
+                color: COLOR.BACK_BORDER,
+                fontWeight: '500',
+              }}>
+              {item.service}
+            </Text>
+            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+              {item.type}
+            </Text>
+          </View>
+          <View
+            style={{
+              height: height * 0.03,
+              width: width * 0.4,
+              flexDirection: 'row',
+              // borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+              {item.loction}
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
   return (
     <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -192,7 +202,12 @@ const MyGarage = () => {
 
           <View style={styles.capcity1}>
             <View style={styles.count}>
-              <TouchableOpacity onPress={() => setCounter(count - 1)}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (count > 0) {
+                    setCount(count - 1);
+                  }
+                }}>
                 <Image
                   source={ImagePath.MINUS}
                   resizeMode="contain"
@@ -208,7 +223,10 @@ const MyGarage = () => {
               </Text>
             </View>
             <View style={styles.count}>
-              <TouchableOpacity onPress={() => setCounter(count + 1)}>
+              <TouchableOpacity
+                onPress={() => {
+                  setCount(count + 1);
+                }}>
                 <Image
                   source={ImagePath.PLUS}
                   resizeMode="contain"
@@ -229,7 +247,12 @@ const MyGarage = () => {
 
           <View style={styles.capcity1}>
             <View style={styles.count}>
-              <TouchableOpacity onPress={() => setRemen(Remen - 1)}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (remain > 0) {
+                    setRemain(remain - 1);
+                  }
+                }}>
                 <Image
                   source={ImagePath.MINUS}
                   resizeMode="contain"
@@ -241,11 +264,16 @@ const MyGarage = () => {
             <View style={styles.count}>
               <Text
                 style={{fontSize: 21, fontWeight: 'bold', color: COLOR.BLACK}}>
-                {Remen}
+                {remain}
               </Text>
             </View>
             <View style={styles.count}>
-              <TouchableOpacity onPress={() => setRemen(Remen + 1)}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (remain < count) {
+                    setRemain(remain + 1);
+                  }
+                }}>
                 <Image
                   source={ImagePath.PLUS}
                   resizeMode="contain"
@@ -256,27 +284,36 @@ const MyGarage = () => {
           </View>
         </View>
       </View>
+
       <View
         style={{
-          height: height * 0.06,
-          width: width * 0.9,
-          alignSelf: 'center',
-          justifyContent: 'center',
-          // backgroundColor:'red'
+          height: height * 0.07,
+          width: width * 0.7,
+          // alignSelf: 'center',
+          justifyContent: 'space-evenly',
+          // backgroundColor: 'red',
+          flexDirection: 'row',
         }}>
-        <Text style={{fontSize: 21, fontWeight: 'bold', color: COLOR.BLACK}}>
+        <Text
+          style={{
+            fontSize: 17,
+            fontWeight: 'bold',
+            color: COLOR.BLACK,
+            textDecorationLine: 'underline',
+          }}>
           Cars
         </Text>
-
-        <View
-          style={{
-            height: height * 0.005,
-            width: width * 0.1,
-            borderColor: 'black',
-            marginTop: 5,
-            borderRadius: 10,
-            backgroundColor: 'black',
-          }}></View>
+        <TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 17,
+              fontWeight: 'bold',
+              color: COLOR.BLACK,
+              textDecorationLine: 'underline',
+            }}>
+            New Requrest
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.flatMain}>
@@ -324,7 +361,7 @@ const styles = StyleSheet.create({
   },
 
   flatMain: {
-    height: height * 0.64,
+    height: height * 0.52,
     width: width * 0.95,
     alignSelf: 'center',
     // backgroundColor: 'skyblue',
@@ -335,12 +372,13 @@ const styles = StyleSheet.create({
   ///======= FlatList ====
 
   item: {
-    height: height * 0.25,
+    height: height * 0.27,
     width: width * 0.43,
     alignSelf: 'center',
     // backgroundColor: 'skyblue',
     // borderWidth: 1,
     borderRadius: 8,
+    justifyContent: 'center',
 
     alignItems: 'center',
     backgroundColor: 'rgb(245,245,245)',

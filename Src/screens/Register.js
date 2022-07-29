@@ -128,7 +128,7 @@ const Register = props => {
           paddingTop: 60,
           paddingHorizontal: 20,
         }}>
-        <View style={{marginBottom: 15}}>
+        <View style={{marginBottom: 18}}>
           <View
             style={{
               alignSelf: 'flex-start',

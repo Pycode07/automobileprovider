@@ -43,7 +43,6 @@ const Routes = () => {
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="OtpVerification" component={OtpVerification} />
         <Stack.Screen name="PhoneOtp" component={PhoneOtp} />
-
         <Stack.Screen name="OrderTracking" component={OrderTracking} />
         <Stack.Screen name="MyGarage" component={MyGarage} />
       </Stack.Navigator>

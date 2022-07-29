@@ -12,6 +12,7 @@ import PersonalDetails from '../screens/PersonalDetails/PersonalDetails';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
 import GrageDetails from '../screens/Garage_Details/GrageDetails';
+import MyGarage from '../screens/Garage_Details/MyGarage';
 
 const {height, width} = Dimensions.get('screen');
 
@@ -124,7 +125,7 @@ export default function BottomTab() {
       />
       <Tab.Screen
         name="Booking"
-        component={Booking}
+        component={MyGarage}
         options={{
           headerShown: false,
           tabBarLabel: 'Buy & Sell',
