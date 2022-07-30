@@ -11,13 +11,12 @@ import {
 } from 'react-native';
 import {COLOR} from '../../utils/Colors';
 import {ImagePath} from '../../utils/ImagePath';
+import {SwiperFlatList} from 'react-native-swiper-flatlist';
 const {height, width} = Dimensions.get('window');
-// let count = 1
-// let remain = 0
+
 const MyGarage = props => {
   const [count, setCount] = useState(0);
   const [remain, setRemain] = useState(0);
-
   useEffect(() => {}, [count, remain]);
 
   const DATA = [
@@ -41,6 +40,7 @@ const MyGarage = props => {
       type: 'AC Repair',
       loction: '400/G 2nd Floor,Near New Delhi',
     },
+
     {
       key: 3,
       IMG: require('../../assets/Splash/intro2.png'),
@@ -51,6 +51,7 @@ const MyGarage = props => {
       type: 'AC Repair',
       loction: '400/G 2nd Floor,Near New Delhi',
     },
+
     {
       key: 4,
       IMG: require('../../assets/Splash/intro2.png'),
@@ -83,7 +84,19 @@ const MyGarage = props => {
       type: 'AC Repair',
       loction: '400/G 2nd Floor,Near New Delhi',
     },
+
+    {
+      key: 7,
+      IMG: require('../../assets/Splash/intro2.png'),
+      text: 'Maruti Vitara Brezza',
+      carno: 'UP 15 CD 1433',
+      OilType: ':Petrol',
+      service: 'ServiceType :',
+      type: 'AC Repair',
+      loction: '400/G 2nd Floor,Near New Delhi',
+    },
   ];
+
   const renderItem = ({item}) => (
     <TouchableOpacity
       onPress={() => props.navigation.navigate('OrderTracking')}>
@@ -157,6 +170,55 @@ const MyGarage = props => {
       </View>
     </TouchableOpacity>
   );
+
+  const DATA2 = [
+    {
+      key: 1,
+      IMG: require('../../assets/Splash/intro2.png'),
+      Cod1: 'Accepte',
+      Cod2: 'Reject',
+    },
+
+    {
+      key: 2,
+      IMG: require('../../assets/Splash/intro2.png'),
+      Cod1: 'Accepte',
+      Cod2: 'Reject',
+    },
+  ];
+
+  const renderCarRquest = ({item}) => {
+    return (
+      <View style={styles.item2}>
+        <View style={styles.newRew}>
+          <Image
+            source={item.IMG}
+            style={{height: 140, width: 140}}
+            resizeMode="contain"
+          />
+        </View>
+
+        <View
+          style={{
+            height: height * 0.09,
+            width: width * 0.4,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            // backgroundColor: 'green',
+            // borderWidth: 1,
+            flexDirection: 'row',
+          }}>
+          <TouchableOpacity style={styles.btn}>
+            <Text style={{fontSize: 14, color: '#FFFFFF'}}>{item.Cod2}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btn2}>
+            <Text style={{fontSize: 12, color: '#FFFFFF'}}>{item.Cod1}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
       <View
@@ -288,46 +350,132 @@ const MyGarage = props => {
       <View
         style={{
           height: height * 0.07,
-          width: width * 0.7,
-          // alignSelf: 'center',
-          justifyContent: 'space-evenly',
+          width: width * 0.65,
+          alignSelf: 'center',
+          justifyContent: 'space-between',
           // backgroundColor: 'red',
           flexDirection: 'row',
+          alignItems: 'center',
         }}>
         <Text
           style={{
             fontSize: 17,
             fontWeight: 'bold',
             color: COLOR.BLACK,
-            textDecorationLine: 'underline',
+            // textDecorationLine: 'underline',
           }}>
           Cars
         </Text>
-        <TouchableOpacity>
-          <Text
-            style={{
-              fontSize: 17,
-              fontWeight: 'bold',
-              color: COLOR.BLACK,
-              textDecorationLine: 'underline',
-            }}>
-            New Requrest
-          </Text>
-        </TouchableOpacity>
+
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: COLOR.BLACK,
+          }}>
+          New Requrest
+        </Text>
+
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: COLOR.BLACK,
+          }}>
+          SOS
+        </Text>
       </View>
 
-      <View style={styles.flatMain}>
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          numColumns={2}
-        />
+      <View>
+        <SwiperFlatList
+          paginationStyle={{
+            width: width * 0.73,
+            height: height * 0.05,
+            // backgroundColor: 'cyan',
+            // alignSelf: 'center',
+            justifyContent: 'center',
+            // alignItems:'center'
+            bottom: 400,
+            justifyContent: 'space-between',
+            marginHorizontal: 20,
+          }}
+          paginationStyleItemActive={{
+            width: width * 0.1,
+            height: height * 0.007,
+            backgroundColor: 'rgb(0,126,247)',
+          }}
+          paginationStyleItem={{
+            width: width * 0.1,
+            height: height * 0.007,
+            // borderRadius: 20,
+          }}
+          // autoplay
+          // autoplayDelay={5}
+          // autoplayLoop
+          index={2}
+          showPagination>
+          {/** ==================================Flat list =============================================
+
+          <View style={styles.child}>
+            <View style={styles.flatMain}>
+              <FlatList
+                data={DATA}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                numColumns={2}
+              />
+            </View>
+          </View>
+          <View style={styles.child}>
+            <View style={styles.IntroImg}>
+              <FlatList
+                data={DATA2}
+                renderItem={renderCarRquest}
+                keyExtractor={item => item.id}
+                numColumns={2}
+              />
+            </View>
+          </View>
+          */}
+
+          <View style={styles.child}>
+            <View style={styles.flatMain}>
+              <FlatList
+                data={DATA}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                numColumns={2}
+              />
+            </View>
+          </View>
+          <View style={styles.child}>
+            <View style={styles.IntroImg}>
+              <FlatList
+                data={DATA2}
+                renderItem={renderCarRquest}
+                keyExtractor={item => item.id}
+                numColumns={2}
+              />
+            </View>
+          </View>
+          <View style={styles.child}>
+            <View style={styles.IntroImg}>
+              <FlatList
+                data={DATA2}
+                renderItem={renderCarRquest}
+                keyExtractor={item => item.id}
+                numColumns={2}
+              />
+            </View>
+          </View>
+        </SwiperFlatList>
       </View>
     </View>
   );
 };
+
 export default MyGarage;
+
 const styles = StyleSheet.create({
   capacitymain: {
     height: height * 0.09,
@@ -368,21 +516,38 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     alignItems: 'center',
   },
+  // swiper falt list
 
-  ///======= FlatList ====
+  child: {
+    height: height * 0.6,
+    width: width * 1,
+    // backgroundColor: 'skyblue',
+    justifyContent: 'center',
+    // alignItems: 'center',
+  },
 
+  // Flat list
+
+  flatMain: {
+    height: height * 0.52,
+    width: width * 0.95,
+    alignSelf: 'center',
+    // backgroundColor: 'skyblue',
+    // borderWidth: 1,
+    alignItems: 'center',
+  },
   item: {
     height: height * 0.27,
     width: width * 0.43,
     alignSelf: 'center',
     // backgroundColor: 'skyblue',
-    // borderWidth: 1,
     borderRadius: 8,
-    justifyContent: 'center',
+    // justifyContent: 'center',
 
     alignItems: 'center',
     backgroundColor: 'rgb(245,245,245)',
     margin: 4,
+    elevation: 2,
   },
   imgData: {
     height: height * 0.12,
@@ -398,12 +563,59 @@ const styles = StyleSheet.create({
   },
   cmntxt: {
     height: height * 0.03,
-    width: width * 0.4,
+    // width: width * 0.4,
     // borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  txt: {
-    fontSize: 11,
+
+  IntroImg: {
+    height: height * 0.6,
+    width: width * 0.9,
+    // backgroundColor: 'red',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // borderWidth: 1,
+    alignSelf: 'center',
+  },
+
+  // ============ new request ====
+  newRew: {
+    height: height * 0.14,
+    width: width * 0.4,
+    // backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  item2: {
+    height: height * 0.27,
+    width: width * 0.43,
+    alignSelf: 'center',
+    // backgroundColor: 'skyblue',
+    borderRadius: 8,
+    justifyContent: 'center',
+
+    alignItems: 'center',
+    backgroundColor: 'rgb(245,245,245)',
+    margin: 4,
+    elevation: 2,
+  },
+  btn: {
+    height: height * 0.04,
+    width: width * 0.14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+
+    borderRadius: 10,
+  },
+  btn2: {
+    height: height * 0.04,
+    width: width * 0.14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'green',
+    borderRadius: 10,
   },
 });

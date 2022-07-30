@@ -13,6 +13,7 @@ import CustomButton from '../../components/Buttons/CustomButton';
 import {COLOR} from '../../utils/Colors';
 import {ImagePath} from '../../utils/ImagePath';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 const {height, width} = Dimensions.get('window');
 
@@ -549,10 +550,9 @@ const GrageDetails = props => {
         {renderEntityType()}
 
         <View style={styles.Nxtbtn}>
-          <CustomButton title={'Next'}
-
-          ButtonPress={() =>props.navigation.navigate("Home")}
-          
+          <CustomButton
+            title={'Next'}
+            ButtonPress={() => props.navigation.navigate('Home')}
           />
         </View>
       </View>

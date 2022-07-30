@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 const {height, width} = Dimensions.get('window');
-const ForgotPassword = (props) => {
+const ForgotPassword = props => {
   const [Phone, setPhone] = useState('');
   const [checkPhone, setCheckPhone] = useState(true);
   const [errorPhone, setErrorPhone] = useState(null);

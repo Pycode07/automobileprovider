@@ -70,8 +70,8 @@ const OtpVerification = ({route, navigation}) => {
   //     // if(otpData.otp !== )ṁ
   //   }
   return (
-    <View style={styles.mainContainer}>
-      <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView>
+      <View style={styles.mainContainer}>
         <ImageBackground
           style={{flex: 1}}
           source={ImagePath.LOGIN_BACKGROUND}
@@ -192,8 +192,8 @@ const OtpVerification = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </ImageBackground>
-      </KeyboardAwareScrollView>
-    </View>
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
