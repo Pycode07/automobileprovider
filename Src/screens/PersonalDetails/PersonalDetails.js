@@ -666,7 +666,7 @@ const styles = StyleSheet.create({
 
     justifyContent: 'center',
     // alignItems: 'center',
-    padding: 4,
+    padding: 2,
     borderColor: COLOR.BACK_BORDER,
   },
   ownName: {

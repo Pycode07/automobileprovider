@@ -24,7 +24,6 @@ const stepIndicatorStyles = {
   labelSize: 15,
   currentStepLabelColor: 'black',
 };
-
 const OrderTracking = props => {
   return (
     <View style={{flex: 1}}>
