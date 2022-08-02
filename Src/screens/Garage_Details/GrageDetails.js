@@ -442,6 +442,8 @@ const GrageDetails = props => {
               No of KMP
             </Text>
           </View>
+
+          {/** 
           <View style={styles.Enitycheck}>
             <View style={styles.cheekk}>
               <BouncyCheckbox
@@ -518,7 +520,7 @@ const GrageDetails = props => {
                 }}
               />
             </View>
-          </View>
+          </View>*/}
         </View>
       </View>
     );

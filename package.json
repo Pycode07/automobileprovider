@@ -20,6 +20,7 @@
     "react-native-bouncy-checkbox": "^2.1.10",
     "react-native-check-box": "^2.1.7",
     "react-native-confirmation-code-field": "^7.3.0",
+    "react-native-element-dropdown": "^2.1.0",
     "react-native-gesture-handler": "^2.5.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-pager-view": "^5.4.25",
