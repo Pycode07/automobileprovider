@@ -18,87 +18,6 @@ import {ImagePath} from '../../utils/ImagePath';
 
 const {height, width} = Dimensions.get('window');
 
-const renderAgeGender = () => {
-  return (
-    <View style={styles.Area}>
-      <View style={styles.WebsideMAIN}>
-        <View style={styles.ownName}>
-          <Text
-            style={{
-              color: COLOR.BACK_BORDER,
-              fontWeight: '600',
-              fontSize: height / 44,
-            }}>
-            Age
-          </Text>
-        </View>
-        <View style={styles.webside}>
-          <TextInput
-            placeholder="Age"
-            color={COLOR.TXT_INPT_COLOR}
-            placeholderTextColor={COLOR.GREY}
-          />
-        </View>
-      </View>
-      <View style={styles.WebsideMAIN}>
-        <View style={styles.ownName}>
-          <Text
-            style={{
-              color: COLOR.BACK_BORDER,
-              fontWeight: '600',
-              fontSize: height / 44,
-            }}>
-            Gender
-          </Text>
-        </View>
-
-        <View style={styles.gender}>{renderGrage()}</View>
-      </View>
-    </View>
-  );
-};
-
-const renderGrage = () => {
-  return (
-    <View style={styles.genderV}>
-      <View style={styles.gragecheck}>
-        <BouncyCheckbox
-          size={20}
-          fillColor="#02024A"
-          unfillColor="#FFFFFF"
-          text="M"
-          iconStyle={{
-            borderColor: 'rgb(245,245,245)',
-            borderRadius: 4,
-            borderColor: 'gray',
-          }}
-          // onPress={(isChecked: boolean) => {}}
-          textStyle={{color: 'black', textDecorationLine: 'none'}}
-        />
-      </View>
-      <View style={styles.gragecheck}>
-        <BouncyCheckbox
-          size={20}
-          fillColor="#02024A"
-          unfillColor="#FFFFFF"
-          text="F"
-          iconStyle={{
-            borderColor: 'rgb(245,245,245)',
-            borderRadius: 4,
-            borderColor: 'gray',
-          }}
-          // onPress={(isChecked: boolean) => {}}
-          textStyle={{
-            color: 'black',
-            textDecorationLine: 'none',
-            fontSize: height / 50,
-          }}
-        />
-      </View>
-    </View>
-  );
-};
-
 const PersonalDetails = props => {
   const [FirstName, setFirstName] = useState('');
   const [errorFirstName, setErrorFirstName] = useState(null);
@@ -117,6 +36,8 @@ const PersonalDetails = props => {
 
   const [Pan, setPan] = useState('');
   const [errorPan, setErrorPan] = useState(null);
+
+  const [Mail, setmail] = useState(null);
 
   const _validateFirstName = fname => {
     var fnameRegex = /^[a-z A-Z ]{2,32}$/i;
@@ -395,7 +316,76 @@ const PersonalDetails = props => {
             ) : null}
           </View>
 
-          {renderAgeGender()}
+          <View style={styles.Area}>
+            <View style={styles.WebsideMAIN}>
+              <View style={styles.ownName}>
+                <Text
+                  style={{
+                    color: COLOR.BACK_BORDER,
+                    fontWeight: '600',
+                    fontSize: height / 44,
+                  }}>
+                  Age
+                </Text>
+              </View>
+              <View style={styles.webside}>
+                <TextInput
+                  placeholder="Age"
+                  color={COLOR.TXT_INPT_COLOR}
+                  placeholderTextColor={COLOR.GREY}
+                />
+              </View>
+            </View>
+            <View style={styles.WebsideMAIN}>
+              <View style={styles.ownName}>
+                <Text
+                  style={{
+                    color: COLOR.BACK_BORDER,
+                    fontWeight: '600',
+                    fontSize: height / 44,
+                  }}>
+                  Gender
+                </Text>
+              </View>
+
+              <View style={styles.genderV}>
+                <View style={styles.gragecheck}>
+                  <BouncyCheckbox
+                    size={20}
+                    fillColor="#02024A"
+                    unfillColor="#FFFFFF"
+                    text="M"
+                    iconStyle={{
+                      borderColor: 'rgb(245,245,245)',
+                      borderRadius: 4,
+                      borderColor: 'gray',
+                    }}
+                    // onPress={(isChecked: boolean) => {}}
+                    textStyle={{color: 'black', textDecorationLine: 'none'}}
+                  />
+                </View>
+                <View style={styles.gragecheck}>
+                  <BouncyCheckbox
+                    size={20}
+                    fillColor="#02024A"
+                    unfillColor="#FFFFFF"
+                    text="F"
+                    iconStyle={{
+                      borderColor: 'rgb(245,245,245)',
+                      borderRadius: 4,
+                      borderColor: 'gray',
+                    }}
+                    // onPress={(isChecked: boolean) => {}}
+                    textStyle={{
+                      color: 'black',
+                      textDecorationLine: 'none',
+                      fontSize: height / 50,
+                    }}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
 
           <View style={styles.PPAddress}>
             <View style={styles.tital}>
@@ -779,13 +769,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   //========ownera name=====
-  gender: {
-    height: height * 0.07,
-    width: width * 0.4,
-    // borderWidth: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
 
   WebsideMAIN: {
     height: height * 0.14,
