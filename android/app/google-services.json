@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "121775272201",
+    "firebase_url": "https://ksbm-MechanilaneProvider-default-rtdb.firebaseio.com",
+    "project_id": "ksbm-MechanilaneProvider",
+    "storage_bucket": "ksbm-MechanilaneProvider.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121775272201:android:de97c8e83b7ec4e4e663d8",
+        "android_client_info": {
+          "package_name": "com.mechanilaneprovider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121775272201-jhao702bmn0inn3a30p2j4rnnbekk9v9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mechanilaneprovider",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "121775272201-4evsjo4i5p3cikmie51tlvirirhjeo3o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCI3x4M1_haahsDPEV-Zu2QJulCOrWk0Xk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121775272201-4evsjo4i5p3cikmie51tlvirirhjeo3o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
