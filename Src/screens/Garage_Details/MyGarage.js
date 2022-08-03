@@ -408,6 +408,7 @@ const MyGarage = props => {
           <Text style={{color: COLOR.BLACK, fontSize: 22}}>My Garage</Text>
         </View>
       </View>
+
       <View style={styles.capacitymain}>
         <View style={{flexDirection: 'row'}}>
           <View style={styles.capcity}>
@@ -453,6 +454,7 @@ const MyGarage = props => {
           </View>
         </View>
       </View>
+
       <View style={styles.capacitymain}>
         <View style={{flexDirection: 'row'}}>
           <View style={styles.capcity}>
@@ -549,7 +551,7 @@ const MyGarage = props => {
             // alignSelf: 'center',
             justifyContent: 'center',
             // alignItems:'center'
-            bottom: 395,
+            bottom: 445,
             justifyContent: 'space-between',
             marginHorizontal: 20,
           }}
@@ -615,7 +617,7 @@ const MyGarage = props => {
                 <TouchableOpacity
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => setModalVisible(!modalVisible)}>
-                  <Text style={styles.textStyle}>Back</Text>
+                  <Text style={styles.textStyle}>Done</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -671,7 +673,7 @@ const styles = StyleSheet.create({
   // swiper falt list
 
   child: {
-    height: height * 0.6,
+    height: height * 0.67,
     width: width * 1,
     // backgroundColor: 'skyblue',
     justifyContent: 'center',
@@ -681,7 +683,7 @@ const styles = StyleSheet.create({
   // Flat list
 
   flatMain: {
-    height: height * 0.52,
+    height: height * 0.67,
     width: width * 0.95,
     alignSelf: 'center',
     // backgroundColor: 'skyblue',
@@ -695,7 +697,6 @@ const styles = StyleSheet.create({
     // backgroundColor: 'skyblue',
     borderRadius: 8,
     // justifyContent: 'center',
-
     alignItems: 'center',
     backgroundColor: 'rgb(245,245,245)',
     margin: 4,
@@ -722,14 +723,13 @@ const styles = StyleSheet.create({
   },
 
   IntroImg: {
-    height: height * 0.6,
+    height: height * 0.67,
     width: width * 0.9,
     // backgroundColor: 'red',
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     // borderWidth: 1,
-    alignSelf: 'center',
   },
 
   // ============ new request ====
@@ -751,7 +751,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(245,245,245)',
     margin: 4,
     elevation: 2,
-    marginVertical: 30,
+    // marginVertical: 30,
   },
   btn: {
     height: height * 0.022,

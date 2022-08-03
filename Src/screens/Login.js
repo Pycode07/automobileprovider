@@ -70,7 +70,7 @@ const Login = props => {
   const onSubmit = () => {
     if (validate()) {
       //onVerifySignUp();
-      props.navigation.navigate('PersonalDetails');
+      props.navigation.navigate('Home');
     } else {
       alert('Something went wrong');
     }
@@ -203,6 +203,23 @@ const Login = props => {
             ) : null}
           </View>
 
+          <TouchableOpacity
+            onPress={() => onSubmit('')}
+            style={{
+              height: height * 0.056,
+              width: width * 0.73,
+              alignSelf: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'navy',
+              marginTop: 10,
+              alignItems: 'center',
+              // borderRadius: 11,
+            }}>
+            <View>
+              <Text style={{fontSize: 14, color: '#FFFFFF'}}>Submit</Text>
+            </View>
+          </TouchableOpacity>
+
           <View style={styles.forgotpasw}>
             <TouchableOpacity
               onPress={() => props.navigation.navigate('ForgotPassword')}>
@@ -224,26 +241,10 @@ const Login = props => {
               New user ?
             </Text>
             <TouchableOpacity
-              onPress={() => props.navigation.navigate('Register')}>
+              onPress={() => props.navigation.navigate('PersonalDetails')}>
               <Text style={{fontSize: 12, color: 'green'}}> Register Now</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            onPress={() => onSubmit('')}
-            style={{
-              height: height * 0.056,
-              width: width * 0.73,
-              alignSelf: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'navy',
-              marginTop: 10,
-              alignItems: 'center',
-              // borderRadius: 11,
-            }}>
-            <View>
-              <Text style={{fontSize: 14, color: '#FFFFFF'}}>Submit</Text>
-            </View>
-          </TouchableOpacity>
         </ScrollView>
       </View>
     </KeyboardAwareScrollView>

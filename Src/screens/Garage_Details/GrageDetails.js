@@ -369,7 +369,6 @@ const GrageDetails = props => {
               Type of Entity
             </Text>
           </View>
-
           <TouchableOpacity
             style={styles.cheekk}
             onPress={() => setModalVisible(!modalVisible)}>
@@ -395,7 +394,6 @@ const GrageDetails = props => {
             onPress={() => setModalVisible(!modalVisible)}>
             <Text>Company</Text>
           </TouchableOpacity>
-
           {/**========================================= Properitor FirmModal==================================================================== */}
           <View style={styles.centeredView}>
             <Modal
@@ -534,7 +532,7 @@ const GrageDetails = props => {
         <View style={styles.Nxtbtn}>
           <CustomButton
             title={'Next'}
-            ButtonPress={() => props.navigation.navigate('Home')}
+            ButtonPress={() => props.navigation.navigate('BaseInformation')}
           />
         </View>
       </View>

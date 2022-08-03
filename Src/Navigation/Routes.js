@@ -33,6 +33,7 @@ const Routes = () => {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="PersonalDetails" component={PersonalDetails} />
         <Stack.Screen name="GrageDetails" component={GrageDetails} />
+        <Stack.Screen name="MyGarage" component={MyGarage} />
         <Stack.Screen name="Wallet" component={Wallet} />
         <Stack.Screen name="Booking" component={Booking} />
         <Stack.Screen name="Home" component={BottomTab} />
@@ -44,7 +45,6 @@ const Routes = () => {
         <Stack.Screen name="OtpVerification" component={OtpVerification} />
         <Stack.Screen name="PhoneOtp" component={PhoneOtp} />
         <Stack.Screen name="OrderTracking" component={OrderTracking} />
-        <Stack.Screen name="MyGarage" component={MyGarage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
