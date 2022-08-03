@@ -1,13 +1,41 @@
 import React from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import {View, Text, Dimensions, ScrollView, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
+import CustomButton from '../components/Buttons/CustomButton';
+import {ImagePath} from '../utils/ImagePath';
+import {COLOR} from '../utils/Colors';
 
-const BaseInformation = () => {
-  const {height, width} = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
+
+const BaseInformation = props => {
   return (
     <ScrollView
       style={{flex: 1, backgroundColor: '#fff', paddingHorizontal: 10}}
       showsVerticalScrollIndicator={false}>
+      <View style={styles.header}>
+        <View style={styles.backbtn}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <Image
+              source={ImagePath.BlACK_BACK_ARROW}
+              style={{height: 25, width: 25}}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.titaltxxt}>
+          <Text style={{color: COLOR.BLACK, fontSize: 21, fontWeight: '700'}}>
+            Base Information
+          </Text>
+        </View>
+      </View>
+
       <View style={styles.headinView}>
         <Text style={styles.headingText}>
           What Kind of car services do you provide?
@@ -782,20 +810,11 @@ const BaseInformation = () => {
           style={{marginVertical: 5, marginLeft: 10}}
         />
       </View>
-      <View
-        style={{
-          flex: 0,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#02024A',
-          marginHorizontal: 20,
-          marginVertical: 40,
-          paddingVertical: 10,
-          borderRadius: 40,
-        }}>
-        <Text style={{color: '#fff', fontSize: 16, fontWeight: '700'}}>
-          NEXT
-        </Text>
+      <View style={styles.Nxtbtn}>
+        <CustomButton
+          title={'Next'}
+          ButtonPress={() => props.navigation.navigate('Login')}
+        />
       </View>
     </ScrollView>
   );
@@ -804,6 +823,33 @@ const BaseInformation = () => {
 export default BaseInformation;
 
 const styles = StyleSheet.create({
+  // ===========Tital ========
+  header: {
+    height: height * 0.1,
+    width: width * 0.99,
+    // borderWidth: 1,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: 'navy'
+  },
+  backbtn: {
+    height: height * 0.05,
+    width: width * 0.2,
+    // borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  titaltxxt: {
+    height: height * 0.05,
+    width: width * 0.6,
+    // borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  //=+======== End ===
   headinView: {
     flex: 0,
     marginVertical: 10,
@@ -833,5 +879,12 @@ const styles = StyleSheet.create({
   },
   boncyContainer: {
     marginVertical: 5,
+  },
+  Nxtbtn: {
+    height: height * 0.2,
+    width: width * 0.9,
+    // borderWidth: 1,
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
 });

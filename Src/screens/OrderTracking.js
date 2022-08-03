@@ -24,22 +24,21 @@ const stepIndicatorStyles = {
   labelSize: 15,
   currentStepLabelColor: 'black',
 };
-
 const OrderTracking = props => {
   return (
     <View style={{flex: 1}}>
       <View style={styles.header}>
         <View style={styles.tital}>
-          <Text style={{fontSize: 24}}> Track Order </Text>
+          <Text style={{fontSize: 24}}> Your Progress </Text>
           <Text style={{fontSize: 13}}> Thu, 28 Jul </Text>
           <Text style={{fontSize: 13}}> Order ID 52hd25jyt </Text>
         </View>
         <View style={styles.tital}>
           <View style={styles.titalimg}>
             <Image
-              source={ImagePath.CAR_ICONE}
+              source={require('../assets/Splash/intro2.png')}
               resizeMode="contain"
-              style={{height: 50, width: 50}}
+              style={{height: 100, width: 100}}
             />
           </View>
           <View style={styles.amt}>
@@ -55,14 +54,15 @@ const OrderTracking = props => {
             direction="vertical"
             //labels={dummyData.data.map((item) => item.title)}
             labels={[
-              'Request Send',
+              //'Request Send',
               'Request Accepted',
-              'Car Pic',
+              'Car Picked',
               'Reach Garage',
-              'Out of Delivery',
+              'Working',
+              'Out for Delivery',
               'Completed',
             ]}
-            onPress={() => onStepPress('')}
+            // onPress={() => onStepPress('')}
           />
         </View>
       </View>
@@ -107,20 +107,21 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   tital: {
-    height: height * 0.12,
-    width: width * 0.45,
+    height: height * 0.13,
+    width: width * 0.46,
     // borderWidth: 1,
     // alignItems:'center'
   },
   titalimg: {
-    height: height * 0.078,
+    height: height * 0.1,
     width: width * 0.42,
     // borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   amt: {
     height: height * 0.028,

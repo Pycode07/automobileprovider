@@ -113,6 +113,14 @@ const Register = props => {
     }
   };
 
+  // ************** Register Api call Here ****************
+  let Register = {
+    mobileNumber: 'Phone',
+    email: 'Email',
+    password: 'Password',
+    confirmPassword: 'confirmpassword',
+  };
+
   return (
     <KeyboardAwareScrollView>
       <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -387,7 +395,9 @@ const Register = props => {
             <Text style={{fontSize: 20, color: '#02024A', fontWeight: '600'}}>
               SignUp
             </Text>
-            <TouchableOpacity onPress={() => onSubmit()}>
+            <TouchableOpacity
+              // onPress={() => onSubmit()}
+              onPress={() => props.navigation.navigate('OtpVerification')}>
               <Image source={ImagePath.NEXT_BTN} />
             </TouchableOpacity>
           </View>

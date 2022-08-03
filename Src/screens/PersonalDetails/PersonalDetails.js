@@ -32,7 +32,6 @@ const renderAgeGender = () => {
             Age
           </Text>
         </View>
-
         <View style={styles.webside}>
           <TextInput
             placeholder="Age"
@@ -106,10 +105,18 @@ const PersonalDetails = props => {
 
   const [surName, setsurName] = useState('');
   const [errorsurName, setErrorsurName] = useState(null);
-  const [Phone, setPhone] = useState('');
 
-  const [checkPhone, setCheckPhone] = useState(true);
+  const [date, setdate] = useState('');
+  const [errordate, setErrordate] = useState('');
+
+  const [Phone, setPhone] = useState('');
   const [errorPhone, setErrorPhone] = useState(null);
+
+  const [Adhar, setAdhar] = useState('');
+  const [errorAdhar, setErrorAdhar] = useState(null);
+
+  const [Pan, setPan] = useState('');
+  const [errorPan, setErrorPan] = useState(null);
 
   const _validateFirstName = fname => {
     var fnameRegex = /^[a-z A-Z ]{2,32}$/i;
@@ -133,6 +140,17 @@ const PersonalDetails = props => {
     }
   };
 
+  const _Datevalidate = date => {
+    var DateRegex = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/;
+    if (date === '') {
+      setErrordate('*Please enter correct Dob.');
+    } else if (!DateRegex.test(date)) {
+      setErrordate('*Please enter valid Dob.');
+    } else {
+      setErrordate(null);
+    }
+  };
+
   const _Phonevalidate = Phone => {
     var PhoneRegex = /^([0-9]){10,14}$/;
     if (Phone === '') {
@@ -141,6 +159,40 @@ const PersonalDetails = props => {
       setErrorPhone('*Please enter valid Phone Number.');
     } else {
       setErrorPhone(null);
+    }
+  };
+
+  const _Panvalidate = Pan => {
+    var PanRegex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+    if (Pan === '') {
+      setErrorPan('*Please enter Pan card number.');
+    } else if (!PanRegex.test(Pan)) {
+      setErrorPan('*Please enter valid Pan card Number.');
+    } else {
+      setErrorPan(null);
+    }
+  };
+
+  const _Adharvalidate = adhar => {
+    var AdharRegex = /^\d{4}\d{4}\d{4}$$/;
+    var PassportRegex = /^[A-PR-WYa-pr-wy][1-9]\\d\\s?\\d{4}[1-9]$/;
+    var VoterRegex = /^([a-zA-Z]){3}([0-9]){7}?$/;
+    var DLRegex =
+      /^(([A-Z]{2}[0-9]{2})|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/;
+
+    if (adhar === '') {
+      setErrorAdhar('*Please enter anyone.');
+    } else if (
+      !(
+        AdharRegex.test(adhar) |
+        PassportRegex.test(adhar) |
+        VoterRegex.test(adhar) |
+        DLRegex.test(adhar)
+      )
+    ) {
+      setErrorAdhar('*Please enter correct Details.');
+    } else {
+      setErrorAdhar(null);
     }
   };
 
@@ -158,6 +210,21 @@ const PersonalDetails = props => {
 
     if (Phone === '') {
       setErrorPhone('*Please enter Phone Number.');
+      flag = false;
+    }
+
+    if (date === '') {
+      setErrordate('*Please enter DOB.');
+      flag = false;
+    }
+
+    if (Pan === '') {
+      setErrordate('*Please enter Pan No.');
+      flag = false;
+    }
+
+    if (Adhar === '') {
+      setErrorAdhar('*Please enter any one Details.');
       flag = false;
     }
 
@@ -301,8 +368,31 @@ const PersonalDetails = props => {
                 placeholder="DD/MM/YY"
                 color={COLOR.TXT_INPT_COLOR}
                 placeholderTextColor={COLOR.GREY}
+                returnKeyType="done"
+                keyboardType="default"
+                onChangeText={txt => {
+                  setdate(txt), _Datevalidate(txt);
+                }}
               />
             </View>
+
+            {errordate != null ? (
+              <View
+                style={{
+                  height: height * 0.02,
+                  width: width / 1.3,
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 10,
+                    marginLeft: 10,
+                  }}>
+                  {errordate}
+                </Text>
+              </View>
+            ) : null}
           </View>
 
           {renderAgeGender()}
@@ -419,13 +509,35 @@ const PersonalDetails = props => {
             </View>
             <View style={styles.commTextinput}>
               <TextInput
-                placeholder="PAN"
+                placeholder="Enter your pan number"
                 color={COLOR.TXT_INPT_COLOR}
                 placeholderTextColor={COLOR.GREY}
                 maxLength={56}
                 keyboardType="default"
+                returnKeyType="done"
+                onChangeText={txt => {
+                  setPan(txt), _Panvalidate(txt);
+                }}
               />
             </View>
+
+            {errorPan != null ? (
+              <View
+                style={{
+                  height: height * 0.02,
+                  width: width / 1.3,
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 10,
+                    marginLeft: 10,
+                  }}>
+                  {errorPan}
+                </Text>
+              </View>
+            ) : null}
           </View>
 
           <View style={styles.Address}>
@@ -445,8 +557,30 @@ const PersonalDetails = props => {
                 placeholderTextColor={COLOR.GREY}
                 maxLength={56}
                 keyboardType="default"
+                returnKeyType="done"
+                onChangeText={txt => {
+                  setAdhar(txt), _Adharvalidate(txt);
+                }}
               />
             </View>
+
+            {errorAdhar != null ? (
+              <View
+                style={{
+                  height: height * 0.02,
+                  width: width / 1.3,
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 10,
+                    marginLeft: 10,
+                  }}>
+                  {errorAdhar}
+                </Text>
+              </View>
+            ) : null}
           </View>
 
           <View style={styles.PPAddress}>
@@ -666,7 +800,7 @@ const styles = StyleSheet.create({
 
     justifyContent: 'center',
     // alignItems: 'center',
-    padding: 4,
+    padding: 2,
     borderColor: COLOR.BACK_BORDER,
   },
   ownName: {

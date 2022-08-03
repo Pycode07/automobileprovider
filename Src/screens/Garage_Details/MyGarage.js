@@ -8,6 +8,7 @@ import {
   Image,
   TextInput,
   FlatList,
+  Modal,
 } from 'react-native';
 import {COLOR} from '../../utils/Colors';
 import {ImagePath} from '../../utils/ImagePath';
@@ -19,6 +20,7 @@ const MyGarage = props => {
   const [remain, setRemain] = useState(0);
   useEffect(() => {}, [count, remain]);
 
+  const [modalVisible, setModalVisible] = useState(false);
   const DATA = [
     {
       key: 1,
@@ -175,15 +177,49 @@ const MyGarage = props => {
     {
       key: 1,
       IMG: require('../../assets/Splash/intro2.png'),
-      Cod1: 'Accepte',
-      Cod2: 'Reject',
+      text: 'Maruti Vitara Brezza',
+      carno: 'UP 15 CD 1433',
+      OilType: ':Petrol',
+      service: 'ServiceType :',
+      type: 'AC Repair',
+      loction: '400/G 2nd Floor,Near New Delhi',
+      BTN: 'Accept',
+      BTN2: 'Reject',
     },
 
     {
       key: 2,
       IMG: require('../../assets/Splash/intro2.png'),
-      Cod1: 'Accepte',
-      Cod2: 'Reject',
+      text: 'Maruti Vitara Brezza',
+      carno: 'UP 15 CD 1433',
+      OilType: ':Petrol',
+      service: 'ServiceType :',
+      type: 'AC Repair',
+      loction: '400/G 2nd Floor,Near New Delhi',
+      BTN: 'Accept',
+      BTN2: 'Reject',
+    },
+  ];
+
+  const DATA3 = [
+    {
+      key: 1,
+      IMG: require('../../assets/Splash/intro2.png'),
+      text: 'Maruti Vitara Brezza',
+      carno: 'UP 15 CD 1433',
+      OilType: ':Petrol',
+
+      loction: '400/G 2nd Floor,Near New Delhi',
+    },
+
+    {
+      key: 2,
+      IMG: require('../../assets/Splash/intro2.png'),
+      text: 'Maruti Vitara Brezza',
+      carno: 'UP 15 CD 1433',
+      OilType: ':Petrol',
+
+      loction: '400/G 2nd Floor,Near New Delhi',
     },
   ];
 
@@ -198,22 +234,140 @@ const MyGarage = props => {
           />
         </View>
 
-        <View
-          style={{
-            height: height * 0.09,
-            width: width * 0.4,
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            // backgroundColor: 'green',
-            // borderWidth: 1,
-            flexDirection: 'row',
-          }}>
-          <TouchableOpacity style={styles.btn}>
-            <Text style={{fontSize: 14, color: '#FFFFFF'}}>{item.Cod2}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn2}>
-            <Text style={{fontSize: 12, color: '#FFFFFF'}}>{item.Cod1}</Text>
-          </TouchableOpacity>
+        <View style={styles.content}>
+          <View style={styles.cmntxt}>
+            <Text style={{fontSize: 13, color: 'black', fontWeight: '500'}}>
+              {item.text}
+            </Text>
+          </View>
+          <View
+            style={{
+              height: height * 0.03,
+              width: width * 0.4,
+              flexDirection: 'row',
+              // borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+              {item.carno}
+            </Text>
+            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+              {' '}
+              {item.OilType}
+            </Text>
+          </View>
+
+          <View
+            style={{
+              height: height * 0.03,
+              width: width * 0.4,
+              flexDirection: 'row',
+              // borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                fontSize: 11,
+                color: COLOR.BACK_BORDER,
+                fontWeight: '500',
+              }}>
+              {item.service}
+            </Text>
+            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+              {item.type}
+            </Text>
+          </View>
+          <View
+            style={{
+              height: height * 0.03,
+              width: width * 0.4,
+              flexDirection: 'row',
+              // borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+              {item.loction}
+            </Text>
+          </View>
+
+          <View
+            style={{
+              height: height * 0.032,
+              width: width * 0.4,
+              flexDirection: 'row',
+              // borderWidth: 1,
+              justifyContent: 'space-around',
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity style={styles.btn}>
+              <Text style={{color: '#FFFFFF', fontSize: height / 65}}>
+                {item.BTN2}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.btn2}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={{color: '#FFFFFF', fontSize: height / 65}}>
+                {item.BTN}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const renderSOS = ({item}) => {
+    return (
+      <View style={styles.item2}>
+        <View style={styles.newRew}>
+          <Image
+            source={item.IMG}
+            style={{height: 140, width: 140}}
+            resizeMode="contain"
+          />
+        </View>
+
+        <View style={styles.content}>
+          <View style={styles.cmntxt}>
+            <Text style={{fontSize: 13, color: 'black', fontWeight: '500'}}>
+              {item.text}
+            </Text>
+          </View>
+          <View
+            style={{
+              height: height * 0.03,
+              width: width * 0.4,
+              flexDirection: 'row',
+              // borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+              {item.carno}
+            </Text>
+            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+              {' '}
+              {item.OilType}
+            </Text>
+          </View>
+
+          <View
+            style={{
+              height: height * 0.03,
+              width: width * 0.4,
+              flexDirection: 'row',
+              // borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+              {item.loction}
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -254,6 +408,7 @@ const MyGarage = props => {
           <Text style={{color: COLOR.BLACK, fontSize: 22}}>My Garage</Text>
         </View>
       </View>
+
       <View style={styles.capacitymain}>
         <View style={{flexDirection: 'row'}}>
           <View style={styles.capcity}>
@@ -299,6 +454,7 @@ const MyGarage = props => {
           </View>
         </View>
       </View>
+
       <View style={styles.capacitymain}>
         <View style={{flexDirection: 'row'}}>
           <View style={styles.capcity}>
@@ -350,7 +506,7 @@ const MyGarage = props => {
       <View
         style={{
           height: height * 0.07,
-          width: width * 0.65,
+          width: width * 0.68,
           alignSelf: 'center',
           justifyContent: 'space-between',
           // backgroundColor: 'red',
@@ -390,19 +546,20 @@ const MyGarage = props => {
         <SwiperFlatList
           paginationStyle={{
             width: width * 0.73,
-            height: height * 0.05,
+            height: height * 0.04,
             // backgroundColor: 'cyan',
             // alignSelf: 'center',
             justifyContent: 'center',
             // alignItems:'center'
-            bottom: 400,
+            bottom: 445,
             justifyContent: 'space-between',
             marginHorizontal: 20,
           }}
           paginationStyleItemActive={{
             width: width * 0.1,
             height: height * 0.007,
-            backgroundColor: 'rgb(0,126,247)',
+            // backgroundColor: 'rgb(0,126,247)',
+            backgroundColor: 'blue',
           }}
           paginationStyleItem={{
             width: width * 0.1,
@@ -412,32 +569,8 @@ const MyGarage = props => {
           // autoplay
           // autoplayDelay={5}
           // autoplayLoop
-          index={2}
+          index={0}
           showPagination>
-          {/** ==================================Flat list =============================================
-
-          <View style={styles.child}>
-            <View style={styles.flatMain}>
-              <FlatList
-                data={DATA}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-                numColumns={2}
-              />
-            </View>
-          </View>
-          <View style={styles.child}>
-            <View style={styles.IntroImg}>
-              <FlatList
-                data={DATA2}
-                renderItem={renderCarRquest}
-                keyExtractor={item => item.id}
-                numColumns={2}
-              />
-            </View>
-          </View>
-          */}
-
           <View style={styles.child}>
             <View style={styles.flatMain}>
               <FlatList
@@ -461,14 +594,35 @@ const MyGarage = props => {
           <View style={styles.child}>
             <View style={styles.IntroImg}>
               <FlatList
-                data={DATA2}
-                renderItem={renderCarRquest}
+                data={DATA3}
+                renderItem={renderSOS}
                 keyExtractor={item => item.id}
                 numColumns={2}
               />
             </View>
           </View>
         </SwiperFlatList>
+
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setModalVisible(!modalVisible);
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        </View>
       </View>
     </View>
   );
@@ -519,7 +673,7 @@ const styles = StyleSheet.create({
   // swiper falt list
 
   child: {
-    height: height * 0.6,
+    height: height * 0.67,
     width: width * 1,
     // backgroundColor: 'skyblue',
     justifyContent: 'center',
@@ -529,7 +683,7 @@ const styles = StyleSheet.create({
   // Flat list
 
   flatMain: {
-    height: height * 0.52,
+    height: height * 0.67,
     width: width * 0.95,
     alignSelf: 'center',
     // backgroundColor: 'skyblue',
@@ -543,7 +697,6 @@ const styles = StyleSheet.create({
     // backgroundColor: 'skyblue',
     borderRadius: 8,
     // justifyContent: 'center',
-
     alignItems: 'center',
     backgroundColor: 'rgb(245,245,245)',
     margin: 4,
@@ -570,14 +723,13 @@ const styles = StyleSheet.create({
   },
 
   IntroImg: {
-    height: height * 0.6,
+    height: height * 0.67,
     width: width * 0.9,
     // backgroundColor: 'red',
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     // borderWidth: 1,
-    alignSelf: 'center',
   },
 
   // ============ new request ====
@@ -589,20 +741,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item2: {
-    height: height * 0.27,
+    height: height * 0.3,
     width: width * 0.43,
     alignSelf: 'center',
     // backgroundColor: 'skyblue',
     borderRadius: 8,
-    justifyContent: 'center',
-
+    // justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgb(245,245,245)',
     margin: 4,
     elevation: 2,
+    // marginVertical: 30,
   },
   btn: {
-    height: height * 0.04,
+    height: height * 0.022,
     width: width * 0.14,
     justifyContent: 'center',
     alignItems: 'center',
@@ -611,11 +763,45 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   btn2: {
-    height: height * 0.04,
-    width: width * 0.14,
+    height: height * 0.022,
+    width: width * 0.13,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'green',
     borderRadius: 10,
+  },
+
+  // ============== Modal ========
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  modalView: {
+    height: height * 0.25,
+    width: width * 0.8,
+    alignSelf: 'center',
+
+    backgroundColor: 'white',
+
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    borderRadius: 10,
+  },
+
+  textStyle: {
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
