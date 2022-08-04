@@ -60,12 +60,21 @@ const Kyc = () => {
           <View style={styles.headingView}>
             <Text style={styles.headingText}>Bank Details</Text>
           </View>
-          <TextInput placeholder="Bank Name" style={styles.inputStyle} />
+          <TextInput
+            placeholder="Bank Name"
+            style={styles.inputStyle}
+            placeholderTextColor="black"
+          />
           <TextInput
             placeholder="Bank Account Number"
             style={styles.inputStyle}
+            placeholderTextColor="black"
           />
-          <TextInput placeholder="IFSC Code" style={styles.inputStyle} />
+          <TextInput
+            placeholder="IFSC Code"
+            style={styles.inputStyle}
+            placeholderTextColor="black"
+          />
           <View style={styles.headingView}>
             <Text style={styles.headingText}>KYC Update</Text>
           </View>
@@ -256,8 +265,8 @@ const Kyc = () => {
                 // borderWidth: 1,
                 borderRadius: 10,
                 backgroundColor: 'navy',
-                justifyContent:'center',
-                alignItems:'center'
+                justifyContent: 'center',
+                alignItems: 'center',
               }}>
               <Text
                 style={{
@@ -274,9 +283,7 @@ const Kyc = () => {
     </KeyboardAwareScrollView>
   );
 };
-
 export default Kyc;
-
 const styles = StyleSheet.create({
   headingView: {
     marginVertical: 15,
@@ -306,9 +313,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 15,
   },
-
   // ==========Counter======
-
   capacitymain: {
     height: height * 0.09,
     width: width * 0.9,

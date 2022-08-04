@@ -33,6 +33,7 @@ const Routes = () => {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="PersonalDetails" component={PersonalDetails} />
         <Stack.Screen name="GrageDetails" component={GrageDetails} />
+        <Stack.Screen name="BaseInformation" component={BaseInformation} />
         <Stack.Screen name="MyGarage" component={MyGarage} />
         <Stack.Screen name="Wallet" component={Wallet} />
         <Stack.Screen name="Booking" component={Booking} />
@@ -40,7 +41,6 @@ const Routes = () => {
         <Stack.Screen name="Kyc" component={Kyc} />
         <Stack.Screen name="More" component={More} />
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="BaseInformation" component={BaseInformation} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="OtpVerification" component={OtpVerification} />
         <Stack.Screen name="PhoneOtp" component={PhoneOtp} />

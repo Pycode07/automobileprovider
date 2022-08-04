@@ -419,31 +419,29 @@ const MyGarage = props => {
 
           <View style={styles.capcity1}>
             <View style={styles.count}>
-              {/**
-             <TouchableOpacity
+              {/** <TouchableOpacity
                 onPress={() => {
                   if (count > 0) {
                     setCount(count - 1);
                   }
                 }}>
                 <Image
-                  // source={ImagePath.MINUS}
+                  source={ImagePath.MINUS}
                   resizeMode="contain"
                   style={{height: 28, width: 28}}
                 />
               </TouchableOpacity>
-            */}
+               */}
             </View>
 
             <View style={styles.count}>
               <Text
                 style={{fontSize: 21, fontWeight: 'bold', color: COLOR.BLACK}}>
-                {/**{count} */}0
+                {/**{count} */}6
               </Text>
             </View>
             <View style={styles.count}>
-              {/**
-             <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setCount(count + 1);
                 }}>
@@ -453,7 +451,8 @@ const MyGarage = props => {
                   style={{height: 28, width: 28}}
                 />
               </TouchableOpacity>
-          */}
+
+            */}
             </View>
           </View>
         </View>
@@ -492,7 +491,7 @@ const MyGarage = props => {
             <View style={styles.count}>
               <TouchableOpacity
                 onPress={() => {
-                  if (remain < count) {
+                  if (remain <= 5) {
                     setRemain(remain + 1);
                   }
                 }}>
@@ -550,12 +549,12 @@ const MyGarage = props => {
         <SwiperFlatList
           paginationStyle={{
             width: width * 0.73,
-            height: height * 0.04,
+            height: height * 0.03,
             // backgroundColor: 'cyan',
             // alignSelf: 'center',
             justifyContent: 'center',
             // alignItems:'center'
-            bottom: 445,
+            bottom: 464,
             justifyContent: 'space-between',
             marginHorizontal: 20,
           }}
