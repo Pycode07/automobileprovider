@@ -19,6 +19,19 @@ import {ImagePath} from '../../utils/ImagePath';
 const {height, width} = Dimensions.get('window');
 
 const PersonalDetails = props => {
+  // ==========  single select state =============
+  const [male, setMale] = useState(false);
+  const [female, setFemale] = useState(false);
+
+  const [marid, setMarid] = useState(false);
+  const [unmerid, setUnmerid] = useState(false);
+
+  const [onwe, setOwned] = useState(false);
+  const [rented, setRented] = useState(false);
+  // ==========  single select state End =============
+
+  // ==========  Validaiton start here ========== =============
+
   const [FirstName, setFirstName] = useState('');
   const [errorFirstName, setErrorFirstName] = useState(null);
 
@@ -37,8 +50,6 @@ const PersonalDetails = props => {
   const [Pan, setPan] = useState('');
   const [errorPan, setErrorPan] = useState(null);
 
-  const [Mail, setmail] = useState(null);
-
   const _validateFirstName = fname => {
     var fnameRegex = /^[a-z A-Z ]{2,32}$/i;
     if (fname == '' || fname == undefined || fname == null) {
@@ -49,7 +60,6 @@ const PersonalDetails = props => {
       setErrorFirstName(null);
     }
   };
-
   const _validatesurName = lname => {
     var lnameRegex = /^[a-z A-Z ]{2,32}$/i;
     if (lname == '' || lname == undefined || lname == null) {
@@ -148,7 +158,6 @@ const PersonalDetails = props => {
       setErrorAdhar('*Please enter any one Details.');
       flag = false;
     }
-
     return flag;
   };
 
@@ -160,6 +169,8 @@ const PersonalDetails = props => {
       setModalVisible(!modalVisible);
     }
   };
+
+  // ==========  Validaiton End  here ========== =============
 
   return (
     <KeyboardAwareScrollView>
@@ -347,42 +358,46 @@ const PersonalDetails = props => {
                   Gender
                 </Text>
               </View>
-
               <View style={styles.genderV}>
-                <View style={styles.gragecheck}>
-                  <BouncyCheckbox
-                    size={20}
-                    fillColor="#02024A"
-                    unfillColor="#FFFFFF"
-                    text="M"
-                    iconStyle={{
-                      borderColor: 'rgb(245,245,245)',
-                      borderRadius: 4,
-                      borderColor: 'gray',
-                    }}
-                    // onPress={(isChecked: boolean) => {}}
-                    textStyle={{color: 'black', textDecorationLine: 'none'}}
-                  />
-                </View>
-                <View style={styles.gragecheck}>
-                  <BouncyCheckbox
-                    size={20}
-                    fillColor="#02024A"
-                    unfillColor="#FFFFFF"
-                    text="F"
-                    iconStyle={{
-                      borderColor: 'rgb(245,245,245)',
-                      borderRadius: 4,
-                      borderColor: 'gray',
-                    }}
-                    // onPress={(isChecked: boolean) => {}}
-                    textStyle={{
-                      color: 'black',
-                      textDecorationLine: 'none',
-                      fontSize: height / 50,
-                    }}
-                  />
-                </View>
+                <BouncyCheckbox
+                  isChecked={male}
+                  disableBuiltInState
+                  size={20}
+                  fillColor="#02024A"
+                  unfillColor="#FFFFFF"
+                  text="M"
+                  onPress={() => {
+                    setMale(true), setFemale(false);
+                  }}
+                  iconStyle={{
+                    borderColor: 'rgb(245,245,245)',
+                    borderRadius: 4,
+                    borderColor: 'gray',
+                  }}
+                  textStyle={{color: 'black', textDecorationLine: 'none'}}
+                />
+
+                <BouncyCheckbox
+                  isChecked={female}
+                  disableBuiltInState
+                  size={20}
+                  fillColor="#02024A"
+                  unfillColor="#FFFFFF"
+                  text="F"
+                  iconStyle={{
+                    borderColor: 'rgb(245,245,245)',
+                    borderRadius: 4,
+                    borderColor: 'gray',
+                  }}
+                  textStyle={{
+                    color: 'black',
+                    textDecorationLine: 'none',
+                    fontSize: height / 50,
+                  }}
+                  onPress={() => {
+                    setMale(false), setFemale(true);
+                  }}
+                />
               </View>
             </View>
           </View>
@@ -401,6 +416,8 @@ const PersonalDetails = props => {
             <View style={styles.permantAddress}>
               <View style={styles.bouncChek}>
                 <BouncyCheckbox
+                  isChecked={unmerid}
+                  disableBuiltInState
                   size={20}
                   fillColor="#02024A"
                   unfillColor="#FFFFFF"
@@ -410,7 +427,9 @@ const PersonalDetails = props => {
                     borderRadius: 4,
                     borderColor: 'gray',
                   }}
-                  //onPress={(isChecked: boolean) => {}}
+                  onPress={() => {
+                    setUnmerid(true), setMarid(false);
+                  }}
                   textStyle={{
                     color: 'black',
                     textDecorationLine: 'none',
@@ -421,10 +440,15 @@ const PersonalDetails = props => {
 
               <View style={styles.bouncChek}>
                 <BouncyCheckbox
+                  isChecked={marid}
+                  disableBuiltInState
                   size={20}
                   fillColor="#02024A"
                   unfillColor="#FFFFFF"
                   text="Married"
+                  onPress={() => {
+                    setUnmerid(false), setMarid(true);
+                  }}
                   iconStyle={{
                     borderColor: 'rgb(245,245,245)',
                     borderRadius: 4,
@@ -435,7 +459,6 @@ const PersonalDetails = props => {
                     textDecorationLine: 'none',
                     fontSize: height / 50,
                   }}
-                  // onPress={(isChecked: boolean) => {}}
                 />
               </View>
             </View>
@@ -587,6 +610,8 @@ const PersonalDetails = props => {
             <View style={styles.permantAddress}>
               <View style={styles.bouncChek}>
                 <BouncyCheckbox
+                  isChecked={onwe}
+                  disableBuiltInState
                   size={20}
                   fillColor="#02024A"
                   unfillColor="#FFFFFF"
@@ -596,7 +621,9 @@ const PersonalDetails = props => {
                     borderRadius: 4,
                     borderColor: 'gray',
                   }}
-                  //onPress={(isChecked: boolean) => {}}
+                  onPress={() => {
+                    setOwned(true), setRented(false);
+                  }}
                   textStyle={{
                     color: 'black',
                     textDecorationLine: 'none',
@@ -607,6 +634,8 @@ const PersonalDetails = props => {
 
               <View style={styles.bouncChek}>
                 <BouncyCheckbox
+                  isChecked={rented}
+                  disableBuiltInState
                   size={20}
                   fillColor="#02024A"
                   unfillColor="#FFFFFF"
@@ -616,7 +645,9 @@ const PersonalDetails = props => {
                     borderRadius: 4,
                     borderColor: 'gray',
                   }}
-                  // onPress={(isChecked: boolean) => {}}
+                  onPress={() => {
+                    setOwned(false), setRented(true);
+                  }}
                   textStyle={{
                     color: 'black',
                     textDecorationLine: 'none',
@@ -805,25 +836,27 @@ const styles = StyleSheet.create({
     width: width * 0.43,
     // borderWidth: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   gragecheck: {
     height: height * 0.05,
-    width: width * 0.2,
-    // borderWidth: 1,
+    width: width * 0.3,
+    borderWidth: 1,
     flexDirection: 'row',
   },
   permantAddress: {
-    height: height * 0.14,
+    height: height * 0.05,
     width: width * 0.9,
     alignSelf: 'center',
     flexDirection: 'row',
+    // borderWidth: 1,
   },
   bouncChek: {
     height: height * 0.04,
-    width: width * 0.35,
+    width: width * 0.34,
     // backgroundColor: 'red',
+    // borderWidth: 1,
   },
 
   // =================Area ======

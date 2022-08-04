@@ -122,7 +122,7 @@ const Kyc = () => {
 
           <View
             style={{
-              height: height * 0.25,
+              height: height * 0.13,
               width: width * 0.9,
               alignSelf: 'center',
               // borderWidth: 1,
@@ -240,6 +240,34 @@ const Kyc = () => {
               </View>
             </View>
             */}
+          </View>
+          <View
+            style={{
+              height: height * 0.13,
+              width: width * 0.9,
+              alignSelf: 'center',
+              // borderWidth: 1,
+            }}>
+            <TouchableOpacity
+              style={{
+                height: height * 0.06,
+                width: width * 0.9,
+                alignSelf: 'center',
+                // borderWidth: 1,
+                borderRadius: 10,
+                backgroundColor: 'navy',
+                justifyContent:'center',
+                alignItems:'center'
+              }}>
+              <Text
+                style={{
+                  fontSize: height / 40,
+                  fontWeight: 'bold',
+                  color: 'white',
+                }}>
+                Update
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

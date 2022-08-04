@@ -47,8 +47,7 @@ const Onbording = props => (
             justifyContent: 'center',
             alignItems: 'flex-end',
           }}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('Register')}>
+          <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
             <Text style={{color: 'black', fontSize: height / 45}}>Skip</Text>
           </TouchableOpacity>
         </View>
@@ -88,8 +87,7 @@ const Onbording = props => (
             justifyContent: 'center',
             alignItems: 'flex-end',
           }}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('Register')}>
+          <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
             <Text style={{color: 'black', fontSize: height / 45}}>Skip</Text>
           </TouchableOpacity>
         </View>
@@ -129,8 +127,7 @@ const Onbording = props => (
             justifyContent: 'center',
             alignItems: 'flex-end',
           }}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('Register')}>
+          <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
             <Text style={{color: 'black', fontSize: height / 45}}>Skip</Text>
           </TouchableOpacity>
         </View>

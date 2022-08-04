@@ -110,7 +110,7 @@ const Login = props => {
             </View>
             <TextInput
               placeholder="example@gmail.com"
-              placeholderTextColor="#02024A"
+              placeholderTextColor="black"
               maxLength={256}
               autoCapitalize="none"
               onChangeText={txt => {
@@ -166,7 +166,7 @@ const Login = props => {
 
             <TextInput
               placeholder="password"
-              placeholderTextColor="#02024A"
+              placeholderTextColor="black"
               onChangeText={txt => {
                 setPassword(txt), _passwordvalidate(txt);
               }}

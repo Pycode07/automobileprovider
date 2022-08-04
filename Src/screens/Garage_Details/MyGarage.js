@@ -419,28 +419,31 @@ const MyGarage = props => {
 
           <View style={styles.capcity1}>
             <View style={styles.count}>
-              <TouchableOpacity
+              {/**
+             <TouchableOpacity
                 onPress={() => {
                   if (count > 0) {
                     setCount(count - 1);
                   }
                 }}>
                 <Image
-                  source={ImagePath.MINUS}
+                  // source={ImagePath.MINUS}
                   resizeMode="contain"
                   style={{height: 28, width: 28}}
                 />
               </TouchableOpacity>
+            */}
             </View>
 
             <View style={styles.count}>
               <Text
                 style={{fontSize: 21, fontWeight: 'bold', color: COLOR.BLACK}}>
-                {count}
+                {/**{count} */}0
               </Text>
             </View>
             <View style={styles.count}>
-              <TouchableOpacity
+              {/**
+             <TouchableOpacity
                 onPress={() => {
                   setCount(count + 1);
                 }}>
@@ -450,6 +453,7 @@ const MyGarage = props => {
                   style={{height: 28, width: 28}}
                 />
               </TouchableOpacity>
+          */}
             </View>
           </View>
         </View>
@@ -656,7 +660,7 @@ const styles = StyleSheet.create({
   },
   count: {
     height: height * 0.05,
-    width: width * 0.12,
+    width: width * 0.13,
     // borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',

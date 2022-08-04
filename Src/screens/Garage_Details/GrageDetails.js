@@ -23,60 +23,13 @@ const GrageDetails = props => {
   const [check1, setCheck1] = useState(true);
   const [value, setValue] = useState([]);
   const [form, setForm] = useState({
-    addres: '',
-    area: '',
-    city: '',
-    pinCode: '',
-    email: '',
-    website: '',
     owned: false,
     rented: false,
-    ownerName: '',
   });
-  const [validation, setValidation] = useState({
-    addres: false,
-    city: false,
-    pinCode: false,
-    email: false,
-    garage: false,
-    Oname: false,
-    ownedRented: false,
-    file: false,
-  });
-  const email_validate = text => {
-    console.log(text);
-    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-    if (reg.test(text) === false) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-  const check_validation = () => {
-    if (form.addres.length === 0) {
-      setValidation({addres: true});
-    } else if (form.city.length === 0) {
-      setValidation({city: true});
-    } else if (form.pinCode.length === 0) {
-      setValidation({pinCode: true});
-    } else if (email_validate(form.email)) {
-      setValidation({email: true});
-    } else if (form.owned === false && form.rented === false) {
-      setValidation({ownedRented: true});
-    } else if (form.ownerName.length === 0) {
-      setValidation({Oname: true});
-    } else {
-      return true;
-    }
-  };
+
   //  states for type of entity check Modal
   const [modalVisible, setModalVisible] = useState(false);
-  const SaveData = () => {
-    if (check_validation()) {
-      props.navigation.navigate('Home');
-      console.log('Every thing fine.');
-    }
-  };
+
   //  states for  No of KMP
   const renderAddress = () => {
     return (
@@ -113,13 +66,6 @@ const GrageDetails = props => {
               placeholderTextColor={COLOR.GREY}
             />
           </View>
-          {validation.addres ? (
-            <View style={{marginBottom: 5}}>
-              <Text style={{color: 'red', fontSize: 13}}>
-                Please Enter correct Address...
-              </Text>
-            </View>
-          ) : null}
         </View>
       </View>
     );
@@ -309,10 +255,6 @@ const GrageDetails = props => {
               placeholder="Full address"
               color={COLOR.TXT_INPT_COLOR}
               placeholderTextColor={COLOR.GREY}
-              value={form.email}
-              onChangeText={text => {
-                setForm({email: text});
-              }}
             />
           </View>
         </View>
@@ -342,10 +284,6 @@ const GrageDetails = props => {
               placeholder="Full address"
               color={COLOR.TXT_INPT_COLOR}
               placeholderTextColor={COLOR.GREY}
-              value={form.website}
-              onChangeText={text => {
-                setForm({website: text});
-              }}
             />
           </View>
         </View>
@@ -367,7 +305,6 @@ const GrageDetails = props => {
               Owner's name
             </Text>
           </View>
-
           <View style={styles.webside}>
             <TextInput
               placeholder="Enter name"
@@ -453,161 +390,151 @@ const GrageDetails = props => {
   const renderEntityType = () => {
     return (
       <View style={styles.Entity}>
-        <View style={styles.KmP}>
-          <View style={styles.ownName}>
-            <Text
-              style={{
-                color: COLOR.BACK_BORDER,
-                fontWeight: '700',
-                fontSize: 16,
-              }}>
-              Type of Entity
-            </Text>
-          </View>
-          <TouchableOpacity
-            style={styles.cheekk}
-            onPress={() => setModalVisible(!modalVisible)}>
-            <Text>Properitor Firm</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.cheekk}
-            onPress={() => setModalVisible(!modalVisible)}>
-            <Text>Partnership Firm</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.cheekk}
-            onPress={() => setModalVisible(!modalVisible)}>
-            <Text>LLP</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.cheekk}
-            onPress={() => setModalVisible(!modalVisible)}>
-            <Text>OPC</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.cheekk}
-            onPress={() => setModalVisible(!modalVisible)}>
-            <Text>Company</Text>
-          </TouchableOpacity>
-          {/**========================================= Properitor FirmModal==================================================================== */}
-          <View style={styles.centeredView}>
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
-                setModalVisible(!modalVisible);
-              }}>
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                  <View style={styles.nofPar}>
-                    <View
+        <View style={styles.ownName}>
+          <Text
+            style={{
+              color: COLOR.BACK_BORDER,
+              fontWeight: '700',
+              fontSize: 16,
+            }}>
+            Type of Entity
+          </Text>
+        </View>
+        <TouchableOpacity
+          style={styles.cheekk}
+          onPress={() => setModalVisible(!modalVisible)}>
+          <Text style={{color: 'black', fontSize: height / 55}}>
+            Properitor Firm
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.cheekk}
+          onPress={() => setModalVisible(!modalVisible)}>
+          <Text style={{color: 'black', fontSize: height / 55}}>
+            Partnership Firm
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.cheekk}
+          onPress={() => setModalVisible(!modalVisible)}>
+          <Text style={{color: 'black', fontSize: height / 55}}>LLP</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.cheekk}
+          onPress={() => setModalVisible(!modalVisible)}>
+          <Text style={{color: 'black', fontSize: height / 55}}>OPC</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.cheekk}
+          onPress={() => setModalVisible(!modalVisible)}>
+          <Text style={{color: 'black', fontSize: height / 55}}>Company</Text>
+        </TouchableOpacity>
+        {/**========================================= Properitor FirmModal==================================================================== */}
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setModalVisible(!modalVisible);
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <View style={styles.nofPar}>
+                  <View
+                    style={{
+                      height: height * 0.05,
+                      width: width * 0.4,
+                      // borderWidth: 1,
+                      justifyContent: 'center',
+                    }}>
+                    <Text style={{color: 'black', fontSize: 14}}>
+                      Total No. of Partner
+                    </Text>
+                  </View>
+                  <View>
+                    <TextInput
+                      placeholder="0"
+                      placeholderTextColor={'red'}
+                      keyboardType="numeric"
+                      value={value}
+                      onChangeText={text => {
+                        if (text >= 3) {
+                          text = 3;
+                        }
+                        let arr = [];
+                        for (let i = 0; i < text; i++) {
+                          arr.push(i);
+                        }
+                        setValue(arr);
+                      }}
                       style={{
                         height: height * 0.05,
-                        width: width * 0.4,
-                        // borderWidth: 1,
+                        width: width * 0.1,
+                        borderWidth: 1,
                         justifyContent: 'center',
+                        textAlign: 'center',
+                        // alignItems: 'center',
+                        borderRadius: 10,
+                        paddingVertical: 5,
+                        borderColor: 'rgb(245,245,245)',
+                      }}
+                    />
+                  </View>
+                </View>
+                {value.map(i => (
+                  <View style={styles.nofParname} key={i}>
+                    <View
+                      style={{
+                        height: height * 0.06,
+                        width: width * 0.3,
+                        borderWidth: 1,
+                        justifyContent: 'center',
+                        borderRadius: 10,
+                        borderColor: 'rgb(225,225,225)',
                       }}>
-                      <Text style={{color: 'black', fontSize: 14}}>
-                        Total No. of Partner
-                      </Text>
-                    </View>
-                    <View>
                       <TextInput
-                        placeholder="0"
-                        placeholderTextColor={'red'}
-                        keyboardType="numeric"
-                        value={value}
-                        onChangeText={text => {
-                          if (text >= 3) {
-                            text = 3;
-                          }
-                          let arr = [];
-                          for (let i = 0; i < text; i++) {
-                            arr.push(i);
-                          }
-                          setValue(arr);
-                        }}
-                        style={{
-                          height: height * 0.05,
-                          width: width * 0.1,
-                          borderWidth: 1,
-                          justifyContent: 'center',
-                          textAlign: 'center',
-                          // alignItems: 'center',
-                          borderRadius: 10,
-                          paddingVertical: 5,
-                          borderColor: 'rgb(245,245,245)',
-                        }}
+                        placeholder=" Enter Name"
+                        keyboardType="default"
+                      />
+                    </View>
+                    <View
+                      style={{
+                        height: height * 0.06,
+                        width: width * 0.33,
+                        justifyContent: 'center',
+                        // alignItems: 'center',
+                        borderWidth: 1,
+                        borderRadius: 10,
+                        borderColor: 'rgb(225,225,225)',
+                      }}>
+                      <TextInput
+                        placeholder="Contect NO"
+                        keyboardType="default"
+                        maxLength={12}
                       />
                     </View>
                   </View>
-                  {value.map(i => (
-                    <View style={styles.nofParname} key={i}>
-                      <View
-                        style={{
-                          height: height * 0.06,
-                          width: width * 0.3,
-                          borderWidth: 1,
-                          justifyContent: 'center',
-                          borderRadius: 10,
-                          borderColor: 'rgb(225,225,225)',
-                        }}>
-                        <TextInput
-                          placeholder=" Enter Name"
-                          keyboardType="default"
-                        />
-                      </View>
-                      <View
-                        style={{
-                          height: height * 0.06,
-                          width: width * 0.33,
-                          justifyContent: 'center',
-                          // alignItems: 'center',
-                          borderWidth: 1,
-                          borderRadius: 10,
-                          borderColor: 'rgb(225,225,225)',
-                        }}>
-                        <TextInput
-                          placeholder="Contect NO"
-                          keyboardType="default"
-                          maxLength={12}
-                        />
-                      </View>
-                    </View>
-                  ))}
+                ))}
 
-                  <TouchableOpacity
-                    style={{
-                      height: height * 0.05,
-                      width: width * 0.5,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      // borderWidth: 1,
-                      backgroundColor: 'rgb(225,225,225)',
-                      marginTop: 20,
-                      borderRadius: 20,
-                    }}
-                    onPress={() => setModalVisible(!modalVisible)}>
-                    <Text style={{fontSize: 16, color: 'black'}}>Submit</Text>
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                  style={{
+                    height: height * 0.05,
+                    width: width * 0.5,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // borderWidth: 1,
+                    backgroundColor: 'rgb(225,225,225)',
+                    marginTop: 20,
+                    borderRadius: 20,
+                  }}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={{fontSize: 16, color: 'black'}}>Submit</Text>
+                </TouchableOpacity>
               </View>
-            </Modal>
-          </View>
-        </View>
-        <View style={styles.KmP}>
-          <View style={styles.ownName}>
-            <Text
-              style={{
-                color: COLOR.BACK_BORDER,
-                fontWeight: '700',
-                fontSize: 16,
-              }}>
-              No of KMP
-            </Text>
-          </View>
+            </View>
+          </Modal>
         </View>
       </View>
     );
@@ -639,7 +566,10 @@ const GrageDetails = props => {
         {renderEntityType()}
 
         <View style={styles.Nxtbtn}>
-          <CustomButton title={'Next'} ButtonPress={() => SaveData()} />
+          <CustomButton
+            title={'Next'}
+            ButtonPress={() => props.navigation.navigate('Register')}
+          />
         </View>
       </View>
     </KeyboardAwareScrollView>
@@ -768,11 +698,10 @@ const styles = StyleSheet.create({
     width: width * 0.9,
     alignSelf: 'center',
     // borderWidth: 1,
-    flexDirection: 'row',
   },
   KmP: {
-    height: height * 0.3,
-    width: width * 0.45,
+    // height: height * 0.4,
+    // width: width * 0.6,
     // borderWidth: 1,
   },
 
