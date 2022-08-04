@@ -19,11 +19,27 @@ import {ImagePath} from '../../utils/ImagePath';
 const {height, width} = Dimensions.get('window');
 
 const PersonalDetails = props => {
+  // ==========  single select state =============
+  const [male, setMale] = useState(false);
+  const [female, setFemale] = useState(false);
+
+  const [marid, setMarid] = useState(false);
+  const [unmerid, setUnmerid] = useState(false);
+
+  const [onwe, setOwned] = useState(false);
+  const [rented, setRented] = useState(false);
+  // ==========  single select state End =============
+
+  // ==========  Validaiton start here ========== =============
+
   const [FirstName, setFirstName] = useState('');
   const [errorFirstName, setErrorFirstName] = useState(null);
 
   const [surName, setsurName] = useState('');
   const [errorsurName, setErrorsurName] = useState(null);
+
+  const [fatherName, setFatherName] = useState('');
+  const [errorfatherName, setErrorFatherName] = useState(null);
 
   const [date, setdate] = useState('');
   const [errordate, setErrordate] = useState('');
@@ -37,7 +53,14 @@ const PersonalDetails = props => {
   const [Pan, setPan] = useState('');
   const [errorPan, setErrorPan] = useState(null);
 
-  const [Mail, setmail] = useState(null);
+  const [area, setArea] = useState('');
+  const [errorArea, setErrorArea] = useState(null);
+
+  const [city, setCity] = useState('');
+  const [errorCity, setErrorCity] = useState(null);
+
+  const [pin, setPin] = useState('');
+  const [errorPin, setErrorPin] = useState(null);
 
   const _validateFirstName = fname => {
     var fnameRegex = /^[a-z A-Z ]{2,32}$/i;
@@ -49,7 +72,6 @@ const PersonalDetails = props => {
       setErrorFirstName(null);
     }
   };
-
   const _validatesurName = lname => {
     var lnameRegex = /^[a-z A-Z ]{2,32}$/i;
     if (lname == '' || lname == undefined || lname == null) {
@@ -58,6 +80,17 @@ const PersonalDetails = props => {
       setErrorsurName('*Please enter valid surname.');
     } else {
       setErrorsurName(null);
+    }
+  };
+
+  const _validateFatherName = fatname => {
+    var fathernameRegex = /^[a-z A-Z ]{2,32}$/i;
+    if (fatname == '' || fatname == undefined || fatname == null) {
+      setErrorFatherName('*Please enter father name.');
+    } else if (!fathernameRegex.test(fatname)) {
+      setErrorFatherName('*Please enter valid father name.');
+    } else {
+      setErrorFatherName(null);
     }
   };
 
@@ -102,7 +135,7 @@ const PersonalDetails = props => {
       /^(([A-Z]{2}[0-9]{2})|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/;
 
     if (adhar === '') {
-      setErrorAdhar('*Please enter anyone.');
+      setErrorAdhar('*Please enter Anyone.');
     } else if (
       !(
         AdharRegex.test(adhar) |
@@ -117,6 +150,41 @@ const PersonalDetails = props => {
     }
   };
 
+  const _Areavalidate = area => {
+    var areaRegex =
+      /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
+    if (area === '') {
+      setErrorArea('*Enter area name.');
+    } else if (!areaRegex.test(area)) {
+      setErrorArea('*this feild is require.');
+    } else {
+      setErrorArea(null);
+    }
+  };
+
+  const _Cityvalidate = pin => {
+    var cityRegex =
+      /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
+    if (pin === '') {
+      setErrorCity('*this feild is require.');
+    } else if (!cityRegex.test(pin)) {
+      setErrorCity('* this feild is require.');
+    } else {
+      setErrorCity(null);
+    }
+  };
+
+  const _Pinvalidate = pin => {
+    var pinRegex = /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/;
+    if (pin === '') {
+      setErrorPin('*Enter area Pincode.');
+    } else if (!pinRegex.test(pin)) {
+      setErrorPin('*Enter valid Pincode.');
+    } else {
+      setErrorPin(null);
+    }
+  };
+
   const validate = () => {
     let flag = true;
     if (FirstName === '') {
@@ -126,6 +194,11 @@ const PersonalDetails = props => {
 
     if (surName === '') {
       setErrorsurName('*Please enter Surname Name');
+      flag = false;
+    }
+
+    if (fatherName === '') {
+      setErrorFatherName('*Please enter Father Name');
       flag = false;
     }
 
@@ -145,21 +218,37 @@ const PersonalDetails = props => {
     }
 
     if (Adhar === '') {
-      setErrorAdhar('*Please enter any one Details.');
+      setErrorAdhar('*Please enter Any one Details.');
       flag = false;
     }
 
+    if (area === '') {
+      setErrorPin('*Enter area.');
+      flag = false;
+    }
+
+    if (city === '') {
+      setErrorPin('*Enter city.');
+      flag = false;
+    }
+
+    if (pin === '') {
+      setErrorPin('*Enter pincode.');
+      flag = false;
+    }
     return flag;
   };
 
   const onSubmit = () => {
     if (validate()) {
-      onVerifySignUp();
+      // onVerifySignUp();
+      props.navigation.navigate('GrageDetails');
     } else {
-      // alert("Something went wrong");
-      setModalVisible(!modalVisible);
+      alert('Please Enter All Require Details');
     }
   };
+
+  // ==========  Validaiton End  here ========== =============
 
   return (
     <KeyboardAwareScrollView>
@@ -276,8 +365,34 @@ const PersonalDetails = props => {
                 placeholder="Father's Name"
                 color={COLOR.TXT_INPT_COLOR}
                 placeholderTextColor={COLOR.GREY}
+                keyboardType="default"
+                maxLength={30}
+                autoCorrect={false}
+                onChangeText={txt => {
+                  setFatherName(txt), _validateFatherName(txt);
+                }}
               />
             </View>
+
+            {errorfatherName != null ? (
+              <View
+                style={{
+                  height: height * 0.02,
+                  // width: width * 1,
+                  width: width / 1.3,
+                  // backgroundColor: "blue",
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 10,
+                    marginLeft: 9,
+                  }}>
+                  {errorfatherName}
+                </Text>
+              </View>
+            ) : null}
           </View>
 
           <View style={styles.Address}>
@@ -347,42 +462,46 @@ const PersonalDetails = props => {
                   Gender
                 </Text>
               </View>
-
               <View style={styles.genderV}>
-                <View style={styles.gragecheck}>
-                  <BouncyCheckbox
-                    size={20}
-                    fillColor="#02024A"
-                    unfillColor="#FFFFFF"
-                    text="M"
-                    iconStyle={{
-                      borderColor: 'rgb(245,245,245)',
-                      borderRadius: 4,
-                      borderColor: 'gray',
-                    }}
-                    // onPress={(isChecked: boolean) => {}}
-                    textStyle={{color: 'black', textDecorationLine: 'none'}}
-                  />
-                </View>
-                <View style={styles.gragecheck}>
-                  <BouncyCheckbox
-                    size={20}
-                    fillColor="#02024A"
-                    unfillColor="#FFFFFF"
-                    text="F"
-                    iconStyle={{
-                      borderColor: 'rgb(245,245,245)',
-                      borderRadius: 4,
-                      borderColor: 'gray',
-                    }}
-                    // onPress={(isChecked: boolean) => {}}
-                    textStyle={{
-                      color: 'black',
-                      textDecorationLine: 'none',
-                      fontSize: height / 50,
-                    }}
-                  />
-                </View>
+                <BouncyCheckbox
+                  isChecked={male}
+                  disableBuiltInState
+                  size={20}
+                  fillColor="#02024A"
+                  unfillColor="#FFFFFF"
+                  text="M"
+                  onPress={() => {
+                    setMale(true), setFemale(false);
+                  }}
+                  iconStyle={{
+                    borderColor: 'rgb(245,245,245)',
+                    borderRadius: 4,
+                    borderColor: 'gray',
+                  }}
+                  textStyle={{color: 'black', textDecorationLine: 'none'}}
+                />
+
+                <BouncyCheckbox
+                  isChecked={female}
+                  disableBuiltInState
+                  size={20}
+                  fillColor="#02024A"
+                  unfillColor="#FFFFFF"
+                  text="F"
+                  iconStyle={{
+                    borderColor: 'rgb(245,245,245)',
+                    borderRadius: 4,
+                    borderColor: 'gray',
+                  }}
+                  textStyle={{
+                    color: 'black',
+                    textDecorationLine: 'none',
+                    fontSize: height / 50,
+                  }}
+                  onPress={() => {
+                    setMale(false), setFemale(true);
+                  }}
+                />
               </View>
             </View>
           </View>
@@ -401,6 +520,8 @@ const PersonalDetails = props => {
             <View style={styles.permantAddress}>
               <View style={styles.bouncChek}>
                 <BouncyCheckbox
+                  isChecked={unmerid}
+                  disableBuiltInState
                   size={20}
                   fillColor="#02024A"
                   unfillColor="#FFFFFF"
@@ -410,7 +531,9 @@ const PersonalDetails = props => {
                     borderRadius: 4,
                     borderColor: 'gray',
                   }}
-                  //onPress={(isChecked: boolean) => {}}
+                  onPress={() => {
+                    setUnmerid(true), setMarid(false);
+                  }}
                   textStyle={{
                     color: 'black',
                     textDecorationLine: 'none',
@@ -421,10 +544,15 @@ const PersonalDetails = props => {
 
               <View style={styles.bouncChek}>
                 <BouncyCheckbox
+                  isChecked={marid}
+                  disableBuiltInState
                   size={20}
                   fillColor="#02024A"
                   unfillColor="#FFFFFF"
                   text="Married"
+                  onPress={() => {
+                    setUnmerid(false), setMarid(true);
+                  }}
                   iconStyle={{
                     borderColor: 'rgb(245,245,245)',
                     borderRadius: 4,
@@ -435,7 +563,6 @@ const PersonalDetails = props => {
                     textDecorationLine: 'none',
                     fontSize: height / 50,
                   }}
-                  // onPress={(isChecked: boolean) => {}}
                 />
               </View>
             </View>
@@ -587,6 +714,8 @@ const PersonalDetails = props => {
             <View style={styles.permantAddress}>
               <View style={styles.bouncChek}>
                 <BouncyCheckbox
+                  isChecked={onwe}
+                  disableBuiltInState
                   size={20}
                   fillColor="#02024A"
                   unfillColor="#FFFFFF"
@@ -596,7 +725,9 @@ const PersonalDetails = props => {
                     borderRadius: 4,
                     borderColor: 'gray',
                   }}
-                  //onPress={(isChecked: boolean) => {}}
+                  onPress={() => {
+                    setOwned(true), setRented(false);
+                  }}
                   textStyle={{
                     color: 'black',
                     textDecorationLine: 'none',
@@ -607,6 +738,8 @@ const PersonalDetails = props => {
 
               <View style={styles.bouncChek}>
                 <BouncyCheckbox
+                  isChecked={rented}
+                  disableBuiltInState
                   size={20}
                   fillColor="#02024A"
                   unfillColor="#FFFFFF"
@@ -616,7 +749,9 @@ const PersonalDetails = props => {
                     borderRadius: 4,
                     borderColor: 'gray',
                   }}
-                  // onPress={(isChecked: boolean) => {}}
+                  onPress={() => {
+                    setOwned(false), setRented(true);
+                  }}
                   textStyle={{
                     color: 'black',
                     textDecorationLine: 'none',
@@ -645,8 +780,30 @@ const PersonalDetails = props => {
                   placeholder="Enter Area"
                   color={COLOR.TXT_INPT_COLOR}
                   placeholderTextColor={COLOR.GREY}
+                  onChangeText={txt => {
+                    setArea(txt), _Areavalidate(txt);
+                  }}
                 />
               </View>
+              {errorArea != null ? (
+                <View
+                  style={{
+                    height: height * 0.017,
+                    // width: width * 1,
+                    width: width * 0.32,
+                    // backgroundColor: "blue",
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: 'red',
+                      fontSize: 10,
+                      // marginLeft: 17,
+                    }}>
+                    {errorArea}
+                  </Text>
+                </View>
+              ) : null}
             </View>
             <View style={styles.city}>
               <View style={styles.areaPin}>
@@ -665,8 +822,31 @@ const PersonalDetails = props => {
                   placeholder="City"
                   color={COLOR.TXT_INPT_COLOR}
                   placeholderTextColor={COLOR.GREY}
+                  onChangeText={txt => {
+                    setCity(txt), _Cityvalidate(txt);
+                  }}
                 />
               </View>
+
+              {errorCity != null ? (
+                <View
+                  style={{
+                    height: height * 0.017,
+                    // width: width * 1,
+                    width: width * 0.32,
+                    // backgroundColor: "blue",
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: 'red',
+                      fontSize: 10,
+                      // marginLeft: 17,
+                    }}>
+                    {errorCity}
+                  </Text>
+                </View>
+              ) : null}
             </View>
             <View style={styles.city}>
               <View style={styles.areaPin}>
@@ -685,8 +865,32 @@ const PersonalDetails = props => {
                   placeholder="Pincode"
                   color={COLOR.TXT_INPT_COLOR}
                   placeholderTextColor={COLOR.GREY}
+                  maxLength={6}
+                  onChangeText={txt => {
+                    setPin(txt), _Pinvalidate(txt);
+                  }}
                 />
               </View>
+
+              {errorPin != null ? (
+                <View
+                  style={{
+                    height: height * 0.017,
+                    // width: width * 1,
+                    width: width * 0.32,
+                    // backgroundColor: "blue",
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: 'red',
+                      fontSize: 10,
+                      // marginLeft: 17,
+                    }}>
+                    {errorPin}
+                  </Text>
+                </View>
+              ) : null}
             </View>
           </View>
 
@@ -699,6 +903,7 @@ const PersonalDetails = props => {
             }}>
             <CustomButton
               title="Next"
+              // ButtonPress={() => onSubmit()}
               ButtonPress={() => props.navigation.navigate('GrageDetails')}
             />
           </View>
@@ -714,7 +919,7 @@ const styles = StyleSheet.create({
   header: {
     height: height * 0.1,
     width: width * 0.9,
-    // backgroundColor: 'red',
+    // backgroundColor: 'navy',
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
@@ -805,28 +1010,30 @@ const styles = StyleSheet.create({
     width: width * 0.43,
     // borderWidth: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   gragecheck: {
     height: height * 0.05,
-    width: width * 0.2,
-    // borderWidth: 1,
+    width: width * 0.3,
+    borderWidth: 1,
     flexDirection: 'row',
   },
   permantAddress: {
-    height: height * 0.14,
+    height: height * 0.05,
     width: width * 0.9,
     alignSelf: 'center',
     flexDirection: 'row',
+    // borderWidth: 1,
   },
   bouncChek: {
     height: height * 0.04,
-    width: width * 0.35,
+    width: width * 0.34,
     // backgroundColor: 'red',
+    // borderWidth: 1,
   },
 
-  // =================Area ======
+  // =========================== AREA ===========================
   city: {
     height: height * 0.14,
     width: width * 0.3,

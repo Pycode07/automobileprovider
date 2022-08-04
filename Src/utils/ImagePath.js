@@ -43,4 +43,6 @@ export const ImagePath = {
 
   PLUS: require('../assets/Images/plus.png'),
   MINUS: require('../assets/Images/minus.png'),
+
+  CLOSE: require('../assets/Splash/close.png'),
 };

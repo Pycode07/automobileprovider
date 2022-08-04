@@ -120,7 +120,6 @@ const Register = props => {
     password: 'Password',
     confirmPassword: 'confirmpassword',
   };
-
   return (
     <KeyboardAwareScrollView>
       <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -130,14 +129,12 @@ const Register = props => {
             width: width * 1,
             backgroundColor: 'navy',
           }}></View>
-
         <View
           style={{
             height: height * 0.6,
             width: width * 1,
             backgroundColor: '#FFFFFF',
           }}></View>
-
         <View
           style={{
             height: height * 0.6,
@@ -171,7 +168,6 @@ const Register = props => {
               }}>
               <Text style={{fontSize: 11, color: '#898b8c'}}>Phone</Text>
             </View>
-
             <View style={styles.commontextV}>
               <TextInput
                 placeholder="9560116872"
@@ -192,7 +188,6 @@ const Register = props => {
                   paddingHorizontal: 14,
                 }}
               />
-
               {errorPhone != null ? (
                 <View
                   style={{
