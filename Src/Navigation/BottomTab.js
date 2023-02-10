@@ -1,5 +1,14 @@
 import * as React from 'react';
-import {View, Dimensions, Image, Text} from 'react-native';
+import {
+  View,
+  Dimensions,
+  Image,
+  Text,
+  UIManager,
+  Platform,
+  TouchableOpacity,
+  LayoutAnimation,
+} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 // import DashBoard from '../Screens/DashBoard/DashBoard';
@@ -13,296 +22,153 @@ import Login from '../screens/Login';
 import Register from '../screens/Register';
 import GrageDetails from '../screens/Garage_Details/GrageDetails';
 import MyGarage from '../screens/Garage_Details/MyGarage';
+import {colors} from '../assets/colors';
+import {useState} from 'react';
 
 const {height, width} = Dimensions.get('screen');
 
 const Tab = createBottomTabNavigator();
 
-export default function BottomTab() {
+function MyTabBar({state, descriptors, navigation}) {
+  const [boxPosition, setBoxPosition] = useState('left');
+  if (Platform.OS === 'android') {
+    if (UIManager.setLayoutAnimationEnabledExperimental) {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    }
+  }
   return (
-    <Tab.Navigator
-      tabBarOptions={{
-        tabBarShowLabel: false,
-      }}
-      initialRouteName="Portfolio"
-      // activeColor="#244273"
-      // inactiveColor="#3e2465"
-      barStyle={{
-        paddingBottom: 48,
-        shadowColor: '#000000',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.9,
-        shadowRadius: 3,
-        elevation: 3,
-      }}
-      screenOptions={({route}) => ({
-        tabBarStyle: {
-          position: 'absolute',
-          // backgroundColor: '#0D1541',
-          height: height * 0.08,
-          borderTopWidth: 0,
-          shadowColor: '#000000',
-          shadowOffset: {width: 0, height: 2},
-          shadowOpacity: 0.9,
-          shadowRadius: 3,
-          elevation: 20,
-        },
-        tabBarLabel: {
-          fontSize: height / 65,
-        },
-      })}>
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          headerShown: false,
-          tabBarShowLabel: false,
-          tabBarLabel: 'DashBoard',
-          tabBarIcon: ({focused, color, size}) =>
-            focused ? (
-              <View
-                style={{
-                  height: height * 0.06,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: width * 0.2,
-                }}>
+    <View
+      style={{
+        flex: 0,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.theme_yellow1,
+      }}>
+      {state.routes.map((route, index) => {
+        const {options} = descriptors[route.key];
+        //   console.log(options);
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            // LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+            LayoutAnimation.configureNext({
+              duration: 500,
+              create: {type: 'easeIn', property: 'opacity'},
+              update: {type: 'linear', property: 'opacity'},
+              delete: {type: 'easeOut', property: 'opacity'},
+            });
+            navigation.navigate(route.name);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: route.key,
+          });
+        };
+        return (
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityState={isFocused ? {selected: true} : {}}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarTestID}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={{
+              flex: 1,
+              marginVertical: 2,
+              backgroundColor: isFocused ? colors.theme_yellow4 : null,
+              borderRadius: 5,
+              marginHorizontal: 5,
+              paddingVertical: 3,
+            }}
+            key={index}>
+            <View
+              style={{flex: 0, justifyContent: 'center', alignItems: 'center'}}>
+              {label === 'Home' ? (
                 <Image
                   source={ImagePath.HOME}
                   style={{
-                    height: height * 0.04,
-                    width: width * 0.05,
-                  }}
-                  resizeMode="contain"
-                />
-                <Text
-                  style={{
-                    fontFamily: 'Lato-Regular',
-                    fontSize: height / 75,
-                  }}>
-                  HOME
-                </Text>
-              </View>
-            ) : (
-              <View
-                style={{
-                  height: height * 0.06,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: width * 0.2,
-                }}>
-                <Image
-                  source={ImagePath.HOME2}
-                  style={{
-                    height: height * 0.04,
-                    width: width * 0.05,
-                  }}
-                  resizeMode="contain"
-                />
-                <Text
-                  style={{
-                    fontFamily: 'Lato-Regular',
-                    fontSize: height / 75,
-                    color: 'grey',
-                  }}>
-                  HOME
-                </Text>
-              </View>
-            ),
-          // <Image
-          //     source={
-          //         focused
-          //             ? ImagePath.DASHBOARD
-          //             : ImagePath.DASHBOARDOFF
-          //     }
-          //     style={{
-          //         height: size,
-          //         width: size,
-          //     }}
-          //     resizeMode="contain"
-          // />
-        }}
-      />
-      <Tab.Screen
-        name="Booking"
-        component={MyGarage}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Buy & Sell',
-          tabBarShowLabel: false,
-          tabBarIcon: ({focused, color, size}) =>
-            focused ? (
-              <View
-                style={{
-                  height: height * 0.06,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: width * 0.2,
-                }}>
-                <Image
-                  source={ImagePath.BOOK2}
-                  style={{
-                    height: height * 0.04,
-                    width: width * 0.07,
+                    width: 20,
+                    height: 20,
                     resizeMode: 'contain',
-                    // backgroundColor: "red"
                   }}
                 />
-                <Text
-                  style={{
-                    fontSize: height / 75,
-                  }}>
-                  BOOKING
-                </Text>
-              </View>
-            ) : (
-              <View
-                style={{
-                  height: height * 0.06,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: width * 0.2,
-                }}>
+              ) : null}
+              {label === 'Garage' ? (
                 <Image
                   source={ImagePath.BOOK}
                   style={{
-                    height: height * 0.04,
-                    width: width * 0.07,
+                    width: 20,
+                    height: 20,
+                    resizeMode: 'contain',
                   }}
-                  resizeMode="contain"
                 />
-                <Text
-                  style={{
-                    fontFamily: 'Lato-Regular',
-                    fontSize: height / 75,
-                    color: 'grey',
-                  }}>
-                  BOOKING
-                </Text>
-              </View>
-            ),
-        }}
-      />
-      <Tab.Screen
-        name="Kyc"
-        component={Kyc}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Wallet',
-          tabBarShowLabel: false,
-          tabBarIcon: ({focused, color, size}) =>
-            focused ? (
-              <View
-                style={{
-                  height: height * 0.06,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: width * 0.2,
-                }}>
-                <Image
-                  source={ImagePath.KYC2}
-                  style={{
-                    height: height * 0.04,
-                    width: width * 0.07,
-                  }}
-                  resizeMode="contain"
-                />
-                <Text
-                  style={{
-                    fontFamily: 'Lato-Regular',
-                    fontSize: height / 75,
-                  }}>
-                  KYC
-                </Text>
-              </View>
-            ) : (
-              <View
-                style={{
-                  height: height * 0.06,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: width * 0.2,
-                }}>
+              ) : null}
+              {label === 'Kyc' ? (
                 <Image
                   source={ImagePath.KYC}
                   style={{
-                    height: height * 0.04,
-                    width: width * 0.07,
+                    width: 20,
+                    height: 20,
+                    resizeMode: 'contain',
                   }}
-                  resizeMode="contain"
                 />
-                <Text
-                  style={{
-                    fontFamily: 'Lato-Regular',
-                    fontSize: height / 75,
-                    color: 'grey',
-                  }}>
-                  KYC
-                </Text>
-              </View>
-            ),
-        }}
-      />
-      <Tab.Screen
-        name="More"
-        component={More}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Redemptions',
-          tabBarShowLabel: false,
-          tabBarIcon: ({focused, color, size}) =>
-            focused ? (
-              <View
-                style={{
-                  height: height * 0.06,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: width * 0.2,
-                }}>
-                <Image
-                  source={ImagePath.CART2}
-                  style={{
-                    height: height * 0.05,
-                    width: width * 0.06,
-                  }}
-                  resizeMode="contain"
-                />
-                <Text
-                  style={{
-                    fontFamily: 'Lato-Regular',
-                    fontSize: height / 75,
-                  }}>
-                  MORE
-                </Text>
-              </View>
-            ) : (
-              <View
-                style={{
-                  height: height * 0.06,
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: width * 0.2,
-                }}>
+              ) : null}
+              {label === 'More' ? (
                 <Image
                   source={ImagePath.CART}
                   style={{
-                    height: height * 0.05,
-                    width: width * 0.06,
+                    width: 20,
+                    height: 20,
+                    resizeMode: 'center',
                   }}
-                  resizeMode="contain"
                 />
-                <Text
-                  style={{
-                    fontFamily: 'Lato-Regular',
-                    fontSize: height / 75,
-                    color: 'grey',
-                  }}>
-                  MORE
-                </Text>
-              </View>
-            ),
-        }}
-      />
+              ) : null}
+              <Text
+                style={{
+                  color: isFocused ? '#fff' : '#fff',
+                  fontSize: 12,
+                  fontFamily: 'FuturaBoldBT',
+                }}>
+                {label}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+}
+
+export default function BottomTab() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShadowVisible: false,
+        tabBarHideOnKeyboard: true,
+      }}
+      tabBar={props => <MyTabBar {...props} />}>
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Garage" component={MyGarage} />
+      <Tab.Screen name="Kyc" component={Kyc} />
+      <Tab.Screen name="More" component={More} />
     </Tab.Navigator>
   );
 }

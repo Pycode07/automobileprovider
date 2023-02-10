@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
+import {colors} from '../../assets/colors';
 import {COLOR} from '../../utils/Colors';
 import {ImagePath} from '../../utils/ImagePath';
 
@@ -27,7 +28,7 @@ const Onbording = props => (
       paginationStyleItemActive={{
         width: width * 0.09,
         height: height * 0.01,
-        backgroundColor: 'rgb(0,126,247)',
+        backgroundColor: colors.theme_yellow1,
       }}
       paginationStyleItem={{
         width: width * 0.02,
@@ -37,7 +38,7 @@ const Onbording = props => (
       autoplay
       autoplayDelay={5}
       autoplayLoop
-      index={2}
+      index={0}
       showPagination>
       <View style={styles.child}>
         <View
@@ -47,7 +48,7 @@ const Onbording = props => (
             justifyContent: 'center',
             alignItems: 'flex-end',
           }}>
-          <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
+          <TouchableOpacity onPress={() => props.navigation.replace('Login')}>
             <Text style={{color: 'black', fontSize: height / 45}}>Skip</Text>
           </TouchableOpacity>
         </View>
@@ -87,7 +88,7 @@ const Onbording = props => (
             justifyContent: 'center',
             alignItems: 'flex-end',
           }}>
-          <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
+          <TouchableOpacity onPress={() => props.navigation.replace('Login')}>
             <Text style={{color: 'black', fontSize: height / 45}}>Skip</Text>
           </TouchableOpacity>
         </View>
@@ -127,7 +128,7 @@ const Onbording = props => (
             justifyContent: 'center',
             alignItems: 'flex-end',
           }}>
-          <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
+          <TouchableOpacity onPress={() => props.navigation.replace('Login')}>
             <Text style={{color: 'black', fontSize: height / 45}}>Skip</Text>
           </TouchableOpacity>
         </View>
@@ -161,7 +162,7 @@ const Onbording = props => (
     </SwiperFlatList>
 
     <View style={styles.btn}>
-      <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
+      <TouchableOpacity onPress={() => props.navigation.replace('Login')}>
         <View style={styles.LoginV}>
           <Text style={{fontSize: height / 55, color: '#FFFFFF'}}>Next</Text>
         </View>
@@ -215,12 +216,12 @@ const styles = StyleSheet.create({
     width: width * 0.15,
     alignSelf: 'center',
     // flexDirection: 'row',
-    borderWidth: 1,
+    //borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'flex-end',
     borderRadius: 100,
-    backgroundColor: 'navy',
+    backgroundColor: colors.theme_yellow1,
   },
 });
 

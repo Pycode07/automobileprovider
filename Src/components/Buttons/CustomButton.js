@@ -9,6 +9,7 @@ import {
 import React from 'react';
 import {ImagePath} from '../../utils/ImagePath';
 import {FONTS} from '../../utils/FontFamily';
+import {colors} from '../../assets/colors';
 const {height, width} = Dimensions.get('window');
 
 const CustomButton = props => {
@@ -25,7 +26,7 @@ const CustomButton = props => {
           height: height * 0.07,
           width: width * 0.9,
           borderWidth: 1,
-          backgroundColor: 'navy',
+          backgroundColor: colors.theme_yellow1,
           borderRadius: 31,
         }}>
         <Text

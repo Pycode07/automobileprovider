@@ -1,47 +1,143 @@
 import {
   View,
   Text,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  Image,
+  Touchable,
   TouchableOpacity,
-  Dimensions,
+  StatusBar,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {ImagePath} from '../utils/ImagePath';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
-const {height, width} = Dimensions.get('window');
+import React from 'react';
+import {useEffect} from 'react';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {colors} from '../assets/colors';
+import {api_url, driver_register_new, fonts} from '../config/Constant';
+import Header from '../components/Header';
+import {useState} from 'react';
+import axios from 'axios';
 
 const Register = props => {
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerShown: true,
+      headerTitle: '',
+      headerLeft: () => {
+        return <Header title="Register" navigation={props.navigation} />;
+      },
+    });
+  }, []);
+
+  // ==========  single select state =============
+  const [male, setMale] = useState(false);
+  const [female, setFemale] = useState(false);
+
+  const [marid, setMarid] = useState(false);
+  const [unmerid, setUnmerid] = useState(false);
+
+  const [onwe, setOwned] = useState(false);
+  const [rented, setRented] = useState(false);
+
+  const [birthDateVisibality, setBirthDateVisibality] = React.useState(false);
+  const [birthDate, setBirthDate] = React.useState('Select a date');
+  const [currentBirthDate, setCurrentBirthDate] = React.useState(new Date());
+  // ==========  single select state End =============
+
+  // ==========  Validaiton start here ========== =============
+
+  const [FirstName, setFirstName] = useState('');
+  const [errorFirstName, setErrorFirstName] = useState(null);
+
+  const [surName, setsurName] = useState('');
+  const [errorsurName, setErrorsurName] = useState(null);
+
+  const [fatherName, setFatherName] = useState('');
+  const [errorfatherName, setErrorFatherName] = useState(null);
+
+  const [date, setdate] = useState('');
+  const [errordate, setErrordate] = useState('');
+
   const [Phone, setPhone] = useState('');
-  const [checkPhone, setCheckPhone] = useState(true);
   const [errorPhone, setErrorPhone] = useState(null);
 
-  const [Email, setEmail] = useState('');
-  const [checkEmail, setCheckEmail] = useState(true);
+  const [Adhar, setAdhar] = useState('');
+  const [errorAdhar, setErrorAdhar] = useState(null);
+
+  const [Pan, setPan] = useState('');
+  const [errorPan, setErrorPan] = useState(null);
+
+  const [area, setArea] = useState('jbjhh');
+  const [errorArea, setErrorArea] = useState(null);
+
+  const [city, setCity] = useState('bvhgcgf');
+  const [errorCity, setErrorCity] = useState(null);
+
+  const [pin, setPin] = useState('hhgfg');
+  const [errorPin, setErrorPin] = useState(null);
+
+  const [email, setEmail] = useState('');
   const [errorEmail, setErrorEmail] = useState(null);
 
-  const [Password, setPassword] = useState('');
+  const [password, setPassword] = useState('');
   const [errorPassword, setErrorPassword] = useState(null);
 
-  const [confirmpassword, setConfirmpassword] = useState(null);
-  const [checkConfirmPassword, setCheckConfirmPassword] = useState(false);
-  const [errorConfirmPassword, setErrorConfirmPassword] = useState(null);
+  const [secandryMobileNumber, setSecandryMobileNumber] = useState('');
 
-  const _emailvalidate = mail => {
-    var emailRegex =
-      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    //  /^(?:\d{10}|\w+@\w+\.\w{2,3})$/;
-    if (mail === '') {
-      setErrorEmail('*Please enter email.');
-    } else if (!emailRegex.test(mail)) {
-      setErrorEmail('*Please enter valid email.');
+  const [age, setAge] = React.useState('');
+
+  const setTravelingDateFromPicker = (d, date) => {
+    if (d.type === 'set') {
+      setBirthDateVisibality(false);
+      setBirthDate(date);
+      setCurrentBirthDate(date);
+      calculateAge(date);
     } else {
-      setErrorEmail(null);
+      setBirthDateVisibality(false);
     }
   };
+
+  const _validateFirstName = fname => {
+    var fnameRegex = /^[a-z A-Z ]{2,32}$/i;
+    if (fname == '' || fname == undefined || fname == null) {
+      setErrorFirstName('*Please enter first name.');
+    } else if (!fnameRegex.test(fname)) {
+      setErrorFirstName('*Please enter valid first name.');
+    } else {
+      setErrorFirstName(null);
+    }
+  };
+  const _validatesurName = lname => {
+    var lnameRegex = /^[a-z A-Z ]{2,32}$/i;
+    if (lname == '' || lname == undefined || lname == null) {
+      setErrorsurName('*Please enter Surname.');
+    } else if (!lnameRegex.test(lname)) {
+      setErrorsurName('*Please enter valid surname.');
+    } else {
+      setErrorsurName(null);
+    }
+  };
+
+  const _validateFatherName = fatname => {
+    var fathernameRegex = /^[a-z A-Z ]{2,32}$/i;
+    if (fatname == '' || fatname == undefined || fatname == null) {
+      setErrorFatherName('*Please enter father name.');
+    } else if (!fathernameRegex.test(fatname)) {
+      setErrorFatherName('*Please enter valid father name.');
+    } else {
+      setErrorFatherName(null);
+    }
+  };
+
+  const _Datevalidate = date => {
+    var DateRegex = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/;
+    if (date === '') {
+      setErrordate('*Please enter correct Dob.');
+    } else if (!DateRegex.test(date)) {
+      setErrordate('*Please enter valid Dob.');
+    } else {
+      setErrordate(null);
+    }
+  };
+
   const _Phonevalidate = Phone => {
     var PhoneRegex = /^([0-9]){10,14}$/;
     if (Phone === '') {
@@ -53,363 +149,199 @@ const Register = props => {
     }
   };
 
-  const _passwordvalidate = pass => {
-    var passwordRegex =
-      /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
-    if (pass === '') {
-      setErrorPassword('*Please enter password.');
-    } else if (/([A-Z]+)/g.test(pass) && pass.length < 8) {
-      setErrorPassword(
-        '*Please enter a special character and length must be 8 digit.',
-      );
-    } else if (!passwordRegex.test(pass)) {
-      setErrorPassword('*Please enter valid password.');
+  const _Panvalidate = Pan => {
+    var PanRegex = /[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+    if (Pan === '') {
+      setErrorPan('*Please enter Pan card number.');
+    } else if (!PanRegex.test(Pan)) {
+      setErrorPan('*Please enter valid Pan card Number.');
     } else {
-      setErrorPassword(null);
+      setErrorPan(null);
     }
   };
 
-  const _confirmpassword = pass => {
-    if (Password != pass) {
-      setErrorConfirmPassword("*Password Don't Match");
-      setCheckConfirmPassword(false);
+  const _Adharvalidate = adhar => {
+    var AdharRegex = /^\d{4}\d{4}\d{4}$$/;
+    var PassportRegex = /^[A-PR-WYa-pr-wy][1-9]\\d\\s?\\d{4}[1-9]$/;
+    var VoterRegex = /^([a-zA-Z]){3}([0-9]){7}?$/;
+    var DLRegex =
+      /^(([A-Z]{2}[0-9]{2})|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/;
+
+    if (adhar === '') {
+      setErrorAdhar('*Please enter Anyone.');
+    } else if (
+      !(
+        AdharRegex.test(adhar) |
+        PassportRegex.test(adhar) |
+        VoterRegex.test(adhar) |
+        DLRegex.test(adhar)
+      )
+    ) {
+      setErrorAdhar('*Please enter correct Details.');
     } else {
-      setCheckConfirmPassword(true);
-      setErrorConfirmPassword(null);
+      setErrorAdhar(null);
+    }
+  };
+
+  const _Areavalidate = area => {
+    var areaRegex =
+      /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
+    if (area === '') {
+      setErrorArea('*Enter area name.');
+    } else if (!areaRegex.test(area)) {
+      setErrorArea('*this feild is require.');
+    } else {
+      setErrorArea(null);
+    }
+  };
+
+  const _Cityvalidate = pin => {
+    var cityRegex =
+      /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/;
+    if (pin === '') {
+      setErrorCity('*this feild is require.');
+    } else if (!cityRegex.test(pin)) {
+      setErrorCity('* this feild is require.');
+    } else {
+      setErrorCity(null);
+    }
+  };
+
+  const _Pinvalidate = pin => {
+    var pinRegex = /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/;
+    if (pin === '') {
+      setErrorPin('*Enter area Pincode.');
+    } else if (!pinRegex.test(pin)) {
+      setErrorPin('*Enter valid Pincode.');
+    } else {
+      setErrorPin(null);
     }
   };
 
   const validate = () => {
     let flag = true;
+    if (FirstName === '') {
+      setErrorFirstName('*Please enter First Name.');
+      flag = false;
+    }
+
+    if (surName === '') {
+      setErrorsurName('*Please enter Surname Name');
+      flag = false;
+    }
+
+    if (fatherName === '') {
+      setErrorFatherName('*Please enter Father Name');
+      flag = false;
+    }
+
     if (Phone === '') {
       setErrorPhone('*Please enter Phone Number.');
-
-      flag = false;
-    }
-    if (Email === '') {
-      setErrorEmail('*Please enter email.');
       flag = false;
     }
 
-    if (Password === '') {
-      setErrorPassword('*Please enter password.');
+    if (birthDate === 'Select a date') {
+      setErrordate('*Please enter DOB.');
       flag = false;
     }
 
-    if (confirmpassword === '') {
-      setErrorC('*Please enter password.');
+    if (Pan === '') {
+      setErrordate('*Please enter Pan No.');
+      flag = false;
+    }
+
+    if (Adhar === '') {
+      setErrorAdhar('*Please enter Any one Details.');
+      flag = false;
+    }
+
+    if (area === '') {
+      setErrorPin('*Enter area.');
+      flag = false;
+    }
+
+    if (city === '') {
+      setErrorPin('*Enter city.');
+      flag = false;
+    }
+
+    if (pin === '') {
+      setErrorPin('*Enter pincode.');
+      flag = false;
+    }
+
+    if (email === '') {
+      setErrorEmail('*Enter Email.');
+      flag = false;
+    }
+
+    if (password === '') {
+      setErrorPassword('*Enter Password.');
       flag = false;
     }
     return flag;
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (validate()) {
-      // onVerifySignUp();
-      props.navigation.navigate('OtpVerification');
+      let fcmToken = 'qwerrtyuio';
+      let PersonalData = {
+        first_name: FirstName,
+        last_name: surName,
+        father_name: fatherName,
+        date_of_birth: moment(birthDate).format('YYYY-MM-DD'),
+        age: age,
+        gender: male == true ? 1 : 2,
+        relationship_status: marid == true ? 2 : 1,
+        phone_number: Phone,
+        fcm_token: fcmToken,
+        phone_number2: secandryMobileNumber,
+        pancard_num: Pan,
+        id_proof: Adhar,
+        address_type: onwe == true ? 1 : 2,
+        city: 'none', //city,
+        area: 'none', //area,
+        pincode: 'none', //pin,
+        email: email,
+        password: password,
+      };
+      const responsePersonalityDetail = await axios.post(
+        api_url + driver_register_new,
+        PersonalData,
+      );
+      console.log('=======>', responsePersonalityDetail.data);
+      if (responsePersonalityDetail) {
+        let a = await AsyncStorage.setItem('email', email.toString());
+        props.dispatch(
+          UserAction.setUserData(responsePersonalityDetail.data.result),
+        );
+        props.navigation.navigate('GrageDetails');
+      }
     } else {
-      alert('Something went wrong');
-      // setModalVisible(!modalVisible);
+      alert('Please Enter All Require Details');
     }
   };
-
-  // ************** Register Api call Here ****************
-  let Register = {
-    mobileNumber: 'Phone',
-    email: 'Email',
-    password: 'Password',
-    confirmPassword: 'confirmpassword',
-  };
+  // ==========  Validaiton End  here ========== =============
+  function calculateAge(birthday) {
+    var ageDifMs = Date.now() - birthday;
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    setAge(Math.abs(ageDate.getUTCFullYear() - 1970));
+  }
   return (
-    <KeyboardAwareScrollView>
-      <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-        <View
-          style={{
-            height: height * 0.4,
-            width: width * 1,
-            backgroundColor: 'navy',
-          }}></View>
-        <View
-          style={{
-            height: height * 0.6,
-            width: width * 1,
-            backgroundColor: '#FFFFFF',
-          }}></View>
-        <View
-          style={{
-            height: height * 0.6,
-            width: width * 0.8,
-            alignSelf: 'center',
-            position: 'absolute',
-            // backgroundColor: 'red',
-            borderRadius: 8,
-            backgroundColor: '#fff',
-            // left: 25,
-            // right: 25,
-            top: 130,
-            // borderRadius: 20,
-            zIndex: 99,
-            // paddingTop: 20,
-            // paddingHorizontal: 20,
-          }}>
-          <View>
-            <View
-              style={{
-                height: height * 0.03,
-                width: width * 0.15,
-                // alignSelf: 'flex-start',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 5,
-                marginLeft: 20,
-                backgroundColor: '#fff',
-                bottom: -6,
-                zIndex: 2,
-              }}>
-              <Text style={{fontSize: 11, color: '#898b8c'}}>Phone</Text>
-            </View>
-            <View style={styles.commontextV}>
-              <TextInput
-                placeholder="9560116872"
-                placeholderTextColor="#02024A"
-                maxLength={10}
-                returnKeyType="done"
-                keyboardType="number-pad"
-                onChangeText={txt => {
-                  setPhone(txt), _Phonevalidate(txt);
-                }}
-                style={{
-                  width: '90%',
-                  borderWidth: 1,
-                  borderColor: '#02024A',
-                  borderRadius: 5,
-                  paddingVertical: 6,
-                  fontSize: 11,
-                  paddingHorizontal: 14,
-                }}
-              />
-              {errorPhone != null ? (
-                <View
-                  style={{
-                    height: height * 0.03,
-                    width: width * 0.73,
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      color: 'red',
-                      fontSize: 10,
-                      marginTop: 4,
-                      top: -height / 230,
-                    }}>
-                    {errorPhone}
-                  </Text>
-                </View>
-              ) : null}
-            </View>
+    <View style={{flex: 1, backgroundColor: colors.theme_black0}}>
+      <StatusBar
+        backgroundColor={colors.theme_yellow1}
+        barStyle="light-content"
+      />
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollView>
+          <View style={{flex: 1, width: '90%', alignSelf: 'center'}}>
+            
           </View>
-          <View>
-            <View
-              style={{
-                height: height * 0.03,
-                width: width * 0.15,
-                // alignSelf: 'flex-start',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 5,
-                marginLeft: 20,
-                backgroundColor: '#fff',
-                bottom: -6,
-                zIndex: 2,
-              }}>
-              <Text style={{fontSize: 11, color: '#898b8c'}}>Email</Text>
-            </View>
-            <View style={styles.commontextV}>
-              <TextInput
-                placeholder="example@gmail.com"
-                placeholderTextColor="#02024A"
-                style={{
-                  width: '90%',
-                  borderWidth: 1,
-                  borderColor: '#02024A',
-                  borderRadius: 5,
-                  paddingVertical: 6,
-                  fontSize: 11,
-                  paddingHorizontal: 14,
-                }}
-                keyboardType="email-address"
-                maxLength={256}
-                autoCapitalize="none"
-                onChangeText={txt => {
-                  setEmail(txt), _emailvalidate(txt);
-                }}
-              />
-
-              {errorEmail != null ? (
-                <View
-                  style={{
-                    height: height * 0.03,
-                    width: width * 0.73,
-                    justifyContent: 'center',
-                    // backgroundColor: "blue",
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      color: 'red',
-                      fontSize: 10,
-                      marginTop: 4,
-                      // top: -height / 230,
-                    }}>
-                    {errorEmail}
-                  </Text>
-                </View>
-              ) : null}
-            </View>
-          </View>
-          <View>
-            <View
-              style={{
-                height: height * 0.03,
-                width: width * 0.18,
-                // alignSelf: 'flex-start',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 5,
-                marginLeft: 20,
-                backgroundColor: '#fff',
-                bottom: -6,
-                zIndex: 2,
-              }}>
-              <Text style={{fontSize: 11, color: '#898b8c'}}>Password</Text>
-            </View>
-            <View style={styles.commontextV}>
-              <TextInput
-                placeholder="password"
-                placeholderTextColor="#02024A"
-                onChangeText={txt => {
-                  setPassword(txt), _passwordvalidate(txt);
-                }}
-                style={{
-                  width: '90%',
-                  borderWidth: 1,
-                  borderColor: '#02024A',
-                  borderRadius: 5,
-                  paddingVertical: 6,
-                  fontSize: 11,
-                  paddingHorizontal: 14,
-                }}
-                secureTextEntry={true}
-              />
-
-              {errorPassword != null ? (
-                <View
-                  style={{
-                    height: height * 0.03,
-                    width: width * 0.73,
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      color: 'red',
-                      fontSize: 10,
-                      marginTop: 5,
-                    }}>
-                    {errorPassword}
-                  </Text>
-                </View>
-              ) : null}
-            </View>
-          </View>
-          <View>
-            <View
-              style={{
-                height: height * 0.03,
-                width: width * 0.3,
-                // alignSelf: 'flex-start',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingHorizontal: 5,
-                marginLeft: 20,
-                backgroundColor: '#fff',
-                bottom: -6,
-                zIndex: 2,
-              }}>
-              <Text style={{fontSize: 11, color: '#898b8c'}}>
-                Confirm Password
-              </Text>
-            </View>
-            <View style={styles.commontextV}>
-              <TextInput
-                placeholder=" confirm password"
-                placeholderTextColor="#02024A"
-                onChangeText={txt => {
-                  setConfirmpassword(txt), _confirmpassword(txt);
-                }}
-                style={{
-                  width: '90%',
-                  borderWidth: 1,
-                  borderColor: '#02024A',
-                  borderRadius: 5,
-                  paddingVertical: 6,
-                  fontSize: 11,
-                  paddingHorizontal: 14,
-                }}
-                secureTextEntry={true}
-              />
-
-              {errorConfirmPassword != null ? (
-                <View
-                  style={{
-                    height: height * 0.03,
-                    width: width * 0.73,
-                    justifyContent: 'center',
-                    // backgroundColor: "blue",
-                  }}>
-                  <Text
-                    style={{
-                      color: 'red',
-                      fontSize: 10,
-                      marginTop: 5,
-                    }}>
-                    {errorConfirmPassword}
-                  </Text>
-                </View>
-              ) : null}
-            </View>
-          </View>
-          <View
-            style={{
-              flex: 0,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              paddingHorizontal: 15,
-              marginVertical: 35,
-            }}>
-            <Text style={{fontSize: 20, color: '#02024A', fontWeight: '600'}}>
-              SignUp
-            </Text>
-            <TouchableOpacity
-              // onPress={() => onSubmit()}
-              onPress={() => props.navigation.navigate('OtpVerification')}>
-              <Image source={ImagePath.NEXT_BTN} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </KeyboardAwareScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
 export default Register;
-
-const styles = StyleSheet.create({
-  commontextV: {
-    height: height * 0.09,
-    width: width * 0.8,
-    // justifyContent:'center'
-    // borderWidth: 1,
-    alignItems: 'center',
-  },
-});

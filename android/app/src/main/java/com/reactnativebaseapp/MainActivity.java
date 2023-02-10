@@ -1,4 +1,4 @@
-package com.mechanilaneprovider;
+package com.ksbm.automobileprovider;
 
 import com.facebook.react.ReactActivity;
 

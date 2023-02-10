@@ -7,55 +7,130 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  ToastAndroid,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {ImagePath} from '../../utils/ImagePath';
 import {COLOR} from '../../utils/Colors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {connect} from 'react-redux';
+import axios from 'axios';
+import * as UserAction from '../../redux/actions/userActions';
+import {colors} from '../../assets/colors';
+import {
+  api_url,
+  driver_get_kyc,
+  driver_update_kyc,
+} from '../../config/Constant';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const {height, width} = Dimensions.get('window');
 
-const Kyc = () => {
+const Kyc = props => {
   const [count, setCount] = useState(0);
   const [remain, setRemain] = useState(0);
-  useEffect(() => {}, [count, remain]);
+  const [bankName, setBankName] = useState('');
+  const [bankAccountNumber, setBankAccountNumber] = useState('');
+  const [ifscCode, setIfscCode] = useState('');
+  const [addarNumber, setAddarNumber] = useState('');
+  const [panNumber, setPanNumber] = useState('');
+
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerStyle: {backgroundColor: colors.theme_white},
+      headerTitleStyle: {color: colors.theme_white},
+      headerTintColor: '#F7931E',
+      headerLeft: () => {
+        return (
+          <View
+            style={{
+              flex: 0,
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              marginLeft: 10,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.goBack();
+              }}>
+              <AntDesign
+                name="leftcircleo"
+                size={25}
+                color={colors.theme_yellow1}
+              />
+            </TouchableOpacity>
+            <Text
+              style={{
+                color: colors.theme_yellow1,
+                fontSize: 20,
+                fontFamily: 'FuturaMediumBT',
+                marginLeft: 10,
+              }}>
+              KYC
+            </Text>
+          </View>
+        );
+      },
+    });
+  }, []);
+
+  const updateKYC = async () => {
+    if (
+      bankName != '' &&
+      bankAccountNumber != '' &&
+      ifscCode != '' &&
+      addarNumber != '' &&
+      panNumber != ''
+    ) {
+      try {
+        const body = {
+          driver_id: props?.userData.id,
+          bank_name: bankName,
+          bank_account_number: bankAccountNumber,
+          ifsc_code: ifscCode,
+          aadhar_number: addarNumber,
+          pan_number: panNumber,
+          total_capacity: count,
+        };
+        const response = await axios.post(api_url + driver_update_kyc, body);
+        console.log('response', response.data);
+        ToastAndroid.show(
+          'Update successfully!',
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM,
+        );
+        props.dispatch(UserAction.setTotalCapacity(count));
+      } catch (error) {
+        console.log('accpetReject', error.message);
+      }
+    } else {
+      Alert.alert('Alert!', 'Please fill all fields');
+    }
+  };
+
+  const getKycDetails = async () => {
+    const response = await axios.post(api_url + driver_get_kyc, {
+      driver_id: props?.userData.id,
+    });
+    if (response.data.message == 'Success') {
+      setAddarNumber(response.data.result.aadhar_number);
+      setBankName(response.data.result.bank_name);
+      setBankAccountNumber(response.data.result.bank_account_number);
+      setIfscCode(response.data.result.ifsc_code);
+      setPanNumber(response.data.result.pan_number);
+      setCount(response.data.result.total_capacity);
+    }
+    console.log(response.data);
+  };
+
+  useEffect(() => {
+    getKycDetails();
+  }, []);
 
   return (
     <KeyboardAwareScrollView>
       <ScrollView style={{flex: 0, backgroundColor: '#fff'}}>
-        <View
-          style={{
-            height: height * 0.1,
-            width: width * 1,
-            borderWidth: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: 'navy',
-          }}>
-          <View
-            style={{
-              height: height * 0.05,
-              width: width * 0.2,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {/*  <TouchableOpacity onPress={() => props.navigation.goBack()}>
-            <Image
-             source={ImagePath.BACK_ARROW}
-              style={{height: 25, width: 25}}
-            />
-        </TouchableOpacity>*/}
-          </View>
-          <View
-            style={{
-              height: height * 0.05,
-              width: width * 0.55,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{color: COLOR.WHITE, fontSize: 22}}>KYC</Text>
-          </View>
-        </View>
-
         <View style={{flex: 0, marginHorizontal: 25, marginBottom: 25}}>
           <View style={styles.headingView}>
             <Text style={styles.headingText}>Bank Details</Text>
@@ -64,21 +139,32 @@ const Kyc = () => {
             placeholder="Bank Name"
             style={styles.inputStyle}
             placeholderTextColor="black"
-          />
+            onChangeText={t => setBankName(t)}>
+            {bankName}
+          </TextInput>
           <TextInput
             placeholder="Bank Account Number"
             style={styles.inputStyle}
             placeholderTextColor="black"
-          />
+            onChangeText={t => setBankAccountNumber(t)}>
+            {bankAccountNumber}
+          </TextInput>
           <TextInput
             placeholder="IFSC Code"
             style={styles.inputStyle}
             placeholderTextColor="black"
-          />
+            onChangeText={t => setIfscCode(t)}>
+            {ifscCode}
+          </TextInput>
           <View style={styles.headingView}>
             <Text style={styles.headingText}>KYC Update</Text>
           </View>
-          <TextInput placeholder="Aadhar Number" style={styles.inputStyle} />
+          <TextInput
+            placeholder="Aadhar Number"
+            style={styles.inputStyle}
+            onChangeText={t => setAddarNumber(t)}>
+            {addarNumber}
+          </TextInput>
           <View style={styles.kycDoc}>
             <Image
               source={ImagePath.ADHAR}
@@ -103,7 +189,12 @@ const Kyc = () => {
               resizeMode="cover"
             />
           </View>
-          <TextInput placeholder="PAN Number" style={styles.inputStyle} />
+          <TextInput
+            placeholder="PAN Number"
+            style={styles.inputStyle}
+            onChangeText={t => setPanNumber(t)}>
+            {panNumber}
+          </TextInput>
           <View style={styles.kycDoc}>
             <Image
               source={ImagePath.PAN}
@@ -190,65 +281,6 @@ const Kyc = () => {
                 </View>
               </View>
             </View>
-
-            {/** 
-            <View style={styles.capacitymain}>
-              <View style={{flexDirection: 'row'}}>
-                <View style={styles.capcity}>
-                  <Text
-                    style={{
-                      fontSize: 17,
-                      fontWeight: '500',
-                      color: COLOR.BLACK,
-                    }}>
-                    Remaining Capacity
-                  </Text>
-                </View>
-
-                <View style={styles.capcity1}>
-                  <View style={styles.count}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (remain > 0) {
-                          setRemain(remain - 1);
-                        }
-                      }}>
-                      <Image
-                        source={ImagePath.MINUS}
-                        resizeMode="contain"
-                        style={{height: 28, width: 28}}
-                      />
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={styles.count}>
-                    <Text
-                      style={{
-                        fontSize: 21,
-                        fontWeight: 'bold',
-                        color: COLOR.BLACK,
-                      }}>
-                      {remain}
-                    </Text>
-                  </View>
-                  <View style={styles.count}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (remain < count) {
-                          setRemain(remain + 1);
-                        }
-                      }}>
-                      <Image
-                        source={ImagePath.PLUS}
-                        resizeMode="contain"
-                        style={{height: 28, width: 28}}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </View>
-            */}
           </View>
           <View
             style={{
@@ -258,13 +290,14 @@ const Kyc = () => {
               // borderWidth: 1,
             }}>
             <TouchableOpacity
+              onPress={updateKYC}
               style={{
                 height: height * 0.06,
                 width: width * 0.9,
                 alignSelf: 'center',
                 // borderWidth: 1,
                 borderRadius: 10,
-                backgroundColor: 'navy',
+                backgroundColor: colors.theme_yellow1,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
@@ -283,7 +316,12 @@ const Kyc = () => {
     </KeyboardAwareScrollView>
   );
 };
-export default Kyc;
+const mapStateToProps = state => ({
+  userData: state.user.userData,
+});
+const mapDispatchToProps = dispatch => ({dispatch});
+export default connect(mapStateToProps, mapDispatchToProps)(Kyc);
+
 const styles = StyleSheet.create({
   headingView: {
     marginVertical: 15,

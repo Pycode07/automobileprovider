@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "Src/assets/fonts/FutuBd.ttf",
+      "sha1": "037d3d3d3d4940040afce4bee6b65bea19fcbc1f"
+    },
+    {
+      "path": "Src/assets/fonts/FutuBdIt.ttf",
+      "sha1": "e9e8be2e13ac6b411d05097899626152bc51608f"
+    },
+    {
+      "path": "Src/assets/fonts/FutuMd.ttf",
+      "sha1": "aae3b3f7db53f999dfc3b33f21eef304535c378d"
+    },
+    {
+      "path": "Src/assets/fonts/FutuMdIt.ttf",
+      "sha1": "72cb806172d71200a77f6a539082cab4d778b4cc"
+    },
+    {
+      "path": "Src/assets/fonts/FuturaBoldBT.ttf",
+      "sha1": "47fb228fa53399b8c04a0466a2db79bcb08b56cd"
+    },
+    {
+      "path": "Src/assets/fonts/FuturaBoldItalicBT.ttf",
+      "sha1": "12b2c308a975de2a681faa01d2df5e18ace10b48"
+    },
+    {
+      "path": "Src/assets/fonts/FuturaMediumBT.ttf",
+      "sha1": "012afbcb1bc6d9a1866bed03a9575b3f06bec79c"
+    },
+    {
+      "path": "Src/assets/fonts/FuturaMediumItalicBT.ttf",
+      "sha1": "081402921b4fe78b2badb3efa444e47005836975"
+    }
+  ]
+}

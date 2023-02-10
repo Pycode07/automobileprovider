@@ -10,27 +10,68 @@ import {
   Image,
 } from 'react-native';
 import CustomButton from '../components/Buttons/CustomButton';
-import {ImagePath} from '../utils/ImagePath';
-import {COLOR} from '../utils/Colors';
+import { ImagePath } from '../utils/ImagePath';
+import { COLOR } from '../utils/Colors';
+import axios from 'axios';
+import { api_url, driver_register_new } from '../config/Constant';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
+
+// const nextGrageDetail = (props) => {
+//   console.warn("==>", props);
+//   // props.navigation.navigate('Login')
+// }
+
 
 const BaseInformation = props => {
+
+  const postRegisterationData = async () => {
+
+    try {
+      let baseInformationData = {
+        no_of_kmp: "",
+        service_provide_array: "",
+        car_serve_array: "",
+        luxury_brand_array: "",
+        engine_variant_array: "",
+        transmission_type_array: "",
+        number_of_boys: "",
+        number_of_mechanics: "",
+        serve_high_end_cars: "",
+        require_inventories_from_company: "",
+        doorstep_service: "",
+        pickup_drop_service: "",
+        accept_card_payment: "",
+        use_software: "",
+        fcm_token: ""
+      }
+      let grageDetail = props?.route?.params?.garageDetailData
+      // console.warn("====>", { ...baseInformationData, ...grageDetail });
+      let response = await axios.post(api_url + driver_register_new, { ...baseInformationData, ...grageDetail })
+      // if (response.data) {
+      //   props.navigation.navigate('Login')
+      // }
+
+
+    } catch (error) {
+      console.log("error", error.message);
+    }
+  }
   return (
     <ScrollView
-      style={{flex: 1, backgroundColor: '#fff', paddingHorizontal: 10}}
+      style={{ flex: 1, backgroundColor: '#fff', paddingHorizontal: 10 }}
       showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
         <View style={styles.backbtn}>
           <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <Image
               source={ImagePath.BlACK_BACK_ARROW}
-              style={{height: 25, width: 25}}
+              style={{ height: 25, width: 25 }}
             />
           </TouchableOpacity>
         </View>
         <View style={styles.titaltxxt}>
-          <Text style={{color: COLOR.BLACK, fontSize: 21, fontWeight: '700'}}>
+          <Text style={{ color: COLOR.BLACK, fontSize: 21, fontWeight: '700' }}>
             Base Information
           </Text>
         </View>
@@ -49,8 +90,8 @@ const BaseInformation = props => {
           text="Regular Service"
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
-          style={{marginVertical: 5, marginLeft: 10}}
-          //// onPress={(isChecked: boolean) => {}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
+        //// onPress={(isChecked: boolean) => {}}
         />
         <BouncyCheckbox
           size={20}
@@ -59,8 +100,8 @@ const BaseInformation = props => {
           text="Washing and Detailing"
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
-          style={{marginVertical: 5, marginLeft: 10}}
-          //// onPress={(isChecked: boolean) => {}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
+        //// onPress={(isChecked: boolean) => {}}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -71,8 +112,8 @@ const BaseInformation = props => {
           text="Wheel Alignment and Balancing"
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
-          style={{marginVertical: 5, marginLeft: 10}}
-          //onPress={(isChecked: boolean) => {}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
+        //onPress={(isChecked: boolean) => {}}
         />
         <BouncyCheckbox
           size={20}
@@ -82,7 +123,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           //// onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -94,7 +135,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           //// onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -104,7 +145,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           //// onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -116,7 +157,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           //onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -126,7 +167,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           //// onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -141,7 +182,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -151,7 +192,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -161,7 +202,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -173,7 +214,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -183,7 +224,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -193,7 +234,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -205,7 +246,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -215,7 +256,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -225,7 +266,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -237,7 +278,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -247,7 +288,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -257,7 +298,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -269,7 +310,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -279,7 +320,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -289,7 +330,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -301,7 +342,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -311,7 +352,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -321,7 +362,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -333,7 +374,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -343,7 +384,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -353,7 +394,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -365,7 +406,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -375,7 +416,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -385,7 +426,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -400,7 +441,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -410,7 +451,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -420,7 +461,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -432,7 +473,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -442,7 +483,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -452,7 +493,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -464,7 +505,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -474,7 +515,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -484,7 +525,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -499,7 +540,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -509,7 +550,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -519,7 +560,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.checkBoxContainer}>
@@ -531,7 +572,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -546,7 +587,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -556,7 +597,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -571,7 +612,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -581,7 +622,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -591,7 +632,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -601,7 +642,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -618,7 +659,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -628,7 +669,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -638,7 +679,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -648,7 +689,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -663,7 +704,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -673,7 +714,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -690,7 +731,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -700,7 +741,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -717,7 +758,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -727,7 +768,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -745,7 +786,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -755,7 +796,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -770,7 +811,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -780,7 +821,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.headinView}>
@@ -797,7 +838,7 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
         <BouncyCheckbox
           size={20}
@@ -807,13 +848,14 @@ const BaseInformation = props => {
           iconStyle={styles.iconStyle}
           textStyle={styles.textStyle}
           // onPress={(isChecked: boolean) => {}}
-          style={{marginVertical: 5, marginLeft: 10}}
+          style={{ marginVertical: 5, marginLeft: 10 }}
         />
       </View>
       <View style={styles.Nxtbtn}>
         <CustomButton
           title={'Next'}
-          ButtonPress={() => props.navigation.navigate('Login')}
+          // ButtonPress={() => props.navigation.navigate('Login')}
+          ButtonPress={() => postRegisterationData()}
         />
       </View>
     </ScrollView>

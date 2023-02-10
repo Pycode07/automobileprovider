@@ -1,0 +1,10 @@
+export const SET_USER_DATA = 'SET_USER_DATA';
+export const SET_GRAGE_DATA = 'SET_GRAGE_DATA';
+export const SET_UPDATE_CAPACITY = 'SET_UPDATE_CAPACITY';
+
+
+
+
+
+
+

@@ -9,226 +9,241 @@ import {
   TextInput,
   FlatList,
   Modal,
+  ToastAndroid,
+  StatusBar,
 } from 'react-native';
 import {COLOR} from '../../utils/Colors';
 import {ImagePath} from '../../utils/ImagePath';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
+import axios from 'axios';
+import {connect} from 'react-redux';
+import {colors} from '../../assets/colors';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {
+  api_url,
+  fonts,
+  get_capacity,
+  provider_packages,
+  provider_running_services,
+  provider_services_action,
+  provider_sos,
+  update_occupied_capacity,
+} from '../../config/Constant';
+import TopTab from '../../Navigation/TopTab';
+import {Loader} from '../../components/Loader';
 const {height, width} = Dimensions.get('window');
 
 const MyGarage = props => {
-  const [count, setCount] = useState(0);
   const [remain, setRemain] = useState(0);
-  useEffect(() => {}, [count, remain]);
-
   const [modalVisible, setModalVisible] = useState(false);
-  const DATA = [
-    {
-      key: 1,
-      IMG: require('../../assets/Splash/intro2.png'),
-      text: 'Maruti Vitara Brezza',
-      carno: 'UP 15 CD 1433',
-      OilType: ':Petrol',
-      service: 'ServiceType :',
-      type: 'AC Repair',
-      loction: '400/G 2nd Floor,Near New Delhi',
-    },
-    {
-      key: 2,
-      IMG: require('../../assets/Splash/intro2.png'),
-      text: 'Maruti Vitara Brezza',
-      carno: 'UP 15 CD 1433',
-      OilType: ':Petrol',
-      service: 'ServiceType :',
-      type: 'AC Repair',
-      loction: '400/G 2nd Floor,Near New Delhi',
-    },
-
-    {
-      key: 3,
-      IMG: require('../../assets/Splash/intro2.png'),
-      text: 'Maruti Vitara Brezza',
-      carno: 'UP 15 CD 1433',
-      OilType: ':Petrol',
-      service: 'ServiceType :',
-      type: 'AC Repair',
-      loction: '400/G 2nd Floor,Near New Delhi',
-    },
-
-    {
-      key: 4,
-      IMG: require('../../assets/Splash/intro2.png'),
-      text: 'Maruti Vitara Brezza',
-      carno: 'UP 15 CD 1433',
-      OilType: ':Petrol',
-      service: 'ServiceType :',
-      type: 'AC Repair',
-      loction: '400/G 2nd Floor,Near New Delhi',
-    },
-
-    {
-      key: 5,
-      IMG: require('../../assets/Splash/intro2.png'),
-      text: 'Maruti Vitara Brezza',
-      carno: 'UP 15 CD 1433',
-      OilType: ':Petrol',
-      service: 'ServiceType :',
-      type: 'AC Repair',
-      loction: '400/G 2nd Floor,Near New Delhi',
-    },
-
-    {
-      key: 6,
-      IMG: require('../../assets/Splash/intro2.png'),
-      text: 'Maruti Vitara Brezza',
-      carno: 'UP 15 CD 1433',
-      OilType: ':Petrol',
-      service: 'ServiceType :',
-      type: 'AC Repair',
-      loction: '400/G 2nd Floor,Near New Delhi',
-    },
-
-    {
-      key: 7,
-      IMG: require('../../assets/Splash/intro2.png'),
-      text: 'Maruti Vitara Brezza',
-      carno: 'UP 15 CD 1433',
-      OilType: ':Petrol',
-      service: 'ServiceType :',
-      type: 'AC Repair',
-      loction: '400/G 2nd Floor,Near New Delhi',
-    },
-  ];
-
-  const renderItem = ({item}) => (
-    <TouchableOpacity
-      onPress={() => props.navigation.navigate('OrderTracking')}>
-      <View style={styles.item}>
-        <View style={styles.imgData}>
-          <Image
-            source={item.IMG}
-            style={{height: 140, width: 140}}
-            resizeMode="contain"
-          />
-        </View>
-        <View style={styles.content}>
-          <View style={styles.cmntxt}>
-            <Text style={{fontSize: 13, color: 'black', fontWeight: '500'}}>
-              {item.text}
-            </Text>
-          </View>
+  const [totalCapacity, setTotalCapacity] = useState(0);
+  const [occupiedCapacity, setOccupiedCapacity] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [newRequest, setNewRequest] = React.useState(null);
+  const [currentServices, setCurrentServices] = React.useState(null);
+  const [sos, setSos] = React.useState(null);
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerStyle: {backgroundColor: colors.theme_white},
+      headerTitleStyle: {color: colors.theme_white},
+      headerTintColor: '#F7931E',
+      headerLeft: () => {
+        return (
           <View
             style={{
-              height: height * 0.03,
-              width: width * 0.4,
+              flex: 0,
               flexDirection: 'row',
-              // borderWidth: 1,
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
               alignItems: 'center',
+              marginLeft: 10,
             }}>
-            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-              {item.carno}
-            </Text>
-            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-              {' '}
-              {item.OilType}
-            </Text>
-          </View>
-
-          <View
-            style={{
-              height: height * 0.03,
-              width: width * 0.4,
-              flexDirection: 'row',
-              // borderWidth: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.goBack();
+              }}>
+              <AntDesign
+                name="leftcircleo"
+                size={25}
+                color={colors.theme_yellow1}
+              />
+            </TouchableOpacity>
             <Text
               style={{
-                fontSize: 11,
-                color: COLOR.BACK_BORDER,
-                fontWeight: '500',
+                color: colors.theme_yellow1,
+                fontSize: 20,
+                fontFamily: 'FuturaMediumBT',
+                marginLeft: 10,
               }}>
-              {item.service}
-            </Text>
-            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-              {item.type}
+              My Garage
             </Text>
           </View>
-          <View
-            style={{
-              height: height * 0.03,
-              width: width * 0.4,
-              flexDirection: 'row',
-              // borderWidth: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-              {item.loction}
-            </Text>
-          </View>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-
-  const DATA2 = [
-    {
-      key: 1,
-      IMG: require('../../assets/Splash/intro2.png'),
-      text: 'Maruti Vitara Brezza',
-      carno: 'UP 15 CD 1433',
-      OilType: ':Petrol',
-      service: 'ServiceType :',
-      type: 'AC Repair',
-      loction: '400/G 2nd Floor,Near New Delhi',
-      BTN: 'Accept',
-      BTN2: 'Reject',
-    },
-
-    {
-      key: 2,
-      IMG: require('../../assets/Splash/intro2.png'),
-      text: 'Maruti Vitara Brezza',
-      carno: 'UP 15 CD 1433',
-      OilType: ':Petrol',
-      service: 'ServiceType :',
-      type: 'AC Repair',
-      loction: '400/G 2nd Floor,Near New Delhi',
-      BTN: 'Accept',
-      BTN2: 'Reject',
-    },
-  ];
-
-  const DATA3 = [
-    {
-      key: 1,
-      IMG: require('../../assets/Splash/intro2.png'),
-      text: 'Maruti Vitara Brezza',
-      carno: 'UP 15 CD 1433',
-      OilType: ':Petrol',
-
-      loction: '400/G 2nd Floor,Near New Delhi',
-    },
-
-    {
-      key: 2,
-      IMG: require('../../assets/Splash/intro2.png'),
-      text: 'Maruti Vitara Brezza',
-      carno: 'UP 15 CD 1433',
-      OilType: ':Petrol',
-
-      loction: '400/G 2nd Floor,Near New Delhi',
-    },
-  ];
+        );
+      },
+    });
+  }, []);
 
   const renderCarRquest = ({item}) => {
+    return (
+      <View>
+        {item?.is_cancel != '1' ? (
+          <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate('orderView', {
+                orderDetails: item,
+                withDrawelHistory: withDrawelHistory,
+                flag: 1,
+              })
+            }
+            style={styles.item2}>
+            <View style={styles.newRew}>
+              <Image
+                source={{uri: item.car.image}}
+                style={{height: 140, width: 140}}
+                resizeMode="contain"
+              />
+            </View>
+            <View style={styles.content}>
+              <View style={styles.cmntxt}>
+                <Text style={{fontSize: 13, color: 'black', fontWeight: '500'}}>
+                  {item.car.model}
+                </Text>
+              </View>
+              <View
+                style={{
+                  height: height * 0.03,
+                  width: width * 0.4,
+                  flexDirection: 'row',
+                  // borderWidth: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+                  {item.car.car_no}
+                </Text>
+                <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+                  {' '}
+                  {item.fuel_type}
+                </Text>
+              </View>
+              <View
+                style={{
+                  height: height * 0.03,
+                  width: width * 0.4,
+                  flexDirection: 'row',
+                  // borderWidth: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontSize: 11,
+                    color: COLOR.BACK_BORDER,
+                    fontWeight: '500',
+                  }}>
+                  {item?.users[0]?.first_name}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    color: COLOR.BACK_BORDER,
+                    marginLeft: 5,
+                  }}>
+                  ({item?.users[0]?.phone_number})
+                </Text>
+              </View>
+              <View
+                style={{
+                  height: height * 0.03,
+                  width: width * 0.4,
+                  flexDirection: 'row',
+                  // borderWidth: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontSize: 11,
+                    color: COLOR.BACK_BORDER,
+                    fontWeight: '500',
+                  }}>
+                  {item.time_slot}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    color: COLOR.BACK_BORDER,
+                    marginLeft: 5,
+                  }}>
+                  {item.order_date}
+                </Text>
+              </View>
+              <View
+                style={{
+                  height: height * 0.03,
+                  width: width * 0.4,
+                  flexDirection: 'row',
+                  // borderWidth: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
+                  {item.loction}
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  height: height * 0.032,
+                  width: width * 0.4,
+                  flexDirection: 'row',
+                  // borderWidth: 1,
+                  justifyContent: 'space-around',
+                  alignItems: 'center',
+                }}>
+                <TouchableOpacity
+                  onPress={() => accpetReject(2)}
+                  style={styles.btn}>
+                  <Text style={{color: '#FFFFFF', fontSize: height / 65}}>
+                    Reject
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.btn2}
+                  // onPress={() => setModalVisible(!modalVisible)}
+                  onPress={() => accpetReject(1)}>
+                  <Text style={{color: '#FFFFFF', fontSize: height / 65}}>
+                    Accept
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableOpacity>
+        ) : null}
+      </View>
+    );
+  };
+
+  const renderSOS = ({item}) => {
+    const accpetReject = async status => {
+      try {
+        const body = {
+          id: item.id,
+          status: status,
+        };
+        const response = await axios.post(
+          api_url + provider_services_action,
+          body,
+        );
+        console.log('response', response.data);
+      } catch (error) {
+        console.log('accpetReject', error.message);
+      }
+    };
     return (
       <View style={styles.item2}>
         <View style={styles.newRew}>
           <Image
-            source={item.IMG}
+            source={{uri: item.car.image}}
             style={{height: 140, width: 140}}
             resizeMode="contain"
           />
@@ -237,7 +252,7 @@ const MyGarage = props => {
         <View style={styles.content}>
           <View style={styles.cmntxt}>
             <Text style={{fontSize: 13, color: 'black', fontWeight: '500'}}>
-              {item.text}
+              {item.car.model}
             </Text>
           </View>
           <View
@@ -250,11 +265,11 @@ const MyGarage = props => {
               alignItems: 'center',
             }}>
             <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-              {item.carno}
+              {item.car.car_no}
             </Text>
             <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
               {' '}
-              {item.OilType}
+              {item.fuel_type}
             </Text>
           </View>
 
@@ -273,10 +288,11 @@ const MyGarage = props => {
                 color: COLOR.BACK_BORDER,
                 fontWeight: '500',
               }}>
-              {item.service}
+              {item.time_slot}
             </Text>
-            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-              {item.type}
+            <Text
+              style={{fontSize: 10, color: COLOR.BACK_BORDER, marginLeft: 5}}>
+              {item.order_date}
             </Text>
           </View>
           <View
@@ -292,7 +308,6 @@ const MyGarage = props => {
               {item.loction}
             </Text>
           </View>
-
           <View
             style={{
               height: height * 0.032,
@@ -302,16 +317,19 @@ const MyGarage = props => {
               justifyContent: 'space-around',
               alignItems: 'center',
             }}>
-            <TouchableOpacity style={styles.btn}>
+            <TouchableOpacity
+              onPress={() => accpetReject(2)}
+              style={styles.btn}>
               <Text style={{color: '#FFFFFF', fontSize: height / 65}}>
-                {item.BTN2}
+                Reject
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.btn2}
-              onPress={() => setModalVisible(!modalVisible)}>
+              // onPress={() => setModalVisible(!modalVisible)}
+              onPress={() => accpetReject(1)}>
               <Text style={{color: '#FFFFFF', fontSize: height / 65}}>
-                {item.BTN}
+                Accept
               </Text>
             </TouchableOpacity>
           </View>
@@ -320,109 +338,157 @@ const MyGarage = props => {
     );
   };
 
-  const renderSOS = ({item}) => {
-    return (
-      <View style={styles.item2}>
-        <View style={styles.newRew}>
-          <Image
-            source={item.IMG}
-            style={{height: 140, width: 140}}
-            resizeMode="contain"
-          />
-        </View>
+  useEffect(() => {
+    get_garage_capacity();
+  }, [props.totalCapacityRedux]);
 
-        <View style={styles.content}>
-          <View style={styles.cmntxt}>
-            <Text style={{fontSize: 13, color: 'black', fontWeight: '500'}}>
-              {item.text}
-            </Text>
-          </View>
-          <View
-            style={{
-              height: height * 0.03,
-              width: width * 0.4,
-              flexDirection: 'row',
-              // borderWidth: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-              {item.carno}
-            </Text>
-            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-              {' '}
-              {item.OilType}
-            </Text>
-          </View>
+  const updata_capacity = async val => {
+    await axios({
+      method: 'post',
+      url: api_url + update_occupied_capacity,
+      data: {
+        driver_id: props?.userData?.id,
+        capacity: val,
+        key: 0,
+      },
+    })
+      .then(res => {
+        console.log(res.data);
+        if (res.data.msg == 'updated success') {
+          get_garage_capacity();
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
-          <View
-            style={{
-              height: height * 0.03,
-              width: width * 0.4,
-              flexDirection: 'row',
-              // borderWidth: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{fontSize: 10, color: COLOR.BACK_BORDER}}>
-              {item.loction}
-            </Text>
-          </View>
-        </View>
-      </View>
-    );
+  const get_garage_capacity = async () => {
+    await axios({
+      method: 'post',
+      url: api_url + get_capacity,
+      data: {
+        driver_id: props?.userData.id,
+      },
+    })
+      .then(res => {
+        setTotalCapacity(res.data.response[0]?.total_capacity);
+        setOccupiedCapacity(res.data.response[0]?.occupied_capacity);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: colors.theme_white,
+        paddingVertical: 10,
+      }}>
+      <StatusBar backgroundColor={colors.theme_yellow1} />
+      <Loader isVisible={isLoading} />
       <View
         style={{
-          height: height * 0.1,
-          width: width * 1,
-          //   borderWidth: 1,
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: 'white',
+          flex: 0,
+          width: '90%',
+          alignSelf: 'center',
+          padding: 12,
+          borderRadius: 8,
+          borderWidth: 1,
+          borderColor: colors.theme_black4,
+          backgroundColor: colors.theme_yellow2,
+          shadowColor: colors.theme_black2,
         }}>
+        <Text
+          style={{
+            fontSize: 18,
+            color: colors.theme_black7,
+            fontFamily: fonts.futura_medium,
+          }}>
+          {`Total Capacity: ${totalCapacity && totalCapacity}`}
+        </Text>
         <View
           style={{
-            height: height * 0.05,
-            width: width * 0.22,
-            justifyContent: 'center',
+            flex: 0,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
             alignItems: 'center',
+            marginTop: 15,
           }}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}>
-            <Image
-              source={ImagePath.BlACK_BACK_ARROW}
-              style={{height: 25, width: 25}}
-            />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            height: height * 0.05,
-            width: width * 0.55,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{color: COLOR.BLACK, fontSize: 22}}>My Garage</Text>
+          <Text
+            style={{
+              fontSize: 16,
+              color: colors.theme_black7,
+              fontFamily: fonts.futura_medium,
+            }}>
+            Occupied Capacity:
+          </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity
+              style={{
+                width: width * 0.09,
+                height: width * 0.09,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: (width * 0.09) / 2,
+                backgroundColor: colors.theme_yellow1,
+              }}>
+              <Text style={{fontSize: 22, color: colors.theme_white}}>-</Text>
+            </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 16,
+                color: colors.theme_black7,
+                fontFamily: fonts.futura_medium,
+              }}>
+              {occupiedCapacity}
+            </Text>
+            <TouchableOpacity
+              style={{
+                width: width * 0.09,
+                height: width * 0.09,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: (width * 0.09) / 2,
+                backgroundColor: colors.theme_yellow1,
+              }}>
+              <Text style={{fontSize: 22, color: colors.theme_white}}>+</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
+      <TopTab />
 
-      <View style={styles.capacitymain}>
+      {/* <View style={styles.capacitymain}>
         <View style={{flexDirection: 'row'}}>
           <View style={styles.capcity}>
             <Text style={{fontSize: 17, fontWeight: '500', color: COLOR.BLACK}}>
-              Total Capacity
+              Occupied Capacity
             </Text>
           </View>
 
           <View style={styles.capcity1}>
             <View style={styles.count}>
-              {/** <TouchableOpacity
-                onPress={() => {
-                  if (count > 0) {
-                    setCount(count - 1);
+              <TouchableOpacity
+                onPress={async () => {
+                  const response = await axios.post(
+                    api_url + update_occupied_capacity,
+                    {
+                      driver_id: props?.userData?.id,
+                      capacity: occupiedCapacity - 1,
+                      key: 0,
+                    },
+                  );
+                  if (response.data.msg == 'updated success') {
+                    getKycDetails();
                   }
                 }}>
                 <Image
@@ -431,69 +497,39 @@ const MyGarage = props => {
                   style={{height: 28, width: 28}}
                 />
               </TouchableOpacity>
-               */}
             </View>
 
             <View style={styles.count}>
               <Text
                 style={{fontSize: 21, fontWeight: 'bold', color: COLOR.BLACK}}>
-                {/**{count} */}6
-              </Text>
-            </View>
-            <View style={styles.count}>
-              {/* <TouchableOpacity
-                onPress={() => {
-                  setCount(count + 1);
-                }}>
-                <Image
-                  source={ImagePath.PLUS}
-                  resizeMode="contain"
-                  style={{height: 28, width: 28}}
-                />
-              </TouchableOpacity>
-
-            */}
-            </View>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.capacitymain}>
-        <View style={{flexDirection: 'row'}}>
-          <View style={styles.capcity}>
-            <Text style={{fontSize: 17, fontWeight: '500', color: COLOR.BLACK}}>
-              Remaining Capacity
-            </Text>
-          </View>
-
-          <View style={styles.capcity1}>
-            <View style={styles.count}>
-              <TouchableOpacity
-                onPress={() => {
-                  if (remain > 0) {
-                    setRemain(remain - 1);
-                  }
-                }}>
-                <Image
-                  source={ImagePath.MINUS}
-                  resizeMode="contain"
-                  style={{height: 28, width: 28}}
-                />
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.count}>
-              <Text
-                style={{fontSize: 21, fontWeight: 'bold', color: COLOR.BLACK}}>
-                {remain}
+                {occupiedCapacity}
               </Text>
             </View>
             <View style={styles.count}>
               <TouchableOpacity
-                onPress={() => {
-                  if (remain <= 5) {
-                    setRemain(remain + 1);
+                onPress={async () => {
+                  if (occupiedCapacity == totalCapacity) {
+                    ToastAndroid.show(
+                      "Occupied Capacity can't be greater then Total Capacity",
+                      ToastAndroid.SHORT,
+                      ToastAndroid.BOTTOM,
+                    );
+                  } else {
+                    const response = await axios.post(
+                      api_url + update_occupied_capacity,
+                      {
+                        driver_id: props?.userData?.id,
+                        capacity: occupiedCapacity + 1,
+                        key: 1,
+                      },
+                    );
+                    if (response.data.msg == 'updated success') {
+                      getKycDetails();
+                    }
                   }
+                  // if (remain <= 5) {
+                  //   setRemain(remain + 1);
+                  // }
                 }}>
                 <Image
                   source={ImagePath.PLUS}
@@ -504,17 +540,19 @@ const MyGarage = props => {
             </View>
           </View>
         </View>
-      </View>
+      </View> */}
 
-      <View
+      {/* <View
         style={{
-          height: height * 0.07,
-          width: width * 0.68,
+          flex: 0,
+          // height: height * 0.07,
+          width: width * 0.8,
           alignSelf: 'center',
           justifyContent: 'space-between',
           // backgroundColor: 'red',
           flexDirection: 'row',
           alignItems: 'center',
+          paddingBottom: 15,
         }}>
         <Text
           style={{
@@ -523,7 +561,7 @@ const MyGarage = props => {
             color: COLOR.BLACK,
             // textDecorationLine: 'underline',
           }}>
-          Cars
+          Cars ({currentServices && currentServices.length})
         </Text>
 
         <Text
@@ -532,7 +570,7 @@ const MyGarage = props => {
             fontWeight: 'bold',
             color: COLOR.BLACK,
           }}>
-          New Requrest
+          New Request ({newRequest && newRequest.length})
         </Text>
 
         <Text
@@ -541,32 +579,34 @@ const MyGarage = props => {
             fontWeight: 'bold',
             color: COLOR.BLACK,
           }}>
-          SOS
+          SOS ({sos && sos.length})
         </Text>
       </View>
 
       <View>
         <SwiperFlatList
           paginationStyle={{
-            width: width * 0.73,
-            height: height * 0.03,
-            // backgroundColor: 'cyan',
-            // alignSelf: 'center',
-            justifyContent: 'center',
-            // alignItems:'center'
-            bottom: 464,
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: -20,
+            alignSelf: 'center',
+            alignItems: 'center',
             justifyContent: 'space-between',
-            marginHorizontal: 20,
+            marginHorizontal: 40,
+            marginBottom: 10,
           }}
           paginationStyleItemActive={{
             width: width * 0.1,
-            height: height * 0.007,
+            height: 5,
+            // height: height * 0.007,
             // backgroundColor: 'rgb(0,126,247)',
-            backgroundColor: 'blue',
+            backgroundColor: colors.theme_yellow1,
           }}
           paginationStyleItem={{
             width: width * 0.1,
-            height: height * 0.007,
+            height: 5,
+            // height: height * 0.007,
             // borderRadius: 20,
           }}
           // autoplay
@@ -575,33 +615,51 @@ const MyGarage = props => {
           index={0}
           showPagination>
           <View style={styles.child}>
-            <View style={styles.flatMain}>
-              <FlatList
-                data={DATA}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-                numColumns={2}
-              />
+            <View style={styles.IntroImg}>
+              {currentServices && currentServices.length > 0 ? (
+                <FlatList
+                  data={currentServices}
+                  renderItem={renderItem}
+                  keyExtractor={item => JSON.stringify(item)}
+                  numColumns={2}
+                />
+              ) : (
+                <View>
+                  <Text style={{marginTop: 50}}>No Current Services</Text>
+                </View>
+              )}
             </View>
           </View>
           <View style={styles.child}>
             <View style={styles.IntroImg}>
-              <FlatList
-                data={DATA2}
-                renderItem={renderCarRquest}
-                keyExtractor={item => item.id}
-                numColumns={2}
-              />
+              {newRequest && newRequest.length > 0 ? (
+                <FlatList
+                  data={newRequest}
+                  renderItem={renderCarRquest}
+                  keyExtractor={item => item.id}
+                  numColumns={2}
+                />
+              ) : (
+                <View>
+                  <Text style={{marginTop: 50}}>No Current Services</Text>
+                </View>
+              )}
             </View>
           </View>
           <View style={styles.child}>
             <View style={styles.IntroImg}>
-              <FlatList
-                data={DATA3}
-                renderItem={renderSOS}
-                keyExtractor={item => item.id}
-                numColumns={2}
-              />
+              {sos && sos.length > 0 ? (
+                <FlatList
+                  data={sos}
+                  renderItem={renderSOS}
+                  keyExtractor={item => item.id}
+                  numColumns={2}
+                />
+              ) : (
+                <View>
+                  <Text style={{marginTop: 50}}>No Current Services</Text>
+                </View>
+              )}
             </View>
           </View>
         </SwiperFlatList>
@@ -626,12 +684,17 @@ const MyGarage = props => {
             </View>
           </Modal>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };
 
-export default MyGarage;
+const mapStateToProps = state => ({
+  userData: state.user.userData,
+  totalCapacityRedux: state.user.totalCapacity,
+});
+const mapDispatchToProps = dispatch => ({dispatch});
+export default connect(mapStateToProps, mapDispatchToProps)(MyGarage);
 
 const styles = StyleSheet.create({
   capacitymain: {
@@ -676,7 +739,7 @@ const styles = StyleSheet.create({
   // swiper falt list
 
   child: {
-    height: height * 0.67,
+    flex: 0,
     width: width * 1,
     // backgroundColor: 'skyblue',
     justifyContent: 'center',
@@ -728,6 +791,7 @@ const styles = StyleSheet.create({
   IntroImg: {
     height: height * 0.67,
     width: width * 0.9,
+    paddingBottom: 100,
     // backgroundColor: 'red',
     alignSelf: 'center',
     justifyContent: 'center',
@@ -744,7 +808,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item2: {
-    height: height * 0.3,
+    height: height * 0.33,
     width: width * 0.43,
     alignSelf: 'center',
     // backgroundColor: 'skyblue',

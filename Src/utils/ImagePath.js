@@ -1,5 +1,5 @@
 export const ImagePath = {
-  Splash: require('../assets/Splash/Splash.jpeg'),
+  Splash: require('../assets/Splash/logo.png'),
   INTRO1: require('../assets/Splash/intro1.png'),
   INTRO2: require('../assets/Splash/intro2.png'),
   INTRO3: require('../assets/Splash/intro3.png'),
@@ -9,6 +9,7 @@ export const ImagePath = {
   BlACK_BACK_ARROW: require('../assets/Images/BlackBackArrow.png'),
   PROFILE: require('../assets/Images/more/profile.png'),
   BORD: require('../assets/Images/more/bord.png'),
+  SPARE_PART: require('../assets/Images/more/spare-part.png'),
   HELLO: require('../assets/Images/more/hello.png'),
   PRINT: require('../assets/Images/more/print.png'),
   SEARCH: require('../assets/Images/more/search.png'),
@@ -20,16 +21,12 @@ export const ImagePath = {
 
   // Home
   HOME: require('../assets/Home/Home.png'),
-  HOME2: require('../assets/Home/Home2.png'),
 
   BOOK: require('../assets/Home/book.png'),
-  BOOK2: require('../assets/Home/book2.png'),
 
   KYC: require('../assets/Home/Kyc.png'),
-  KYC2: require('../assets/Home/Kyc2.png'),
 
   CART: require('../assets/Home/cart.png'),
-  CART2: require('../assets/Home/cart2.png'),
 
   ADHAR: require('../assets/Images/aadhar-front.jpg'),
   ADHAR_BACK: require('../assets/Images/aadhar-back.jpg'),

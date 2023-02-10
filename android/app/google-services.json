@@ -1,42 +1,71 @@
 {
   "project_info": {
-    "project_number": "121775272201",
-    "firebase_url": "https://ksbm-MechanilaneProvider-default-rtdb.firebaseio.com",
-    "project_id": "ksbm-MechanilaneProvider",
-    "storage_bucket": "ksbm-MechanilaneProvider.appspot.com"
+    "project_number": "510104837686",
+    "firebase_url": "https://automobile-doctor-389b6-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "automobile-doctor-389b6",
+    "storage_bucket": "automobile-doctor-389b6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:121775272201:android:de97c8e83b7ec4e4e663d8",
+        "mobilesdk_app_id": "1:510104837686:android:f6516cc088dbbd09edc297",
         "android_client_info": {
-          "package_name": "com.mechanilaneprovider"
+          "package_name": "com.ksbm.automobiledoctor"
         }
       },
       "oauth_client": [
         {
-          "client_id": "121775272201-jhao702bmn0inn3a30p2j4rnnbekk9v9.apps.googleusercontent.com",
+          "client_id": "510104837686-qaj3nic6v0ml09vpeqqmnrlavof6vvk0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.mechanilaneprovider",
+            "package_name": "com.ksbm.automobiledoctor",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {
-          "client_id": "121775272201-4evsjo4i5p3cikmie51tlvirirhjeo3o.apps.googleusercontent.com",
+          "client_id": "510104837686-snuj901ocq9hbn7gj7bdr6itheor806q.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCI3x4M1_haahsDPEV-Zu2QJulCOrWk0Xk"
+          "current_key": "AIzaSyAWJmn_q1-4T66H2hhkXLCo2r1LO_n5wDE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "121775272201-4evsjo4i5p3cikmie51tlvirirhjeo3o.apps.googleusercontent.com",
+              "client_id": "510104837686-snuj901ocq9hbn7gj7bdr6itheor806q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:510104837686:android:08ec6065556dbc63edc297",
+        "android_client_info": {
+          "package_name": "com.ksbm.automobileprovider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "510104837686-snuj901ocq9hbn7gj7bdr6itheor806q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWJmn_q1-4T66H2hhkXLCo2r1LO_n5wDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "510104837686-snuj901ocq9hbn7gj7bdr6itheor806q.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

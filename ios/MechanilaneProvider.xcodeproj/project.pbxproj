@@ -14,6 +14,14 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-MechanilaneProvider-MechanilaneProviderTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-MechanilaneProvider-MechanilaneProviderTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		BCD50186EAEE4F95AE4DEB02 /* FutuBd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 988B87CA929F47DB96A33DB8 /* FutuBd.ttf */; };
+		67B40811132542A792954755 /* FutuBdIt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E41AD3441D56400AB003455B /* FutuBdIt.ttf */; };
+		7808C669F5044224AB7FADB0 /* FutuMd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F2C8498CA3C47FB85659A55 /* FutuMd.ttf */; };
+		0648AAA5D2744D6F8FD10527 /* FutuMdIt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFC83F6396AE44E5A527DF5E /* FutuMdIt.ttf */; };
+		870D77FB95EE426AB669C6E5 /* FuturaBoldBT.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FBF2F7095AE442AAA4F20257 /* FuturaBoldBT.ttf */; };
+		03A33E35DE344579825CD880 /* FuturaBoldItalicBT.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9776A5DD820F4846B2CAAD05 /* FuturaBoldItalicBT.ttf */; };
+		51C0EF457D7044E092C5A646 /* FuturaMediumBT.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AEFEA3F04D584A1787398CC5 /* FuturaMediumBT.ttf */; };
+		D0C362C4867D421B87BC77FA /* FuturaMediumItalicBT.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6DB97188E20D43439136655D /* FuturaMediumItalicBT.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +52,14 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MechanilaneProvider/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-MechanilaneProvider-MechanilaneProviderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MechanilaneProvider-MechanilaneProviderTests.release.xcconfig"; path = "Target Support Files/Pods-MechanilaneProvider-MechanilaneProviderTests/Pods-MechanilaneProvider-MechanilaneProviderTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		988B87CA929F47DB96A33DB8 /* FutuBd.ttf */ = {isa = PBXFileReference; name = "FutuBd.ttf"; path = "../Src/assets/fonts/FutuBd.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E41AD3441D56400AB003455B /* FutuBdIt.ttf */ = {isa = PBXFileReference; name = "FutuBdIt.ttf"; path = "../Src/assets/fonts/FutuBdIt.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2F2C8498CA3C47FB85659A55 /* FutuMd.ttf */ = {isa = PBXFileReference; name = "FutuMd.ttf"; path = "../Src/assets/fonts/FutuMd.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FFC83F6396AE44E5A527DF5E /* FutuMdIt.ttf */ = {isa = PBXFileReference; name = "FutuMdIt.ttf"; path = "../Src/assets/fonts/FutuMdIt.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FBF2F7095AE442AAA4F20257 /* FuturaBoldBT.ttf */ = {isa = PBXFileReference; name = "FuturaBoldBT.ttf"; path = "../Src/assets/fonts/FuturaBoldBT.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9776A5DD820F4846B2CAAD05 /* FuturaBoldItalicBT.ttf */ = {isa = PBXFileReference; name = "FuturaBoldItalicBT.ttf"; path = "../Src/assets/fonts/FuturaBoldItalicBT.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AEFEA3F04D584A1787398CC5 /* FuturaMediumBT.ttf */ = {isa = PBXFileReference; name = "FuturaMediumBT.ttf"; path = "../Src/assets/fonts/FuturaMediumBT.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6DB97188E20D43439136655D /* FuturaMediumItalicBT.ttf */ = {isa = PBXFileReference; name = "FuturaMediumItalicBT.ttf"; path = "../Src/assets/fonts/FuturaMediumItalicBT.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +138,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				DEB77681CA834C0A86FC2C3E /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -147,6 +164,22 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		DEB77681CA834C0A86FC2C3E /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				988B87CA929F47DB96A33DB8 /* FutuBd.ttf */,
+				E41AD3441D56400AB003455B /* FutuBdIt.ttf */,
+				2F2C8498CA3C47FB85659A55 /* FutuMd.ttf */,
+				FFC83F6396AE44E5A527DF5E /* FutuMdIt.ttf */,
+				FBF2F7095AE442AAA4F20257 /* FuturaBoldBT.ttf */,
+				9776A5DD820F4846B2CAAD05 /* FuturaBoldItalicBT.ttf */,
+				AEFEA3F04D584A1787398CC5 /* FuturaMediumBT.ttf */,
+				6DB97188E20D43439136655D /* FuturaMediumItalicBT.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -244,6 +277,14 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				BCD50186EAEE4F95AE4DEB02 /* FutuBd.ttf in Resources */,
+				67B40811132542A792954755 /* FutuBdIt.ttf in Resources */,
+				7808C669F5044224AB7FADB0 /* FutuMd.ttf in Resources */,
+				0648AAA5D2744D6F8FD10527 /* FutuMdIt.ttf in Resources */,
+				870D77FB95EE426AB669C6E5 /* FuturaBoldBT.ttf in Resources */,
+				03A33E35DE344579825CD880 /* FuturaBoldItalicBT.ttf in Resources */,
+				51C0EF457D7044E092C5A646 /* FuturaMediumBT.ttf in Resources */,
+				D0C362C4867D421B87BC77FA /* FuturaMediumItalicBT.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

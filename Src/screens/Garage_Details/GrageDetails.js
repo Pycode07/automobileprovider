@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
   Modal,
+  ToastAndroid,
 } from 'react-native';
 import CustomButton from '../../components/Buttons/CustomButton';
 import {COLOR} from '../../utils/Colors';
@@ -16,8 +17,21 @@ import {ImagePath} from '../../utils/ImagePath';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {connect} from 'react-redux';
 const {height, width} = Dimensions.get('window');
+import * as UserAction from '../../redux/actions/userActions';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import RNFetchBlob from 'rn-fetch-blob';
 
+import DocumentPicker, {types} from 'react-native-document-picker';
+import {colors} from '../../assets/colors';
+import {
+  api_url,
+  driver_add_garage,
+  garage_document,
+} from '../../config/Constant';
 const GrageDetails = props => {
   const [value, setValue] = useState([]);
   const [form, setForm] = useState({
@@ -25,6 +39,10 @@ const GrageDetails = props => {
     rented: false,
   });
 
+  const [modalVisible1, setModalVisible1] = useState(false);
+  const [modalVisible2, setModalVisible2] = useState(false);
+  const [modalVisible3, setModalVisible3] = useState(false);
+  const [modalVisible4, setModalVisible4] = useState(false);
   //============================  validation start here========================
 
   const [Email, setEmail] = useState('');
@@ -44,6 +62,11 @@ const GrageDetails = props => {
 
   const [city, setCity] = useState('');
   const [errorCity, setErrorCity] = useState(null);
+  const [entityType, setEntityType] = useState(1);
+
+  const [website, setWebsite] = useState('null');
+
+  const [imagedData, setImagedData] = useState('');
 
   const _Addvalidate = add => {
     var addRegex = /^[a-zA-Z0-9\s\,\''\-]*$/;
@@ -139,32 +162,98 @@ const GrageDetails = props => {
       flag = false;
     }
 
-    if (Email === '') {
-      setErrorEmail('*Please enter email.');
-      flag = false;
-    }
+    // if (Email === '') {
+    //   setErrorEmail('*Please enter email.');
+    //   flag = false;
+    // }
     if (FirstName === '') {
       setErrorEmail('*Please enter name.');
       flag = false;
     }
     return flag;
   };
+  const imagePicker = () => {
+    DocumentPicker.pick({
+      type: types.pdf,
+    }).then(response => {
+      setImagedData(response);
+    });
+  };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (validate()) {
-      // onVerifySignUp();
-      props.navigation.navigate('BaseInformation');
-    } else {
-      alert('Something went wrong');
+      try {
+        console.log(imagedData);
+        await axios({
+          method: 'post',
+          url: api_url + driver_add_garage,
+          data: {
+            full_address: addres,
+            area: area,
+            city: city,
+            pincode: pin,
+            email: 'none@gmail.com', //Email,
+            website: website,
+            garage: form.owned == true ? 1 : 2,
+            garage_owner_name: FirstName,
+            type_of_entity: 5, //entityType,
+            driver_id: 31, //props?.userData?.id,
+          },
+        })
+          .then(async res => {
+            console.log(res.data);
+            if (res.data.status == 1) {
+              await RNFetchBlob.fetch(
+                'POST',
+                api_url + garage_document,
+                {
+                  'Content-Type': 'multipart/form-data',
+                },
+                [
+                  {
+                    name: 'garage_document',
+                    filename: `garage_document${res.data.result.id}.pdf`,
+                    type: 'application/pdf',
+                    data: decodeURIComponent(imagedData[0].uri),
+                  },
+                  {
+                    name: 'id',
+                    data: res.data.result.id.toString(),
+                  },
+                ],
+              )
+                .then(async resp => {
+                  let x = JSON.parse(resp.data);
+                  console.log(x);
+                  let a = await AsyncStorage.setItem(
+                    'grageDetails',
+                    JSON.stringify(JSON.parse(resp.data).result),
+                  );
+                  props.dispatch(
+                    UserAction.setGrageData(JSON.parse(resp.data).result),
+                  );
+                  ToastAndroid.show(
+                    'Profile is under verification',
+                    ToastAndroid.SHORT,
+                  );
+                  props.navigation.replace('Login');
+                  // alert('Successfully updated');
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } catch (error) {
+        console.log('asdasd', error.message);
+      }
     }
   };
 
   //  ================states for type of entity check Modal==========
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalVisible1, setModalVisible1] = useState(false);
-  const [modalVisible2, setModalVisible2] = useState(false);
-  const [modalVisible3, setModalVisible3] = useState(false);
-  const [modalVisible4, setModalVisible4] = useState(false);
 
   //  ================================= states for  No of KMP ==========================================================
 
@@ -230,6 +319,7 @@ const GrageDetails = props => {
 
           <View style={styles.webside}>
             <TouchableOpacity
+              onPress={imagePicker}
               style={{
                 height: height * 0.033,
                 width: width * 0.25,
@@ -242,7 +332,7 @@ const GrageDetails = props => {
               }}>
               <Text style={{color: COLOR.BACK_BORDER, fontSize: 10}}>
                 {' '}
-                Attach file
+                {imagedData != '' ? imagedData[0].name : 'Attach file'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -265,36 +355,57 @@ const GrageDetails = props => {
           </Text>
         </View>
         <TouchableOpacity
-          style={styles.cheekk}
-          onPress={() => setModalVisible(!modalVisible)}>
-          <Text style={{color: 'black', fontSize: height / 55}}>
+          style={{
+            ...styles.cheekk,
+            backgroundColor: entityType == 1 ? COLOR.GREY : null,
+          }}
+          onPress={() => setEntityType(1)}>
+          <Text style={{color: 'black', fontSize: height / 55, marginLeft: 10}}>
             Properitor Firm
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.cheekk}
-          onPress={() => setModalVisible1(!modalVisible1)}>
-          <Text style={{color: 'black', fontSize: height / 55}}>
+          style={{
+            ...styles.cheekk,
+            backgroundColor: entityType == 2 ? COLOR.GREY : null,
+          }}
+          onPress={() => setEntityType(2)}>
+          <Text style={{color: 'black', fontSize: height / 55, marginLeft: 10}}>
             Partnership Firm
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.cheekk}
-          onPress={() => setModalVisible2(!modalVisible2)}>
-          <Text style={{color: 'black', fontSize: height / 55}}>LLP</Text>
+          style={{
+            ...styles.cheekk,
+            backgroundColor: entityType == 3 ? COLOR.GREY : null,
+          }}
+          onPress={() => setEntityType(3)}>
+          <Text style={{color: 'black', fontSize: height / 55, marginLeft: 10}}>
+            LLP
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.cheekk}
-          onPress={() => setModalVisible3(!modalVisible3)}>
-          <Text style={{color: 'black', fontSize: height / 55}}>OPC</Text>
+          style={{
+            ...styles.cheekk,
+            backgroundColor: entityType == 4 ? COLOR.GREY : null,
+          }}
+          onPress={() => setEntityType(4)}>
+          <Text style={{color: 'black', fontSize: height / 55, marginLeft: 10}}>
+            OPC
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.cheekk}
-          onPress={() => setModalVisible4(!modalVisible4)}>
-          <Text style={{color: 'black', fontSize: height / 55}}>Company</Text>
+          style={{
+            ...styles.cheekk,
+            backgroundColor: entityType == 5 ? COLOR.GREY : null,
+          }}
+          onPress={() => setEntityType(5)}>
+          <Text style={{color: 'black', fontSize: height / 55, marginLeft: 10}}>
+            Company
+          </Text>
         </TouchableOpacity>
         {/**========================================= Properitor FirmModal==================================================================== */}
-        <View style={styles.centeredView}>
+        {/* <View style={styles.centeredView}>
           <Modal
             animationType="fade"
             transparent={true}
@@ -313,7 +424,7 @@ const GrageDetails = props => {
                       // borderWidth: 1,
                       justifyContent: 'center',
                     }}>
-                    <Text style={{color: 'black', fontSize: 14}}>
+                    <Text style={{ color: 'black', fontSize: 14 }}>
                       Total No. of Partner
                     </Text>
                   </View>
@@ -365,7 +476,7 @@ const GrageDetails = props => {
                     <Image
                       source={ImagePath.CLOSE}
                       resizeMode="contain"
-                      style={{height: 20, width: 20}}
+                      style={{ height: 20, width: 20 }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -416,12 +527,12 @@ const GrageDetails = props => {
                     borderRadius: 20,
                   }}
                   onPress={() => setModalVisible(!modalVisible)}>
-                  <Text style={{fontSize: 16, color: 'black'}}>Submit</Text>
+                  <Text style={{ fontSize: 16, color: 'black' }}>Submit</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </Modal>
-        </View>
+        </View> */}
         {/**========================================= Partnership FirmModal==================================================================== */}
         <View style={styles.centeredView}>
           <Modal
@@ -944,381 +1055,394 @@ const GrageDetails = props => {
     );
   };
   // =============++ Main Function ++==========
+
   return (
-    <KeyboardAwareScrollView style={{flex: 1}}>
+    <View style={{flex: 1}}>
       <View style={styles.header}>
         <View style={styles.backbtn}>
           <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <Image
-              source={ImagePath.BlACK_BACK_ARROW}
+              source={ImagePath.BACK_ARROW}
               style={{height: 25, width: 25}}
             />
           </TouchableOpacity>
         </View>
         <View style={styles.titaltxxt}>
-          <Text style={{color: COLOR.BLACK, fontSize: 21, fontWeight: '700'}}>
+          <Text style={{color: COLOR.WHITE, fontSize: 21, fontWeight: '700'}}>
             Garage Details
           </Text>
         </View>
       </View>
-      <View style={styles.Address}>
-        <View
-          style={{
-            height: height * 0.12,
-            width: width * 0.9,
-            // borderWidth: 1
-          }}>
+      <KeyboardAwareScrollView>
+        <View style={styles.Address}>
           <View
             style={{
-              height: height * 0.04,
+              height: height * 0.12,
               width: width * 0.9,
               // borderWidth: 1
             }}>
-            <Text
-              style={{
-                color: COLOR.BACK_BORDER,
-                fontSize: 16,
-                fontWeight: '600',
-              }}>
-              Full Address
-            </Text>
-          </View>
-          <View style={styles.commTextinput}>
-            <TextInput
-              placeholder="Full address"
-              color={COLOR.TXT_INPT_COLOR}
-              placeholderTextColor={COLOR.GREY}
-              autoCorrect={false}
-              maxLength={256}
-              autoCapitalize="none"
-              onChangeText={txt => {
-                setAddress(txt), _Addvalidate(txt);
-              }}
-            />
-          </View>
-
-          {errorAddress != null ? (
             <View
               style={{
-                height: height * 0.015,
-                // width: width * 1,
+                height: height * 0.04,
                 width: width * 0.9,
-                // backgroundColor: "blue",
-                justifyContent: 'center',
+                // borderWidth: 1
               }}>
               <Text
                 style={{
-                  color: 'red',
-                  fontSize: 10,
-                  marginLeft: 17,
+                  color: COLOR.BACK_BORDER,
+                  fontSize: 16,
+                  fontWeight: '600',
                 }}>
-                {errorAddress}
+                Full Address
               </Text>
             </View>
-          ) : null}
+            <View style={styles.commTextinput}>
+              <TextInput
+                placeholder="Full address"
+                color={COLOR.TXT_INPT_COLOR}
+                placeholderTextColor={COLOR.GREY}
+                autoCorrect={false}
+                maxLength={256}
+                autoCapitalize="none"
+                onChangeText={txt => {
+                  setAddress(txt), _Addvalidate(txt);
+                }}
+              />
+            </View>
+
+            {errorAddress != null ? (
+              <View
+                style={{
+                  height: height * 0.015,
+                  // width: width * 1,
+                  width: width * 0.9,
+                  // backgroundColor: "blue",
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 10,
+                    marginLeft: 17,
+                  }}>
+                  {errorAddress}
+                </Text>
+              </View>
+            ) : null}
+          </View>
         </View>
-      </View>
-      <View style={styles.Area}>
-        <View style={styles.city}>
-          <View style={styles.areaPin}>
-            <Text
-              style={{
-                color: COLOR.BACK_BORDER,
-                fontWeight: '600',
-                fontSize: 16,
-              }}>
-              Area
-            </Text>
-          </View>
-
-          <View style={styles.textInpt}>
-            <TextInput
-              placeholder="Enter Area"
-              color={COLOR.TXT_INPT_COLOR}
-              placeholderTextColor={COLOR.GREY}
-              onChangeText={txt => {
-                setArea(txt), _Areavalidate(txt);
-              }}
-            />
-          </View>
-
-          {errorArea != null ? (
-            <View
-              style={{
-                height: height * 0.017,
-                // width: width * 1,
-                width: width * 0.32,
-                // backgroundColor: "blue",
-                justifyContent: 'center',
-              }}>
+        <View style={styles.Area}>
+          <View style={styles.city}>
+            <View style={styles.areaPin}>
               <Text
                 style={{
-                  color: 'red',
-                  fontSize: 10,
-                  // marginLeft: 17,
+                  color: COLOR.BACK_BORDER,
+                  fontWeight: '600',
+                  fontSize: 16,
                 }}>
-                {errorArea}
+                Location
               </Text>
             </View>
-          ) : null}
-        </View>
-        <View style={styles.city}>
-          <View style={styles.areaPin}>
-            <Text
-              style={{
-                color: COLOR.BACK_BORDER,
-                fontWeight: '600',
-                fontSize: 16,
-              }}>
-              City
-            </Text>
-          </View>
 
-          <View style={styles.textInpt}>
-            <TextInput
-              placeholder="City"
-              color={COLOR.TXT_INPT_COLOR}
-              placeholderTextColor={COLOR.GREY}
-              onChangeText={txt => {
-                setCity(txt), _Cityvalidate(txt);
-              }}
-            />
+            <View style={styles.textInpt}>
+              <TextInput
+                placeholder="Enter location"
+                color={COLOR.TXT_INPT_COLOR}
+                placeholderTextColor={COLOR.GREY}
+                onChangeText={txt => {
+                  setArea(txt), _Areavalidate(txt);
+                }}
+              />
+            </View>
+
+            {errorArea != null ? (
+              <View
+                style={{
+                  height: height * 0.017,
+                  // width: width * 1,
+                  width: width * 0.32,
+                  // backgroundColor: "blue",
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 10,
+                    // marginLeft: 17,
+                  }}>
+                  {errorArea}
+                </Text>
+              </View>
+            ) : null}
           </View>
-          {errorCity != null ? (
-            <View
-              style={{
-                height: height * 0.017,
-                // width: width * 1,
-                width: width * 0.32,
-                // backgroundColor: "blue",
-                justifyContent: 'center',
-              }}>
+          <View style={styles.city}>
+            <View style={styles.areaPin}>
               <Text
                 style={{
-                  color: 'red',
-                  fontSize: 10,
-                  // marginLeft: 17,
+                  color: COLOR.BACK_BORDER,
+                  fontWeight: '600',
+                  fontSize: 16,
                 }}>
-                {errorCity}
+                City
               </Text>
             </View>
-          ) : null}
-        </View>
-        <View style={styles.city}>
-          <View style={styles.areaPin}>
-            <Text
-              style={{
-                color: COLOR.BACK_BORDER,
-                fontWeight: '600',
-                fontSize: 16,
-              }}>
-              Pin code
-            </Text>
-          </View>
 
-          <View style={styles.textInpt}>
-            <TextInput
-              placeholder="Pincode"
-              color={COLOR.TXT_INPT_COLOR}
-              placeholderTextColor={COLOR.GREY}
-              keyboardType={'phone-pad'}
-              onChangeText={txt => {
-                setPin(txt), _Pinvalidate(txt);
-              }}
-            />
+            <View style={styles.textInpt}>
+              <TextInput
+                placeholder="City"
+                color={COLOR.TXT_INPT_COLOR}
+                placeholderTextColor={COLOR.GREY}
+                onChangeText={txt => {
+                  setCity(txt), _Cityvalidate(txt);
+                }}
+              />
+            </View>
+            {errorCity != null ? (
+              <View
+                style={{
+                  height: height * 0.017,
+                  // width: width * 1,
+                  width: width * 0.32,
+                  // backgroundColor: "blue",
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 10,
+                    // marginLeft: 17,
+                  }}>
+                  {errorCity}
+                </Text>
+              </View>
+            ) : null}
           </View>
-
-          {errorPin != null ? (
-            <View
-              style={{
-                height: height * 0.017,
-                // width: width * 1,
-                width: width * 0.32,
-                // backgroundColor: "blue",
-                justifyContent: 'center',
-              }}>
+          <View style={styles.city}>
+            <View style={styles.areaPin}>
               <Text
                 style={{
-                  color: 'red',
-                  fontSize: 10,
-                  // marginLeft: 17,
+                  color: COLOR.BACK_BORDER,
+                  fontWeight: '600',
+                  fontSize: 16,
                 }}>
-                {errorPin}
+                Pin code
               </Text>
             </View>
-          ) : null}
-        </View>
-      </View>
 
-      <View style={styles.EmailV}>
-        <View
-          style={{
-            height: height * 0.13,
-            width: width * 0.9,
-            // borderWidth: 1
-          }}>
+            <View style={styles.textInpt}>
+              <TextInput
+                placeholder="Pincode"
+                color={COLOR.TXT_INPT_COLOR}
+                placeholderTextColor={COLOR.GREY}
+                keyboardType={'phone-pad'}
+                onChangeText={txt => {
+                  setPin(txt), _Pinvalidate(txt);
+                }}
+              />
+            </View>
+
+            {errorPin != null ? (
+              <View
+                style={{
+                  height: height * 0.017,
+                  // width: width * 1,
+                  width: width * 0.32,
+                  // backgroundColor: "blue",
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 10,
+                    // marginLeft: 17,
+                  }}>
+                  {errorPin}
+                </Text>
+              </View>
+            ) : null}
+          </View>
+        </View>
+
+        {/* <View style={styles.EmailV}>
           <View
             style={{
-              height: height * 0.04,
+              height: height * 0.13,
+              width: width * 0.9,
+              // borderWidth: 1
+            }}>
+            <View
+              style={{
+                height: height * 0.04,
+                width: width * 0.9, // borderWidth: 1
+              }}>
+              <Text
+                style={{
+                  color: COLOR.BACK_BORDER,
+                  fontSize: 16,
+                  fontWeight: '600',
+                }}>
+                Email id
+              </Text>
+            </View>
+            <View style={styles.commTextinput}>
+              <TextInput
+                placeholder="Email id"
+                color={COLOR.TXT_INPT_COLOR}
+                placeholderTextColor={COLOR.GREY}
+                maxLength={256}
+                autoCapitalize="none"
+                onChangeText={txt => {
+                  setEmail(txt);
+                }}
+              />
+            </View>
+
+            {errorEmail != null ? (
+              <View
+                style={{
+                  height: height * 0.015,
+                  // width: width * 1,
+                  width: width * 0.9,
+                  // backgroundColor: "blue",
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 10,
+                    marginLeft: 17,
+                  }}>
+                  {errorEmail}
+                </Text>
+              </View>
+            ) : null}
+          </View>
+
+          <View
+            style={{
+              height: height * 0.12,
               width: width * 0.9, // borderWidth: 1
             }}>
-            <Text
-              style={{
-                color: COLOR.BACK_BORDER,
-                fontSize: 16,
-                fontWeight: '600',
-              }}>
-              Email id
-            </Text>
-          </View>
-          <View style={styles.commTextinput}>
-            <TextInput
-              placeholder="Full address"
-              color={COLOR.TXT_INPT_COLOR}
-              placeholderTextColor={COLOR.GREY}
-              maxLength={256}
-              autoCapitalize="none"
-              onChangeText={txt => {
-                setEmail(txt), _emailvalidate(txt);
-              }}
-            />
-          </View>
-
-          {errorEmail != null ? (
             <View
               style={{
-                height: height * 0.015,
-                // width: width * 1,
+                height: height * 0.04,
                 width: width * 0.9,
-                // backgroundColor: "blue",
-                justifyContent: 'center',
+                // borderWidth: 1
               }}>
               <Text
                 style={{
-                  color: 'red',
-                  fontSize: 10,
-                  marginLeft: 17,
+                  color: COLOR.BACK_BORDER,
+                  fontSize: 16,
+                  fontWeight: '600',
                 }}>
-                {errorEmail}
+                Website(if any)
               </Text>
             </View>
-          ) : null}
-        </View>
-
-        <View
-          style={{
-            height: height * 0.12,
-            width: width * 0.9, // borderWidth: 1
-          }}>
+            <View style={styles.commTextinput}>
+              <TextInput
+                placeholder="Website"
+                color={COLOR.TXT_INPT_COLOR}
+                placeholderTextColor={COLOR.GREY}
+                onChangeText={txt => setWebsite(txt)}
+              />
+            </View>
+          </View>
+        </View> */}
+        <View style={styles.GrageV}>
           <View
             style={{
               height: height * 0.04,
               width: width * 0.9,
-              // borderWidth: 1
+              alignSelf: 'center',
+              // borderWidth: 1,
             }}>
             <Text
               style={{
                 color: COLOR.BACK_BORDER,
                 fontSize: 16,
-                fontWeight: '600',
+                fontWeight: '900',
               }}>
-              Website(if any)
+              Garage
             </Text>
           </View>
-          <View style={styles.commTextinput}>
-            <TextInput
-              placeholder="Full address"
-              color={COLOR.TXT_INPT_COLOR}
-              placeholderTextColor={COLOR.GREY}
-            />
-          </View>
-        </View>
-      </View>
-      <View style={styles.GrageV}>
-        <View
-          style={{
-            height: height * 0.04,
-            width: width * 0.9,
-            alignSelf: 'center',
-            // borderWidth: 1,
-          }}>
-          <Text
-            style={{
-              color: COLOR.BACK_BORDER,
-              fontSize: 16,
-              fontWeight: '900',
-            }}>
-            Garage
-          </Text>
-        </View>
 
-        <View
-          style={{
-            height: height * 0.1,
-            width: width * 0.9,
-            flexDirection: 'row',
-          }}>
-          <View style={styles.gragecheck}>
-            <BouncyCheckbox
-              isChecked={form.owned}
-              disableBuiltInState
-              size={20}
-              fillColor="#02024A"
-              unfillColor="#FFFFFF"
-              text="Owned"
-              iconStyle={{
-                borderColor: 'rgb(245,245,245)',
-                borderRadius: 4,
-                borderColor: 'gray',
-              }}
-              onPress={() => {
-                setForm({owned: true, rented: false});
-              }}
-              textStyle={{
-                color: 'black',
-                textDecorationLine: 'none',
-                fontSize: height / 50,
-              }}
-            />
-          </View>
-          <View style={styles.gragecheck}>
-            <BouncyCheckbox
-              isChecked={form.rented}
-              disableBuiltInState
-              size={20}
-              fillColor="#02024A"
-              unfillColor="#FFFFFF"
-              text="Rented"
-              iconStyle={{
-                borderColor: 'rgb(245,245,245)',
-                borderRadius: 4,
-                borderColor: 'gray',
-              }}
-              onPress={() => {
-                setForm({rented: true, owned: false});
-              }}
-              textStyle={{
-                color: 'black',
-                textDecorationLine: 'none',
-                fontSize: height / 50,
-              }}
-            />
+          <View
+            style={{
+              height: height * 0.1,
+              width: width * 0.9,
+              flexDirection: 'row',
+            }}>
+            <View style={styles.gragecheck}>
+              <BouncyCheckbox
+                isChecked={form.owned}
+                disableBuiltInState
+                size={20}
+                fillColor="#02024A"
+                unfillColor="#FFFFFF"
+                text="Owned"
+                iconStyle={{
+                  borderColor: 'rgb(245,245,245)',
+                  borderRadius: 4,
+                  borderColor: 'gray',
+                }}
+                onPress={() => {
+                  setForm({owned: true, rented: false});
+                }}
+                textStyle={{
+                  color: 'black',
+                  textDecorationLine: 'none',
+                  fontSize: height / 50,
+                }}
+              />
+            </View>
+            <View style={styles.gragecheck}>
+              <BouncyCheckbox
+                isChecked={form.rented}
+                disableBuiltInState
+                size={20}
+                fillColor="#02024A"
+                unfillColor="#FFFFFF"
+                text="Rented"
+                iconStyle={{
+                  borderColor: 'rgb(245,245,245)',
+                  borderRadius: 4,
+                  borderColor: 'gray',
+                }}
+                onPress={() => {
+                  setForm({rented: true, owned: false});
+                }}
+                textStyle={{
+                  color: 'black',
+                  textDecorationLine: 'none',
+                  fontSize: height / 50,
+                }}
+              />
+            </View>
           </View>
         </View>
-      </View>
-      {renderOwnerName()}
-      {renderEntityType()}
-      <View style={styles.Nxtbtn}>
-        <CustomButton
-          title={'Next'}
-          // ButtonPress={() => onSubmit('')}
-          ButtonPress={() => props.navigation.navigate('BaseInformation')}
-        />
-      </View>
-    </KeyboardAwareScrollView>
+        {renderOwnerName()}
+        {renderEntityType()}
+        <View style={styles.Nxtbtn}>
+          <CustomButton
+            title={'Add Garage'}
+            // ButtonPress={() => onSubmit('')}
+            // props.navigation.navigate('BaseInformation')
+            ButtonPress={() => onSubmit()}
+          />
+        </View>
+      </KeyboardAwareScrollView>
+    </View>
   );
 };
-export default GrageDetails;
+
+const mapStateToProps = state => ({
+  userData: state.user.userData,
+});
+
+const mapDispatchToProps = dispatch => ({dispatch});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GrageDetails);
+
 const styles = StyleSheet.create({
   header: {
     height: height * 0.1,
@@ -1328,7 +1452,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'navy'
+    backgroundColor: colors.theme_yellow1,
   },
   backbtn: {
     height: height * 0.05,

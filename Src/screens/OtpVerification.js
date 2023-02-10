@@ -19,6 +19,7 @@ import {
   useClearByFocusCell,
   Cursor,
 } from 'react-native-confirmation-code-field';
+import {colors} from '../assets/colors';
 // import { api_url, register } from '../../Api/ApiKey';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import axios from 'axios'
@@ -175,7 +176,7 @@ const OtpVerification = ({route, navigation}) => {
                 width: width * 0.9,
                 alignSelf: 'center',
                 borderRadius: 10,
-                backgroundColor: 'navy',
+                backgroundColor: colors.theme_yellow1,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}

@@ -9,15 +9,22 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {COLOR} from '../utils/Colors';
 import {ImagePath} from '../utils/ImagePath';
 const {height, width} = Dimensions.get('window');
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {connect} from 'react-redux';
+import * as UserAction from '../../Src/redux/actions/userActions';
+import messaging from '@react-native-firebase/messaging';
+import {colors} from '../assets/colors';
+import {api_url, driver_login, fonts, set_fcm_driver} from '../config/Constant';
 
 const Login = props => {
   const [Email, setEmail] = useState('');
-  const [checkEmail, setCheckEmail] = useState(true);
   const [errorEmail, setErrorEmail] = useState(null);
 
   const [Password, setPassword] = useState('');
@@ -40,7 +47,7 @@ const Login = props => {
 
   const _passwordvalidate = pass => {
     var passwordRegex =
-      /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+      /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,100}$/;
     if (pass === '') {
       setErrorPassword('*Please enter password.');
     } else if (/([A-Z]+)/g.test(pass) && pass.length < 8) {
@@ -67,34 +74,70 @@ const Login = props => {
     return flag;
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (validate()) {
-      //onVerifySignUp();
-      props.navigation.navigate('Home');
+      const body = {
+        email: Email,
+        password: Password,
+        fcm_token: 'dumjds',
+      };
+      const response = await axios.post(api_url + driver_login, body);
+      console.log(response.data);
+      if (response.data.message != 'Invalid email or password') {
+        props.dispatch(UserAction.setUserData(response.data.result));
+        await AsyncStorage.setItem('email', Email.toString());
+        console.log(response.data);
+        let permission = await messaging().hasPermission();
+        if (permission == 1) {
+          let fcmToken = await messaging().getToken();
+          console.log(fcmToken);
+          const response1 = await axios.post(api_url + set_fcm_driver, {
+            driver_id: response.data.result.id,
+            fcm: fcmToken,
+          });
+          console.log(response1.data);
+        }
+        props.navigation.navigate('Home');
+      } else {
+        alert('Invalid email or password');
+      }
     } else {
       alert('Something went wrong');
     }
   };
 
   return (
-    <KeyboardAwareScrollView>
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <View style={{flex: 0, height: 250, backgroundColor: '#02024A'}}></View>
-        <View style={{flex: 0, height: 500, backgroundColor: 'white'}}></View>
-        <ScrollView
+    <View style={{flex: 1, backgroundColor: colors.theme_yellow1}}>
+      <ScrollView
+        contentContainerStyle={{
+          flex: 0.9,
+          width: '90%',
+          alignSelf: 'center',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: colors.theme_yellow1,
+        }}>
+        <KeyboardAvoidingView
+          behavior="padding"
           style={{
-            flex: 1,
+            flex: 0,
             backgroundColor: '#fff',
-            position: 'absolute',
-            left: 25,
-            right: 25,
-            top: 120,
             borderRadius: 20,
-            zIndex: 99,
-            paddingTop: 60,
+            paddingTop: 50,
             paddingHorizontal: 20,
+            elevation: 10,
+            shadowColor: colors.theme_black5,
           }}>
           <View style={{marginBottom: 15}}>
+            <Text
+              style={{
+                color: colors.theme_yellow1,
+                fontSize: 20,
+                marginBottom: 10,
+                fontFamily: fonts.futura_bold,
+              }}>
+              Login
+            </Text>
             <View
               style={{
                 alignSelf: 'flex-start',
@@ -106,7 +149,14 @@ const Login = props => {
                 bottom: -6,
                 zIndex: 2,
               }}>
-              <Text style={{fontSize: 11, color: '#898b8c'}}>Email</Text>
+              <Text
+                style={{
+                  fontSize: 11,
+                  color: '#898b8c',
+                  fontFamily: fonts.futura_medium,
+                }}>
+                Email
+              </Text>
             </View>
             <TextInput
               placeholder="example@gmail.com"
@@ -122,6 +172,7 @@ const Login = props => {
                 borderColor: '#02024A',
                 borderRadius: 5,
                 paddingVertical: 6,
+                fontFamily: fonts.futura_medium,
                 fontSize: 11,
                 paddingHorizontal: 15,
               }}
@@ -142,6 +193,7 @@ const Login = props => {
                     color: 'red',
                     fontSize: 10,
                     marginLeft: 17,
+                    fontFamily: fonts.futura_medium,
                     // top: -height / 230,
                   }}>
                   {errorEmail}
@@ -161,7 +213,14 @@ const Login = props => {
                 bottom: -6,
                 zIndex: 2,
               }}>
-              <Text style={{fontSize: 11, color: '#898b8c'}}>Password</Text>
+              <Text
+                style={{
+                  fontSize: 11,
+                  color: '#898b8c',
+                  fontFamily: fonts.futura_medium,
+                }}>
+                Password
+              </Text>
             </View>
 
             <TextInput
@@ -174,6 +233,7 @@ const Login = props => {
                 width: '100%',
                 borderWidth: 1,
                 borderColor: '#02024A',
+                fontFamily: fonts.futura_medium,
                 borderRadius: 5,
                 paddingVertical: 6,
                 fontSize: 11,
@@ -195,6 +255,7 @@ const Login = props => {
                     color: 'red',
                     fontSize: 9,
                     marginTop: 4,
+                    fontFamily: fonts.futura_medium,
                     top: -height / 240,
                   }}>
                   {errorPassword}
@@ -210,20 +271,34 @@ const Login = props => {
               width: width * 0.73,
               alignSelf: 'center',
               justifyContent: 'center',
-              backgroundColor: 'navy',
+              backgroundColor: colors.theme_yellow1,
               marginTop: 10,
               alignItems: 'center',
               // borderRadius: 11,
             }}>
             <View>
-              <Text style={{fontSize: 14, color: '#FFFFFF'}}>Submit</Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: '#FFFFFF',
+                  fontFamily: fonts.futura_medium,
+                }}>
+                Submit
+              </Text>
             </View>
           </TouchableOpacity>
 
           <View style={styles.forgotpasw}>
             <TouchableOpacity
               onPress={() => props.navigation.navigate('ForgotPassword')}>
-              <Text style={{fontSize: 14, color: 'red'}}>Forgot Password</Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: 'red',
+                  fontFamily: fonts.futura_medium,
+                }}>
+                Forgot Password
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -237,21 +312,37 @@ const Login = props => {
               alignItems: 'center',
               flexDirection: 'row',
             }}>
-            <Text style={{fontSize: 12, color: COLOR.POST_TXT}}>
+            <Text
+              style={{
+                fontSize: 12,
+                color: COLOR.POST_TXT,
+                fontFamily: fonts.futura_medium,
+              }}>
               New user ?
             </Text>
             <TouchableOpacity
               onPress={() => props.navigation.navigate('PersonalDetails')}>
-              <Text style={{fontSize: 12, color: 'green'}}> Register Now</Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: 'green',
+                  fontFamily: fonts.futura_medium,
+                }}>
+                {' '}
+                Register Now
+              </Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
-      </View>
-    </KeyboardAwareScrollView>
+        </KeyboardAvoidingView>
+      </ScrollView>
+    </View>
   );
 };
 
-export default Login;
+const mapDispatchToProps = dispatch => ({dispatch});
+
+export default connect(null, mapDispatchToProps)(Login);
+
 const styles = StyleSheet.create({
   forgotpasw: {
     height: height * 0.05,

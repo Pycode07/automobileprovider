@@ -9,12 +9,21 @@ import {
   TextInput,
   ScrollView,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CustomButton from '../../components/Buttons/CustomButton';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {COLOR} from '../../utils/Colors';
 import {ImagePath} from '../../utils/ImagePath';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {connect} from 'react-redux';
+import * as UserAction from '../../redux/actions/userActions';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
+import {colors} from '../../assets/colors';
+import {api_url, driver_register_new} from '../../config/Constant';
 
 const {height, width} = Dimensions.get('window');
 
@@ -28,6 +37,10 @@ const PersonalDetails = props => {
 
   const [onwe, setOwned] = useState(false);
   const [rented, setRented] = useState(false);
+
+  const [birthDateVisibality, setBirthDateVisibality] = React.useState(false);
+  const [birthDate, setBirthDate] = React.useState('Select a date');
+  const [currentBirthDate, setCurrentBirthDate] = React.useState(new Date());
   // ==========  single select state End =============
 
   // ==========  Validaiton start here ========== =============
@@ -53,14 +66,35 @@ const PersonalDetails = props => {
   const [Pan, setPan] = useState('');
   const [errorPan, setErrorPan] = useState(null);
 
-  const [area, setArea] = useState('');
+  const [area, setArea] = useState('jbjhh');
   const [errorArea, setErrorArea] = useState(null);
 
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState('bvhgcgf');
   const [errorCity, setErrorCity] = useState(null);
 
-  const [pin, setPin] = useState('');
+  const [pin, setPin] = useState('hhgfg');
   const [errorPin, setErrorPin] = useState(null);
+
+  const [email, setEmail] = useState('');
+  const [errorEmail, setErrorEmail] = useState(null);
+
+  const [password, setPassword] = useState('');
+  const [errorPassword, setErrorPassword] = useState(null);
+
+  const [secandryMobileNumber, setSecandryMobileNumber] = useState('');
+
+  const [age, setAge] = React.useState('');
+
+  const setTravelingDateFromPicker = (d, date) => {
+    if (d.type === 'set') {
+      setBirthDateVisibality(false);
+      setBirthDate(date);
+      setCurrentBirthDate(date);
+      calculateAge(date);
+    } else {
+      setBirthDateVisibality(false);
+    }
+  };
 
   const _validateFirstName = fname => {
     var fnameRegex = /^[a-z A-Z ]{2,32}$/i;
@@ -95,7 +129,7 @@ const PersonalDetails = props => {
   };
 
   const _Datevalidate = date => {
-    var DateRegex = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/;
+    var DateRegex = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$/;
     if (date === '') {
       setErrordate('*Please enter correct Dob.');
     } else if (!DateRegex.test(date)) {
@@ -207,7 +241,7 @@ const PersonalDetails = props => {
       flag = false;
     }
 
-    if (date === '') {
+    if (birthDate === 'Select a date') {
       setErrordate('*Please enter DOB.');
       flag = false;
     }
@@ -236,47 +270,92 @@ const PersonalDetails = props => {
       setErrorPin('*Enter pincode.');
       flag = false;
     }
+
+    if (email === '') {
+      setErrorEmail('*Enter Email.');
+      flag = false;
+    }
+
+    if (password === '') {
+      setErrorPassword('*Enter Password.');
+      flag = false;
+    }
     return flag;
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (validate()) {
-      // onVerifySignUp();
-      props.navigation.navigate('GrageDetails');
+      let fcmToken = 'qwerrtyuio';
+      let PersonalData = {
+        first_name: FirstName,
+        last_name: surName,
+        father_name: fatherName,
+        date_of_birth: moment(birthDate).format('YYYY-MM-DD'),
+        age: age,
+        gender: male == true ? 1 : 2,
+        relationship_status: marid == true ? 2 : 1,
+        phone_number: Phone,
+        fcm_token: fcmToken,
+        phone_number2: secandryMobileNumber,
+        pancard_num: Pan,
+        id_proof: Adhar,
+        address_type: onwe == true ? 1 : 2,
+        city: 'none', //city,
+        area: 'none', //area,
+        pincode: 'none', //pin,
+        email: email,
+        password: password,
+      };
+      const responsePersonalityDetail = await axios.post(
+        api_url + driver_register_new,
+        PersonalData,
+      );
+      console.log('=======>', responsePersonalityDetail.data);
+      if (responsePersonalityDetail) {
+        let a = await AsyncStorage.setItem('email', email.toString());
+        props.dispatch(
+          UserAction.setUserData(responsePersonalityDetail.data.result),
+        );
+        props.navigation.navigate('GrageDetails');
+      }
     } else {
       alert('Please Enter All Require Details');
     }
   };
-
   // ==========  Validaiton End  here ========== =============
-
+  function calculateAge(birthday) {
+    // birthday is a date
+    var ageDifMs = Date.now() - birthday;
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    setAge(Math.abs(ageDate.getUTCFullYear() - 1970));
+  }
   return (
-    <KeyboardAwareScrollView>
-      <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-        <View style={styles.header}>
-          <View style={styles.backbtn}>
-            <TouchableOpacity onPress={() => props.navigation.goBack()}>
-              <Image source={ImagePath.BlACK_BACK_ARROW} resizeMode="center" />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              height: height * 0.04,
-              width: width * 0.66,
-              alignSelf: 'center',
-              // borderWidth: 1,
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{
-                color: COLOR.BACK_BORDER,
-                fontSize: 20,
-                fontWeight: '900',
-              }}>
-              Personal Details
-            </Text>
-          </View>
+    <View style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+      <View style={styles.header}>
+        <View style={styles.backbtn}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <Image source={ImagePath.BACK_ARROW} resizeMode="center" />
+          </TouchableOpacity>
         </View>
+        <View
+          style={{
+            height: height * 0.04,
+            width: width * 0.66,
+            alignSelf: 'center',
+            // borderWidth: 1,
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              color: COLOR.WHITE,
+              fontSize: 20,
+              fontWeight: '900',
+            }}>
+            Personal Details
+          </Text>
+        </View>
+      </View>
+      <KeyboardAwareScrollView>
         <View style={styles.upper}>
           <View style={styles.Address}>
             <View style={styles.tital}>
@@ -399,9 +478,16 @@ const PersonalDetails = props => {
             <View style={styles.tital}>
               <Text style={styles.txxt}>Date of Birth</Text>
             </View>
-            <View style={styles.commTextinput}>
-              <TextInput
-                placeholder="DD/MM/YY"
+            <TouchableOpacity
+              onPress={() => setBirthDateVisibality(!birthDateVisibality)}
+              style={styles.commTextinput}>
+              <Text style={{marginLeft: 5, color: COLOR.GREY}}>
+                {birthDate != 'Select a date'
+                  ? moment(birthDate).format('YYYY-MM-DD')
+                  : birthDate}
+              </Text>
+              {/* <TextInput
+                placeholder="YYYY-MM-DD"
                 color={COLOR.TXT_INPT_COLOR}
                 placeholderTextColor={COLOR.GREY}
                 returnKeyType="done"
@@ -409,8 +495,8 @@ const PersonalDetails = props => {
                 onChangeText={txt => {
                   setdate(txt), _Datevalidate(txt);
                 }}
-              />
-            </View>
+              /> */}
+            </TouchableOpacity>
 
             {errordate != null ? (
               <View
@@ -445,10 +531,13 @@ const PersonalDetails = props => {
               </View>
               <View style={styles.webside}>
                 <TextInput
+                  onChangeText={txt => setAge(txt)}
                   placeholder="Age"
+                  editable={false}
                   color={COLOR.TXT_INPT_COLOR}
-                  placeholderTextColor={COLOR.GREY}
-                />
+                  placeholderTextColor={COLOR.GREY}>
+                  {age}
+                </TextInput>
               </View>
             </View>
             <View style={styles.WebsideMAIN}>
@@ -616,6 +705,9 @@ const PersonalDetails = props => {
                 placeholderTextColor={COLOR.GREY}
                 maxLength={14}
                 keyboardType="numeric"
+                onChangeText={txt => {
+                  setSecandryMobileNumber(txt);
+                }}
               />
             </View>
           </View>
@@ -633,7 +725,8 @@ const PersonalDetails = props => {
                 keyboardType="default"
                 returnKeyType="done"
                 onChangeText={txt => {
-                  setPan(txt), _Panvalidate(txt);
+                  setPan(txt);
+                  //  _Panvalidate(txt);
                 }}
               />
             </View>
@@ -700,6 +793,76 @@ const PersonalDetails = props => {
             ) : null}
           </View>
 
+          <View style={styles.Address}>
+            <View style={styles.tital}>
+              <Text style={styles.txxt}>Email</Text>
+            </View>
+            <View style={styles.commTextinput}>
+              <TextInput
+                placeholder="Enter your email"
+                color={COLOR.TXT_INPT_COLOR}
+                placeholderTextColor={COLOR.GREY}
+                returnKeyType="done"
+                keyboardType="default"
+                onChangeText={txt => {
+                  setEmail(txt);
+                }}
+              />
+            </View>
+            {errorEmail != null ? (
+              <View
+                style={{
+                  height: height * 0.02,
+                  width: width / 1.3,
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 10,
+                    marginLeft: 10,
+                  }}>
+                  {errorEmail}
+                </Text>
+              </View>
+            ) : null}
+          </View>
+
+          <View style={styles.Address}>
+            <View style={styles.tital}>
+              <Text style={styles.txxt}>Password</Text>
+            </View>
+            <View style={styles.commTextinput}>
+              <TextInput
+                placeholder="Enter your password"
+                color={COLOR.TXT_INPT_COLOR}
+                placeholderTextColor={COLOR.GREY}
+                returnKeyType="done"
+                keyboardType="default"
+                onChangeText={txt => {
+                  setPassword(txt);
+                }}
+              />
+            </View>
+            {errorPassword != null ? (
+              <View
+                style={{
+                  height: height * 0.02,
+                  width: width / 1.3,
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: 'red',
+                    fontSize: 10,
+                    marginLeft: 10,
+                  }}>
+                  {errorPassword}
+                </Text>
+              </View>
+            ) : null}
+          </View>
+
           <View style={styles.PPAddress}>
             <View style={styles.tital}>
               <Text
@@ -761,8 +924,7 @@ const PersonalDetails = props => {
               </View>
             </View>
           </View>
-
-          <View style={styles.Area}>
+          {/* <View style={styles.Area}>
             <View style={styles.city}>
               <View style={styles.areaPin}>
                 <Text
@@ -892,8 +1054,7 @@ const PersonalDetails = props => {
                 </View>
               ) : null}
             </View>
-          </View>
-
+          </View> */}
           <View
             style={{
               height: height * 0.2,
@@ -902,24 +1063,37 @@ const PersonalDetails = props => {
               justifyContent: 'center',
             }}>
             <CustomButton
-              title="Next"
-              // ButtonPress={() => onSubmit()}
-              ButtonPress={() => props.navigation.navigate('GrageDetails')}
+              title="Register"
+              ButtonPress={() => onSubmit()}
+              // ButtonPress={() => props.navigation.navigate('GrageDetails')}
             />
           </View>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+      {Platform.OS == 'android' ? (
+        birthDateVisibality ? (
+          <DateTimePicker
+            value={currentBirthDate}
+            maximumDate={new Date()}
+            display={'calendar'}
+            mode="date"
+            onChange={setTravelingDateFromPicker}
+          />
+        ) : null
+      ) : null}
+    </View>
   );
 };
 
-export default PersonalDetails;
+const mapDispatchToProps = dispatch => ({dispatch});
+
+export default connect(null, mapDispatchToProps)(PersonalDetails);
 
 const styles = StyleSheet.create({
   header: {
     height: height * 0.1,
-    width: width * 0.9,
-    // backgroundColor: 'navy',
+    width: width * 1,
+    backgroundColor: colors.theme_yellow1,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
@@ -961,6 +1135,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     borderWidth: 1,
     padding: 2,
+    justifyContent: 'center',
   },
 
   tital: {
