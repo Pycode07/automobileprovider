@@ -147,7 +147,7 @@ const OrderView = ({navigation, route}) => {
                 color: '#343a40',
                 fontFamily: 'FuturaMediumBT',
               }}>
-              {`Order ID: ML${myCar.id}`}
+              {`Order ID: ${myCar.id}`}
             </Text>
           </View>
           <View

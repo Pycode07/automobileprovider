@@ -20,7 +20,7 @@ import database from '@react-native-firebase/database';
 import {connect} from 'react-redux';
 import {Loader} from '../components/Loader';
 import {colors} from '../assets/colors';
-import { api_url, change_package_status, order_status } from '../config/Constant';
+import {api_url, change_package_status, order_status} from '../config/Constant';
 const {height, width} = Dimensions.get('window');
 
 const customStyle = {
@@ -93,11 +93,16 @@ const OrderTracking = props => {
   const updateStatus = async () => {
     setAlertVisible(false);
     setIsLoading(true);
+    console.log({
+      driver_id: props.userData?.id,
+      id: props.route.params.orderDetails.id,
+      status: status + 3,
+    });
     await axios
       .post(api_url + change_package_status, {
         driver_id: props.userData?.id,
         id: props.route.params.orderDetails.id,
-        status: status + 2,
+        status: status + 3,
       })
       .then(response => {
         setIsLoading(false);
@@ -117,7 +122,7 @@ const OrderTracking = props => {
   const order_status_update = () => {
     database()
       .ref(`orders/${props.route.params.orderDetails.id}`)
-      .update({status: status + 2})
+      .update({status: status + 3})
       .then(res => {
         console.log('updated');
       })
@@ -131,12 +136,9 @@ const OrderTracking = props => {
     database()
       .ref(`orders/${props.route.params.orderDetails.id}`)
       .on('value', snapshot => {
-        setStatus(snapshot?.val()?.status - 1);
+        setStatus(snapshot?.val()?.status - 2);
         console.log(snapshot?.val());
       });
-    // database().ref(`orders/${props?.route?.params?.orderDetails?.id}`).on('value', snapshot =>{
-    // console.log(snapshot.val())
-    // })
   };
   return (
     <View style={{flex: 1, backgroundColor: colors.theme_white}}>

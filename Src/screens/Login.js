@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import {COLOR} from '../utils/Colors';
 import {ImagePath} from '../utils/ImagePath';
-const {height, width} = Dimensions.get('window');
+const {height, width} = Dimensions.get('screen');
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -111,14 +111,13 @@ const Login = props => {
       <ScrollView
         contentContainerStyle={{
           flex: 0.9,
-          width: '90%',
+          width: width * 0.9,
           alignSelf: 'center',
           alignItems: 'center',
           justifyContent: 'center',
           backgroundColor: colors.theme_yellow1,
         }}>
-        <KeyboardAvoidingView
-          behavior="padding"
+        <View
           style={{
             flex: 0,
             backgroundColor: '#fff',
@@ -178,28 +177,6 @@ const Login = props => {
               }}
               keyboardType="email-address"
             />
-
-            {errorEmail != null ? (
-              <View
-                style={{
-                  height: height * 0.019,
-                  // width: width * 1,
-                  width: width / 1.3,
-                  // backgroundColor: "blue",
-                  justifyContent: 'center',
-                }}>
-                <Text
-                  style={{
-                    color: 'red',
-                    fontSize: 10,
-                    marginLeft: 17,
-                    fontFamily: fonts.futura_medium,
-                    // top: -height / 230,
-                  }}>
-                  {errorEmail}
-                </Text>
-              </View>
-            ) : null}
           </View>
           <View style={{marginBottom: 15}}>
             <View
@@ -241,27 +218,6 @@ const Login = props => {
               }}
               secureTextEntry={true}
             />
-
-            {errorPassword != null ? (
-              <View
-                style={{
-                  height: height * 0.033,
-                  width: width * 0.9,
-                  justifyContent: 'center',
-                  // marginTop: -verticalScale(6),
-                }}>
-                <Text
-                  style={{
-                    color: 'red',
-                    fontSize: 9,
-                    marginTop: 4,
-                    fontFamily: fonts.futura_medium,
-                    top: -height / 240,
-                  }}>
-                  {errorPassword}
-                </Text>
-              </View>
-            ) : null}
           </View>
 
           <TouchableOpacity
@@ -321,7 +277,7 @@ const Login = props => {
               New user ?
             </Text>
             <TouchableOpacity
-              onPress={() => props.navigation.navigate('PersonalDetails')}>
+              onPress={() => props.navigation.navigate('register')}>
               <Text
                 style={{
                   fontSize: 12,
@@ -333,7 +289,7 @@ const Login = props => {
               </Text>
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
+        </View>
       </ScrollView>
     </View>
   );

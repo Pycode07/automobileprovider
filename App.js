@@ -1,5 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View, SafeAreaView, StatusBar} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  StatusBar,
+  TextInput,
+} from 'react-native';
 import Routes from './Src/Navigation/Routes';
 import GrageDetails from './Src/screens/Garage_Details/GrageDetails';
 import {Provider} from 'react-redux';
@@ -64,6 +71,10 @@ const App = () => {
 
   React.useEffect(() => {
     try {
+      Text.defaultProps = Text.defaultProps || {};
+      Text.defaultProps.allowFontScaling = false;
+      TextInput.defaultProps = TextInput.defaultProps || {};
+      TextInput.defaultProps.allowFontScaling = false;
       requestUserPermission();
       const unsubscribe = messaging().onMessage(async remoteMessage => {
         const {messageId} = remoteMessage;

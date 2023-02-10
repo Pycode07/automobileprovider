@@ -9,7 +9,13 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {api_url, colors, fonts, provider_sos} from '../config/Constant';
+import {
+  api_url,
+  colors,
+  fonts,
+  provider_services_action,
+  provider_sos,
+} from '../config/Constant';
 import {connect} from 'react-redux';
 import {Loader} from '../components/Loader';
 const {width, height} = Dimensions.get('screen');
