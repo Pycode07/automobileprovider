@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -22,11 +23,42 @@ const {width, height} = Dimensions.get('screen');
 const CarReqest = props => {
   const [getCarRequest, setCarRequests] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [numberOfRequests, setNumberOfRequest] = useState(0);
   useEffect(() => {
     props.navigation.setOptions({
-      title: 'New Request',
+      tabBarShowLabel: true,
+      tabBarLabel: label => (
+        <View style={{flex: 0, flexDirection: 'row'}}>
+          <Text
+            style={{
+              fontSize: 14,
+              color: label.focused ? colors.theme_black6 : label.color,
+              fontFamily: fonts.futura_medium,
+            }}>
+            NEW REQUEST
+          </Text>
+          <Text
+            style={{
+              fontSize: 12,
+              color: colors.red_color1,
+              fontFamily: fonts.futura_medium,
+              lineHeight: 12,
+              marginLeft: 2,
+            }}>
+            {numberOfRequests}
+          </Text>
+        </View>
+      ),
     });
   });
+
+  useEffect(() => {
+    myRequets();
+  }, []);
+
+  useEffect(() => {
+    get_length();
+  }, [getCarRequest]);
 
   const myRequets = async () => {
     setIsLoading(true);
@@ -37,14 +69,28 @@ const CarReqest = props => {
         driver_id: props?.userData?.id,
       },
     })
-      .then(res => {
+      .then(async res => {
         setIsLoading(false);
-        setCarRequests(res.data.responce);
+        await setCarRequests(res.data.responce);
+        await get_length();
       })
       .catch(err => {
         setIsLoading(false);
         console.log(err);
       });
+  };
+
+  const get_length = () => {
+    let x = 0;
+    getCarRequest &&
+      getCarRequest.map((item, index) => {
+        if (item.is_cancel != '1') {
+          x = x + 1;
+          console.log('dsfdsf');
+        }
+      });
+    console.log(x);
+    setNumberOfRequest(x);
   };
 
   const accpetReject = async (id, status) => {
@@ -65,13 +111,24 @@ const CarReqest = props => {
       });
   };
 
-  useEffect(() => {
+  const onRefresh = React.useCallback(() => {
     myRequets();
   }, []);
   return (
     <View style={{flex: 1, backgroundColor: colors.theme_black0}}>
-      <Loader isVisible={isLoading} />
-      <ScrollView>
+      {/* <Loader isVisible={isLoading} /> */}
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            colors={[
+              colors.red_color1,
+              colors.green_color1,
+              colors.theme_yellow1,
+            ]}
+            onRefresh={onRefresh}
+          />
+        }>
         <View
           style={{
             flex: 0,
@@ -84,10 +141,17 @@ const CarReqest = props => {
             paddingVertical: 15,
           }}>
           {getCarRequest &&
-            getCarRequest.map((item, index) => (
-              <>
-                {item?.is_cancel != '1' ? (
+            getCarRequest.map((item, index) => {
+              if (item?.is_cancel != '1') {
+                return (
                   <TouchableOpacity
+                    onPress={() =>
+                      props.navigation.navigate('orderView', {
+                        orderDetails: item,
+                        flag: 1,
+                      })
+                    }
+                    key={item.id}
                     style={{
                       flex: 0,
                       width: '45%',
@@ -195,9 +259,9 @@ const CarReqest = props => {
                       </TouchableOpacity>
                     </View>
                   </TouchableOpacity>
-                ) : null}
-              </>
-            ))}
+                );
+              }
+            })}
         </View>
       </ScrollView>
     </View>

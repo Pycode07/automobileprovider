@@ -45,6 +45,8 @@ export const colors = {
   theme_black5: '#6c757d',
   theme_black6: '#000',
   theme_black7: '#333533',
+  red_color1: '#e63946',
+  green_color1: '#069e2d',
 };
 
 export const fonts = {

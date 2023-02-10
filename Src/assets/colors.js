@@ -17,4 +17,5 @@ export const colors = {
   theme_black6: '#000',
   theme_black7: '#333533',
   green_color1: '#069e2d',
+  red_color1: '#e63946',
 };

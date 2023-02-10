@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {api_url, colors, fonts, provider_packages} from '../config/Constant';
@@ -16,16 +17,42 @@ const {width, height} = Dimensions.get('screen');
 
 const ActiveCars = props => {
   const [activeServices, setActiveServices] = useState(null);
+  const [numberOfRequests, setNumberOfRequest] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     props.navigation.setOptions({
-      title: 'Garage',
+      tabBarLabel: label => (
+        <View style={{flex: 0, flexDirection: 'row'}}>
+          <Text
+            style={{
+              fontSize: 14,
+              color: label.focused ? colors.theme_black6 : label.color,
+              fontFamily: fonts.futura_medium,
+            }}>
+            GARAGE
+          </Text>
+          <Text
+            style={{
+              fontSize: 12,
+              color: colors.red_color1,
+              fontFamily: fonts.futura_medium,
+              lineHeight: 12,
+              marginLeft: 2,
+            }}>
+            {numberOfRequests}
+          </Text>
+        </View>
+      ),
     });
   });
 
   useEffect(() => {
     carRequets();
   }, []);
+
+  useEffect(() => {
+    get_length();
+  }, [activeServices]);
 
   const carRequets = async () => {
     setIsLoading(true);
@@ -47,10 +74,38 @@ const ActiveCars = props => {
       });
   };
 
+  const get_length = () => {
+    let x = 0;
+    activeServices &&
+      activeServices.map((item, index) => {
+        if (item.is_cancel != '1') {
+          x = x + 1;
+          console.log('dsfdsf');
+        }
+      });
+    console.log(x);
+    setNumberOfRequest(x);
+  };
+
+  const onRefresh = React.useCallback(() => {
+    carRequets();
+  }, []);
+
   return (
     <View style={{flex: 1, backgroundColor: colors.theme_black0}}>
-      <Loader isVisible={isLoading} />
-      <ScrollView>
+      {/* <Loader isVisible={isLoading} /> */}
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            colors={[
+              colors.red_color1,
+              colors.green_color1,
+              colors.theme_yellow1,
+            ]}
+            onRefresh={onRefresh}
+          />
+        }>
         <View
           style={{
             flex: 1,
@@ -63,10 +118,11 @@ const ActiveCars = props => {
             paddingVertical: 15,
           }}>
           {activeServices &&
-            activeServices.map((item, index) => (
-              <>
-                {item?.is_cancel != '1' ? (
+            activeServices.map((item, index) => {
+              if (item?.is_cancel != '1') {
+                return (
                   <TouchableOpacity
+                    key={item.id}
                     activeOpacity={0.6}
                     onPress={() =>
                       props.navigation.navigate('orderView', {
@@ -137,9 +193,9 @@ const ActiveCars = props => {
                       02-02-20023 07-09
                     </Text>
                   </TouchableOpacity>
-                ) : null}
-              </>
-            ))}
+                );
+              }
+            })}
         </View>
       </ScrollView>
     </View>
