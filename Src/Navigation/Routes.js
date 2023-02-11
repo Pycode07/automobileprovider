@@ -30,6 +30,8 @@ import OrderView from '../screens/OrderView';
 import OrderHistory from '../screens/OrderHistory';
 import {colors} from '../assets/colors';
 import SpareParts from '../screens/SpareParts';
+import SelectYourCar from '../screens/SelectYourCar';
+import CarModalSelection from '../screens/CarModalSelection';
 
 const Routes = () => {
   return (
@@ -40,7 +42,7 @@ const Routes = () => {
           headerStyle: {
             backgroundColor: colors.theme_white,
           },
-          headerShadowVisible: false,
+          //  headerShadowVisible: false,
           headerTitleStyle: {
             fontFamily: 'FuturaMediumBT',
           },
@@ -81,6 +83,8 @@ const Routes = () => {
           component={SpareParts}
           options={{headerShown: true}}
         />
+        <Stack.Screen name="selectYourCar" component={SelectYourCar} />
+        <Stack.Screen name="carModalSelection" component={CarModalSelection} />
       </Stack.Navigator>
     </NavigationContainer>
   );

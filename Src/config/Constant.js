@@ -27,6 +27,8 @@ export const provider_services_action = 'provider/services/action';
 export const provider_sos = 'provider/sos';
 export const provider_packages = 'provider/packages';
 export const provider_running_services = 'provider/running/services';
+export const brands = 'brands';
+export const vehicles_brand = 'vehicles/brand';
 
 export const theme_yellow1 = '#fca10a';
 export const theme_blue1 = '#02024A';

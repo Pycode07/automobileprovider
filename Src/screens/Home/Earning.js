@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import React, {useEffect} from 'react';
 import axios from 'axios';
@@ -14,23 +15,40 @@ import {COLOR} from '../../utils/Colors';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {colors} from '../../assets/colors';
-import { api_url, driver_earning } from '../../config/Constant';
+import {api_url, driver_earning, fonts} from '../../config/Constant';
+import Header from '../../components/Header';
+import {useState} from 'react';
+import {Loader} from '../../components/Loader';
 const {height, width} = Dimensions.get('window');
-const Earning = ({navigation, route, userData}) => {
+const Earning = props => {
   const [earning, setEarning] = React.useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerShown: true,
+      headerTitle: '',
+      headerLeft: () => {
+        return <Header title="Earnings" navigation={props.navigation} />;
+      },
+    });
+  }, []);
 
   const getEarning = async () => {
+    setIsLoading(true);
     try {
       await axios({
         method: 'post',
         url: api_url + driver_earning,
         data: {
-          id: userData?.id,
+          id: props.userData?.id,
         },
       }).then(res => {
+        setIsLoading(false);
         setEarning(res.data.result);
       });
     } catch (error) {
+      setIsLoading(false);
       console.warn('error', error.message);
     }
   };
@@ -40,87 +58,60 @@ const Earning = ({navigation, route, userData}) => {
   }, []);
   return (
     <ScrollView style={{flex: 0, backgroundColor: '#fff'}}>
-      <View
-        style={{
-          height: height * 0.1,
-          width: width * 1,
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: colors.theme_yellow1,
-        }}>
+      <StatusBar
+        backgroundColor={colors.theme_yellow1}
+        barStyle="light-content"
+      />
+      <Loader isVisible={isLoading} />
+      <View style={{marginHorizontal: 10, marginTop: 15}}>
         <View
           style={{
-            height: height * 0.05,
-            width: width * 0.22,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image
-              source={ImagePath.BACK_ARROW}
-              style={{height: 25, width: 25}}
-            />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            height: height * 0.05,
-            width: width * 0.55,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{color: COLOR.WHITE, fontSize: 22}}>Earning</Text>
-        </View>
-      </View>
-      <View style={{marginHorizontal: 10, marginTop: 10}}>
-        <View
-          style={{
-            borderRadius: 10,
-            shadowColor: '#000',
-            backgroundColor: '#fff',
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-
-            elevation: 5,
+            borderRadius: 5,
+            borderWidth: 1,
+            borderColor: colors.theme_black5,
+            backgroundColor: colors.theme_yellow2,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
             paddingVertical: 15,
             marginHorizontal: 5,
+            marginBottom: 15,
           }}>
           <View
             style={{flex: 0, justifyContent: 'center', alignItems: 'center'}}>
             <Text
               style={{
-                fontSize: 22,
-                color: '#000',
+                fontSize: 20,
+                color: colors.black_color1,
                 marginBottom: 10,
-                fontWeight: 'bold',
+                fontFamily: fonts.futura_bold,
               }}>
               Total Earnings
             </Text>
-            <Text style={{fontSize: 18, color: '#000', fontWeight: '500'}}>
-              Rs{earning?.total_earnings}
-            </Text>
+            <View
+              style={{
+                flex: 0,
+                paddingHorizontal: 10,
+                paddingVertical: 4,
+                borderRadius: 50,
+                borderWidth: 1,
+                borderColor: colors.theme_yellow1,
+              }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: colors.theme_black6,
+                  fontWeight: '500',
+                }}>
+                Rs {earning?.total_earnings}
+              </Text>
+            </View>
           </View>
-
-          {/* <View style={{ height: 90, width: 2, backgroundColor: "#000", marginHorizontal: 20 }}></View> */}
-
-          {/* <View>
-                        <Text style={{ fontSize: 12, color: '#000' }}>Today Earnings</Text>
-                        <Text style={{ fontSize: 20, color: '#000', fontWeight: "500" }}>Rs{earning?.today_earnings}</Text>
-
-                    </View> */}
         </View>
-
         <View
           style={{
-            borderRadius: 10,
-            shadowColor: '#000',
+            borderRadius: 5,
+            shadowColor: colors.theme_black5,
             backgroundColor: '#fff',
             shadowOffset: {
               width: 0,
@@ -135,65 +126,73 @@ const Earning = ({navigation, route, userData}) => {
             marginHorizontal: 5,
             marginVertical: 10,
           }}>
-          <Text style={{fontSize: 15, color: '#000', marginLeft: 20}}>
+          <Text
+            style={{
+              fontSize: 18,
+              color: colors.black_color1,
+              fontFamily: fonts.futura_bold,
+              marginLeft: 10,
+            }}>
             Earnings
           </Text>
-
-          <FlatList
-            data={earning?.earnings}
-            renderItem={({item, index}) => {
-              return (
-                <View style={{paddingHorizontal: 5}}>
-                  <View style={{paddingVertical: 10}}>
+          {earning &&
+            earning?.earnings.map((item, index) => (
+              <View key={index} style={{paddingHorizontal: 5}}>
+                <View style={{paddingVertical: 10}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: 10,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: colors.theme_yellow1,
+                        fontFamily: fonts.futura_medium,
+                      }}>
+                      *BH{item.trip_id}
+                    </Text>
                     <View
                       style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
+                        flex: 0,
                         paddingHorizontal: 10,
+                        paddingVertical: 2,
+                        borderRadius: 50,
+                        borderWidth: 1,
+                        borderColor: colors.theme_yellow1,
                       }}>
                       <Text
                         style={{
-                          fontSize: 18,
-                          color: '#000',
-                          fontWeight: '700',
+                          fontSize: 14,
+                          color: colors.theme_black5,
+                          fontWeight: fonts.futura_medium,
                         }}>
-                        #ML{item.trip_id}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          color: '#000',
-                          fontWeight: '500',
-                        }}>
-                        Rs{item.amount}
-                      </Text>
-                    </View>
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        paddingHorizontal: 10,
-                      }}>
-                      <Text style={{fontSize: 13, color: '#000'}}>
-                        {moment(item.created_at).format('Do MMMM YYYY HH:MM A')}
+                        Rs {item.amount}
                       </Text>
                     </View>
                   </View>
-                  {index == 3 ? null : (
-                    <View
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: 10,
+                    }}>
+                    <Text
                       style={{
-                        height: 1,
-                        width: '100%',
-                        backgroundColor: '#00000040',
-                      }}></View>
-                  )}
+                        fontSize: 13,
+                        color: colors.theme_black5,
+                        fontFamily: fonts.futura_medium,
+                      }}>
+                      {moment(item.created_at).format('Do MMMM YYYY HH:MM A')}
+                    </Text>
+                  </View>
                 </View>
-              );
-            }}
-          />
+              </View>
+            ))}
         </View>
       </View>
     </ScrollView>

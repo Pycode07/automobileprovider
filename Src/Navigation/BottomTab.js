@@ -161,7 +161,7 @@ export default function BottomTab() {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerShadowVisible: false,
+        //  headerShadowVisible: false,
         tabBarHideOnKeyboard: true,
       }}
       tabBar={props => <MyTabBar {...props} />}>

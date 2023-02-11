@@ -18,6 +18,7 @@ import {
 } from '../config/Constant';
 import {connect} from 'react-redux';
 import {Loader} from '../components/Loader';
+import moment from 'moment';
 const {width, height} = Dimensions.get('screen');
 
 const SosRequest = props => {
@@ -184,7 +185,7 @@ const SosRequest = props => {
                         textAlign: 'center',
                         marginTop: 5,
                       }}>
-                      DL78HJ7898
+                      {item.car.car_no}
                     </Text>
                     <Text
                       style={{
@@ -194,7 +195,8 @@ const SosRequest = props => {
                         textAlign: 'center',
                         marginTop: 5,
                       }}>
-                      02-02-20023 07-09
+                      {moment(item.order_date).format('Do MMM YYYY')}{' '}
+                      {/* {item.time_slot} */}
                     </Text>
                     <View
                       style={{

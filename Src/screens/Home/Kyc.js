@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
   Alert,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {ImagePath} from '../../utils/ImagePath';
@@ -22,6 +23,7 @@ import {
   api_url,
   driver_get_kyc,
   driver_update_kyc,
+  fonts,
 } from '../../config/Constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 const {height, width} = Dimensions.get('window');
@@ -129,8 +131,10 @@ const Kyc = props => {
   }, []);
 
   return (
-    <KeyboardAwareScrollView>
-      <ScrollView style={{flex: 0, backgroundColor: '#fff'}}>
+    <KeyboardAvoidingView>
+      <ScrollView
+        style={{flex: 0, backgroundColor: colors.theme_black0}}
+        showsVerticalScrollIndicator={false}>
         <View style={{flex: 0, marginHorizontal: 25, marginBottom: 25}}>
           <View style={styles.headingView}>
             <Text style={styles.headingText}>Bank Details</Text>
@@ -169,8 +173,8 @@ const Kyc = props => {
             <Image
               source={ImagePath.ADHAR}
               style={{
-                width: 120,
-                height: 80,
+                width: width * 0.4,
+                height: width * 0.25,
                 borderRadius: 10,
                 borderColor: '#02024A',
                 borderWidth: 1,
@@ -180,8 +184,8 @@ const Kyc = props => {
             <Image
               source={ImagePath.ADHAR_BACK}
               style={{
-                width: 120,
-                height: 80,
+                width: width * 0.4,
+                height: width * 0.25,
                 borderRadius: 10,
                 borderColor: '#02024A',
                 borderWidth: 1,
@@ -199,8 +203,8 @@ const Kyc = props => {
             <Image
               source={ImagePath.PAN}
               style={{
-                width: 120,
-                height: 80,
+                width: width * 0.4,
+                height: width * 0.25,
                 borderRadius: 10,
                 borderColor: '#02024A',
                 borderWidth: 1,
@@ -210,8 +214,8 @@ const Kyc = props => {
             <Image
               source={ImagePath.PAN_BACK}
               style={{
-                width: 120,
-                height: 80,
+                width: width * 0.4,
+                height: width * 0.25,
                 borderRadius: 10,
                 borderColor: '#02024A',
                 borderWidth: 1,
@@ -220,7 +224,7 @@ const Kyc = props => {
             />
           </View>
 
-          <View
+          {/* <View
             style={{
               height: height * 0.13,
               width: width * 0.9,
@@ -281,7 +285,7 @@ const Kyc = props => {
                 </View>
               </View>
             </View>
-          </View>
+          </View> */}
           <View
             style={{
               height: height * 0.13,
@@ -292,28 +296,28 @@ const Kyc = props => {
             <TouchableOpacity
               onPress={updateKYC}
               style={{
-                height: height * 0.06,
                 width: width * 0.9,
+                paddingVertical: 10,
                 alignSelf: 'center',
-                // borderWidth: 1,
-                borderRadius: 10,
+                borderRadius: 5,
                 backgroundColor: colors.theme_yellow1,
                 justifyContent: 'center',
                 alignItems: 'center',
+                marginTop: 20,
               }}>
               <Text
                 style={{
-                  fontSize: height / 40,
-                  fontWeight: 'bold',
-                  color: 'white',
+                  fontSize: 16,
+                  fontFamily: fonts.futura_bold,
+                  color: colors.theme_white,
                 }}>
-                Update
+                UPDATE
               </Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-    </KeyboardAwareScrollView>
+    </KeyboardAvoidingView>
   );
 };
 const mapStateToProps = state => ({
@@ -328,21 +332,22 @@ const styles = StyleSheet.create({
   },
   headingText: {
     color: '#000',
-    fontSize: 15,
-    fontWeight: '600',
+    fontSize: 16,
+    fontFamily: fonts.futura_bold,
   },
   inputStyle: {
     fontSize: 13,
     color: '#454545',
-    borderWidth: 0.3,
-    borderColor: '#919090',
+    borderWidth: 1,
+    borderColor: colors.theme_black5,
     borderRadius: 5,
     backgroundColor: '#fff',
-    elevation: 1,
-    shadowColor: '#000',
+    elevation: 5,
+    shadowColor: colors.theme_black5,
     marginBottom: 20,
     paddingLeft: 15,
     paddingVertical: 12,
+    fontFamily: fonts.futura_medium,
   },
   kycDoc: {
     flex: 0,
@@ -351,11 +356,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 15,
   },
-  // ==========Counter======
   capacitymain: {
     height: height * 0.09,
     width: width * 0.9,
-    // borderWidth: 1,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -364,13 +367,11 @@ const styles = StyleSheet.create({
   capcity: {
     height: height * 0.07,
     width: width * 0.43,
-    // borderWidth: 1,
     justifyContent: 'center',
   },
   capcity1: {
     height: height * 0.07,
     width: width * 0.45,
-    // borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -378,7 +379,6 @@ const styles = StyleSheet.create({
   count: {
     height: height * 0.05,
     width: width * 0.12,
-    // borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -20,7 +20,13 @@ import database from '@react-native-firebase/database';
 import {connect} from 'react-redux';
 import {Loader} from '../components/Loader';
 import {colors} from '../assets/colors';
-import {api_url, change_package_status, order_status} from '../config/Constant';
+import {
+  api_url,
+  change_package_status,
+  fonts,
+  order_status,
+} from '../config/Constant';
+import Header from '../components/Header';
 const {height, width} = Dimensions.get('window');
 
 const customStyle = {
@@ -60,7 +66,6 @@ const labels = [
 ];
 const OrderTracking = props => {
   const myCar = props.route.params.orderDetails;
-  console.log(myCar?.id);
   const comma = Intl.NumberFormat('en-IN');
   const [isLoading, setIsLoading] = useState(false);
   const [alertVisible, setAlertVisible] = useState(false);
@@ -69,6 +74,18 @@ const OrderTracking = props => {
   useEffect(() => {
     get_status();
     get_order_status();
+  }, []);
+
+  useEffect(() => {
+    props.navigation.setOptions({
+      headerShown: true,
+      headerTitle: '',
+      headerLeft: () => {
+        return (
+          <Header title="Update Order Status" navigation={props.navigation} />
+        );
+      },
+    });
   }, []);
 
   const get_status = async () => {
@@ -143,38 +160,6 @@ const OrderTracking = props => {
   return (
     <View style={{flex: 1, backgroundColor: colors.theme_white}}>
       <Loader isVisible={isLoading} />
-      <View
-        style={{
-          // height: height * 0.08,
-          width: width * 1,
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: colors.theme_yellow1,
-        }}>
-        <View
-          style={{
-            height: height * 0.05,
-            width: width * 0.22,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}>
-            <Image
-              source={ImagePath.BACK_ARROW}
-              style={{height: 25, width: 25}}
-            />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            height: height * 0.05,
-            width: width * 0.55,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={{color: COLOR.WHITE, fontSize: 22}}>ORDER TRACKING</Text>
-        </View>
-      </View>
       <ScrollView>
         <View style={styles.header}>
           <View
@@ -184,8 +169,10 @@ const OrderTracking = props => {
               backgroundColor: colors.theme_white,
               paddingVertical: 10,
               paddingHorizontal: 8,
-              borderRadius: 8,
-              elevation: 10,
+              borderRadius: 5,
+              elevation: 1,
+              borderWidth: 1,
+              borderColor: colors.theme_black1,
               marginVertical: 15,
               shadowColor: colors.theme_black5,
             }}>
@@ -193,15 +180,15 @@ const OrderTracking = props => {
               style={{
                 flex: 0,
                 borderBottomWidth: 0.7,
-                paddingBottom: 8,
-                marginBottom: 8,
+                paddingBottom: 10,
+                marginBottom: 10,
                 borderBottomColor: colors.theme_black1,
               }}>
               <Text
                 style={{
                   fontSize: 22,
                   color: colors.theme_blue1,
-                  fontFamily: 'FuturaBd',
+                  fontFamily: fonts.futura_bold,
                   letterSpacing: 1,
                 }}>
                 {myCar.car.model}
@@ -210,10 +197,11 @@ const OrderTracking = props => {
                 style={{
                   fontSize: 16,
                   color: colors.theme_black5,
-                  fontFamily: 'FuturaBd',
-                  marginTop: 5,
+                  fontFamily: fonts.futura_medium,
+                  marginTop: 10,
+                  letterSpacing: 1,
                 }}>
-                {myCar.car.car_no} ( {myCar?.car?.fuel_type} )
+                {myCar.car.car_no} ({myCar?.car?.fuel_type})
               </Text>
             </View>
             <View
@@ -221,21 +209,21 @@ const OrderTracking = props => {
                 flex: 0,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginBottom: 3,
+                marginBottom: 5,
               }}>
               <Text
                 style={{
-                  fontSize: 14,
-                  color: colors.theme_black6,
-                  fontFamily: 'FuturaBoldBT',
+                  fontSize: 16,
+                  color: colors.theme_black5,
+                  fontFamily: fonts.futura_medium,
                 }}>
                 Booking Date
               </Text>
               <Text
                 style={{
-                  fontSize: 12,
-                  color: colors.theme_black6,
-                  fontFamily: 'FuturaBoldBT',
+                  fontSize: 16,
+                  color: colors.theme_black5,
+                  fontFamily: fonts.futura_medium,
                 }}>
                 {moment(myCar?.order_date).format('Do MMM YYYY')}
               </Text>
@@ -245,21 +233,21 @@ const OrderTracking = props => {
                 flex: 0,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginBottom: 3,
+                marginBottom: 5,
               }}>
               <Text
                 style={{
-                  fontSize: 14,
-                  color: colors.theme_black6,
-                  fontFamily: 'FuturaMediumBT',
+                  fontSize: 16,
+                  color: colors.theme_black5,
+                  fontFamily: fonts.futura_medium,
                 }}>
                 Order Date
               </Text>
               <Text
                 style={{
-                  fontSize: 12,
-                  color: colors.theme_black6,
-                  fontFamily: 'FuturaMediumBT',
+                  fontSize: 16,
+                  color: colors.theme_black5,
+                  fontFamily: fonts.futura_medium,
                 }}>
                 {moment(myCar?.created_at).format('Do MMM YYYY')}
               </Text>
@@ -269,21 +257,21 @@ const OrderTracking = props => {
                 flex: 0,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginBottom: 3,
+                marginBottom: 5,
               }}>
               <Text
                 style={{
-                  fontSize: 14,
-                  color: colors.theme_black6,
-                  fontFamily: 'FuturaMediumBT',
+                  fontSize: 16,
+                  color: colors.theme_black5,
+                  fontFamily: fonts.futura_medium,
                 }}>
                 Booking Time Slot
               </Text>
               <Text
                 style={{
-                  fontSize: 12,
-                  color: colors.theme_black6,
-                  fontFamily: 'FuturaMediumBT',
+                  fontSize: 16,
+                  color: colors.theme_black5,
+                  fontFamily: fonts.futura_medium,
                 }}>
                 {myCar.time_slot}
               </Text>
@@ -293,21 +281,21 @@ const OrderTracking = props => {
                 flex: 0,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginBottom: 3,
+                marginBottom: 5,
               }}>
               <Text
                 style={{
-                  fontSize: 14,
-                  color: colors.theme_black6,
-                  fontFamily: 'FuturaMediumBT',
+                  fontSize: 16,
+                  color: colors.theme_black5,
+                  fontFamily: fonts.futura_medium,
                 }}>
                 Paymet Method
               </Text>
               <Text
                 style={{
-                  fontSize: 12,
-                  color: colors.theme_black6,
-                  fontFamily: 'FuturaMediumBT',
+                  fontSize: 16,
+                  color: colors.theme_black5,
+                  fontFamily: fonts.futura_medium,
                   textTransform: 'capitalize',
                 }}>
                 {myCar.payment_type}
@@ -318,13 +306,13 @@ const OrderTracking = props => {
                 flex: 0,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginBottom: 3,
+                marginBottom: 5,
               }}>
               <Text
                 style={{
-                  fontSize: 14,
-                  color: colors.theme_black6,
-                  fontFamily: 'FuturaMediumBT',
+                  fontSize: 16,
+                  color: colors.theme_black5,
+                  fontFamily: fonts.futura_medium,
                 }}>
                 Amount
               </Text>
@@ -348,13 +336,13 @@ const OrderTracking = props => {
                 <FontAwesome
                   name="rupee"
                   color={colors.theme_black6}
-                  size={14}
+                  size={16}
                 />
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: 16,
                     color: colors.theme_black6,
-                    fontFamily: 'FuturaMediumBT',
+                    fontFamily: fonts.futura_medium,
                     marginLeft: 2,
                   }}>
                   {comma.format(myCar?.price)}

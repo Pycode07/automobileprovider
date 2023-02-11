@@ -16,8 +16,9 @@ import {COLOR} from '../../utils/Colors';
 import {ImagePath} from '../../utils/ImagePath';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {colors} from '../../assets/colors';
-import {api_url, customer_profile_update} from '../../config/Constant';
+import {api_url, customer_profile_update, fonts} from '../../config/Constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import LinearGradient from 'react-native-linear-gradient';
 const {height, width} = Dimensions.get('window');
 
 const More = props => {
@@ -100,10 +101,6 @@ const More = props => {
     )
       .then(async resp => {
         console.log(resp.data);
-        // let a = await AsyncStorage.setItem("grageDetails", JSON.stringify(JSON.parse(resp.data).result))
-        // props.dispatch(UserAction.setGrageData(JSON.parse(resp.data).result));
-        // props.navigation.navigate('Home');
-        // alert('Successfully updated');
       })
       .catch(err => {
         console.log(err);
@@ -111,154 +108,123 @@ const More = props => {
       });
   };
   return (
-    <SafeAreaView style={{height: height * 1, width: width * 1}}>
-      <ScrollView>
+    <LinearGradient
+      style={{flex: 1}}
+      colors={[colors.theme_white, colors.theme_yellow2]}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.titals}>
-          <TouchableOpacity
-          // onPress={() => {
-          //   launchImageLibrary({
-          //     selectionLimit: 0,
-          //     mediaType: 'photo',
-          //     includeBase64: false,
-          //   }, (response) => {
-          //     if (response.didCancel) {
-          //       console.log(response)
-          //     } else if (response.error) {
-          //       console.log(response)
-          //     }
-          //     else {
-          //       setImageData(response)
-          //       // setIsVisible(false)
-          //     }
-          //   })
-          // }}
-          //onPress={() => props.navigation.navigate('')}
-          >
-            <View style={styles.profile}>
-              <View style={styles.img}>
-                <Image
-                  source={ImagePath.PROFILE}
-                  resizeMode="contain"
-                  style={{height: 25, width: 25}}
-                />
-              </View>
-              <View style={styles.txxt}>
-                <Text style={styles.commantxt}>Profile</Text>
-              </View>
+          <TouchableOpacity style={styles.contentContainer}>
+            <View style={styles.img}>
+              <Image
+                source={ImagePath.PROFILE}
+                resizeMode="contain"
+                style={{height: 25, width: 25}}
+              />
+            </View>
+            <View style={styles.txxt}>
+              <Text style={styles.commantxt}>Profile</Text>
             </View>
           </TouchableOpacity>
-
           <TouchableOpacity
+            style={styles.contentContainer}
             onPress={() => props.navigation.navigate('orderHistory')}>
-            {/* <TouchableOpacity onPress={() => update()}> */}
-            <View style={styles.profile}>
-              <View style={styles.img}>
-                <Image
-                  source={ImagePath.SEARCH}
-                  resizeMode="contain"
-                  style={{height: 25, width: 25}}
-                />
-              </View>
-              <View style={styles.txxt}>
-                <Text style={styles.commantxt}>Order History</Text>
-              </View>
+            <View style={styles.img}>
+              <Image
+                source={ImagePath.SEARCH}
+                resizeMode="contain"
+                style={{height: 25, width: 25}}
+              />
+            </View>
+            <View style={styles.txxt}>
+              <Text style={styles.commantxt}>Order History</Text>
             </View>
           </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => props.navigation.navigate('Kyc')}>
-            {/* <TouchableOpacity onPress={() => update()}> */}
-            <View style={styles.profile}>
-              <View style={styles.img}>
-                <Image
-                  source={ImagePath.SEARCH}
-                  resizeMode="contain"
-                  style={{height: 25, width: 25}}
-                />
-              </View>
-              <View style={styles.txxt}>
-                <Text style={styles.commantxt}>Kyc verification</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-
           <TouchableOpacity
+            style={styles.contentContainer}
+            onPress={() => props.navigation.navigate('Kyc')}>
+            <View style={styles.img}>
+              <Image
+                source={ImagePath.SEARCH}
+                resizeMode="contain"
+                style={{height: 25, width: 25}}
+              />
+            </View>
+            <View style={styles.txxt}>
+              <Text style={styles.commantxt}>Kyc verification</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.contentContainer}
             onPress={() => props.navigation.navigate('Traning')}>
-            <View style={styles.profile}>
-              <View style={styles.img}>
-                <Image
-                  source={ImagePath.BORD}
-                  resizeMode="contain"
-                  style={{height: 25, width: 25}}
-                />
-              </View>
-              <View style={styles.txxt}>
-                <Text style={styles.commantxt}>Training</Text>
-              </View>
+            <View style={styles.img}>
+              <Image
+                source={ImagePath.BORD}
+                resizeMode="contain"
+                style={{height: 25, width: 25}}
+              />
+            </View>
+            <View style={styles.txxt}>
+              <Text style={styles.commantxt}>Training</Text>
             </View>
           </TouchableOpacity>
-
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('spareParts')}>
-            <View style={styles.profile}>
-              <View style={styles.img}>
-                <Image
-                  source={ImagePath.SPARE_PART}
-                  resizeMode="contain"
-                  style={{height: 25, width: 25}}
-                />
-              </View>
-              <View style={styles.txxt}>
-                <Text style={styles.commantxt}>Spare Parts</Text>
-              </View>
+            style={styles.contentContainer}
+            onPress={() => props.navigation.navigate('selectYourCar')}>
+            <View style={styles.img}>
+              <Image
+                source={ImagePath.SPARE_PART}
+                resizeMode="contain"
+                style={{height: 25, width: 25}}
+              />
+            </View>
+            <View style={styles.txxt}>
+              <Text style={styles.commantxt}>Spare Parts</Text>
             </View>
           </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => props.navigation.navigate('Help')}>
-            <View style={styles.profile}>
-              <View style={styles.img}>
-                <Image
-                  source={ImagePath.HELLO}
-                  resizeMode="contain"
-                  style={{height: 25, width: 25}}
-                />
-              </View>
-              <View style={styles.txxt}>
-                <Text style={styles.commantxt}>Partner Care</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-
           <TouchableOpacity
+            style={styles.contentContainer}
+            onPress={() => props.navigation.navigate('Help')}>
+            <View style={styles.img}>
+              <Image
+                source={ImagePath.HELLO}
+                resizeMode="contain"
+                style={{height: 25, width: 25}}
+              />
+            </View>
+            <View style={styles.txxt}>
+              <Text style={styles.commantxt}>Partner Care</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.contentContainer}
             onPress={() => props.navigation.navigate('Earning')}>
-            <View style={styles.profile}>
-              <View style={styles.img}>
-                <Image
-                  source={ImagePath.MONEY}
-                  resizeMode="contain"
-                  style={{height: 25, width: 25}}
-                />
-              </View>
-              <View style={styles.txxt}>
-                <Text style={styles.commantxt}>Earnings</Text>
-              </View>
+            <View style={styles.img}>
+              <Image
+                source={ImagePath.MONEY}
+                resizeMode="contain"
+                style={{height: 25, width: 25}}
+              />
             </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => props.navigation.navigate('Wallet')}>
-            <View style={styles.profile}>
-              <View style={styles.img}>
-                <Image
-                  source={ImagePath.PRINT}
-                  resizeMode="contain"
-                  style={{height: 25, width: 25}}
-                />
-              </View>
-              <View style={styles.txxt}>
-                <Text style={styles.commantxt}>Wallet</Text>
-              </View>
+            <View style={styles.txxt}>
+              <Text style={styles.commantxt}>Earnings</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
+            style={styles.contentContainer}
+            onPress={() => props.navigation.navigate('Wallet')}>
+            <View style={styles.img}>
+              <Image
+                source={ImagePath.PRINT}
+                resizeMode="contain"
+                style={{height: 25, width: 25}}
+              />
+            </View>
+            <View style={styles.txxt}>
+              <Text style={styles.commantxt}>Wallet</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.contentContainer}
             onPress={async () => {
               Alert.alert('Alert', 'Are you sure you want to Logout', [
                 {
@@ -274,22 +240,18 @@ const More = props => {
                 },
               ]);
             }}>
-            <View style={styles.profile}>
-              <View style={styles.img}>
-                <Image
-                  source={ImagePath.WALLETMONEY}
-                  resizeMode="contain"
-                  style={{height: 25, width: 25}}
-                />
-              </View>
-              <View style={styles.txxt}>
-                <Text style={styles.commantxt}>Logout</Text>
-              </View>
+            <View style={styles.img}>
+              <Image
+                source={ImagePath.WALLETMONEY}
+                resizeMode="contain"
+                style={{height: 25, width: 25}}
+              />
             </View>
+            <Text style={styles.commantxt}>Logout</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </LinearGradient>
   );
 };
 
@@ -299,47 +261,56 @@ const styles = StyleSheet.create({
   header: {
     height: height * 0.12,
     width: width * 1,
-    // borderWidth: 1
   },
   moreText: {
     height: height * 0.08,
     width: width * 0.78,
     alignSelf: 'center',
-    // backgroundColor: 'cyan',
     justifyContent: 'flex-end',
   },
   titals: {
-    height: height * 0.9,
-    width: width * 0.8,
+    flex: 0,
+    width: '90%',
     alignSelf: 'center',
-    // backgroundColor: 'red'
+    marginTop: 10,
   },
   profile: {
     height: height * 0.09,
     width: width * 0.8,
-    // backgroundColor: 'red',
     flexDirection: 'row',
     alignSelf: 'center',
     justifyContent: 'space-around',
     alignItems: 'center',
   },
   txxt: {
-    height: height * 0.07,
-    width: width * 0.6,
-    // backgroundColor: 'green',
+    //height: height * 0.07,
+    width: width * 0.65,
     justifyContent: 'center',
   },
   img: {
-    height: height * 0.06,
-    width: width * 0.12,
+    height: width * 0.1,
+    width: width * 0.1,
     backgroundColor: colors.theme_yellow1,
-    borderRadius: 10,
+    borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
   commantxt: {
-    fontSize: height / 40,
-    color: COLOR.BLACK,
-    fontWeight: '600',
+    fontSize: 16,
+    marginLeft: 15,
+    color: colors.theme_black5,
+    fontFamily: fonts.futura_medium,
+  },
+  contentContainer: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: colors.theme_white,
+    shadowColor: colors.theme_black4,
+    padding: 10,
+    elevation: 5,
+    borderRadius: 5,
+    marginBottom: 15,
   },
 });

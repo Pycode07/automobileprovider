@@ -14,6 +14,7 @@ import axios from 'axios';
 import {ImagePath} from '../utils/ImagePath';
 import {Loader} from '../components/Loader';
 const {width, height} = Dimensions.get('screen');
+import moment from 'moment';
 
 const ActiveCars = props => {
   const [activeServices, setActiveServices] = useState(null);
@@ -64,7 +65,7 @@ const ActiveCars = props => {
       },
     })
       .then(res => {
-        console.log(res.data.res);
+        console.log(res.data.res[0]);
         setIsLoading(false);
         setActiveServices(res.data.res);
       })
@@ -113,7 +114,7 @@ const ActiveCars = props => {
             alignSelf: 'center',
             flexDirection: 'row',
             justifyContent: 'flex-start',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             flexWrap: 'wrap',
             paddingVertical: 15,
           }}>
@@ -170,7 +171,7 @@ const ActiveCars = props => {
                         textAlign: 'center',
                         marginTop: 5,
                       }}>
-                      DL78HJ7898
+                      {item.car.car_no}
                     </Text>
                     <Text
                       style={{
@@ -190,7 +191,8 @@ const ActiveCars = props => {
                         textAlign: 'center',
                         marginTop: 5,
                       }}>
-                      02-02-20023 07-09
+                      {moment(item.order_date).format('Do MMM YYYY')}{' '}
+                      {item.time_slot}
                     </Text>
                   </TouchableOpacity>
                 );
