@@ -79,14 +79,19 @@ const App = () => {
       const unsubscribe = messaging().onMessage(async remoteMessage => {
         const {messageId} = remoteMessage;
         const data = remoteMessage.data;
+        console.log(data);
         if (Platform.OS === 'android') {
           NotificationManagerAndroid.createChannel();
           NotificationManagerAndroid.showNotification(
             data.title,
-            data.message,
-            'notification',
-            messageId,
-            data,
+            data.description,
+            data.subText,
+            data.full_description,
+            data.messageId,
+            data.data,
+            data.url,
+            data.userProfile,
+            data.image,
           );
         } else {
         }

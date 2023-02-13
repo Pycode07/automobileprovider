@@ -12,6 +12,7 @@ import {
 
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import {colors} from '../../assets/colors';
+import {fonts} from '../../config/Constant';
 import {COLOR} from '../../utils/Colors';
 import {ImagePath} from '../../utils/ImagePath';
 
@@ -49,7 +50,14 @@ const Onbording = props => (
             alignItems: 'flex-end',
           }}>
           <TouchableOpacity onPress={() => props.navigation.replace('Login')}>
-            <Text style={{color: 'black', fontSize: height / 45}}>Skip</Text>
+            <Text
+              style={{
+                color: colors.theme_black5,
+                fontSize: 14,
+                fontFamily: fonts.futura_medium,
+              }}>
+              SKIP
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.tital}>
@@ -89,7 +97,14 @@ const Onbording = props => (
             alignItems: 'flex-end',
           }}>
           <TouchableOpacity onPress={() => props.navigation.replace('Login')}>
-            <Text style={{color: 'black', fontSize: height / 45}}>Skip</Text>
+            <Text
+              style={{
+                color: colors.theme_black5,
+                fontSize: 14,
+                fontFamily: fonts.futura_medium,
+              }}>
+              SKIP
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.tital}>
@@ -129,7 +144,14 @@ const Onbording = props => (
             alignItems: 'flex-end',
           }}>
           <TouchableOpacity onPress={() => props.navigation.replace('Login')}>
-            <Text style={{color: 'black', fontSize: height / 45}}>Skip</Text>
+            <Text
+              style={{
+                color: colors.theme_black5,
+                fontSize: 14,
+                fontFamily: fonts.futura_medium,
+              }}>
+              SKIP
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.tital}>

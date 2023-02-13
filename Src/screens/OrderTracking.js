@@ -110,11 +110,6 @@ const OrderTracking = props => {
   const updateStatus = async () => {
     setAlertVisible(false);
     setIsLoading(true);
-    console.log({
-      driver_id: props.userData?.id,
-      id: props.route.params.orderDetails.id,
-      status: status + 3,
-    });
     await axios
       .post(api_url + change_package_status, {
         driver_id: props.userData?.id,

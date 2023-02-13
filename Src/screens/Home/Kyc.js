@@ -223,75 +223,73 @@ const Kyc = props => {
               resizeMode="cover"
             />
           </View>
-
-          {/* <View
+          <View
             style={{
-              height: height * 0.13,
-              width: width * 0.9,
-              alignSelf: 'center',
-              // borderWidth: 1,
+              flex: 0,
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              marginVertical: 15,
             }}>
-            <View style={styles.capacitymain}>
-              <View style={{flexDirection: 'row'}}>
-                <View style={styles.capcity}>
-                  <Text
-                    style={{
-                      fontSize: 17,
-                      fontWeight: '500',
-                      color: COLOR.BLACK,
-                    }}>
-                    Total Capacity
-                  </Text>
-                </View>
-
-                <View style={styles.capcity1}>
-                  <View style={styles.count}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (count > 0) {
-                          setCount(count - 1);
-                        }
-                      }}>
-                      <Image
-                        source={ImagePath.MINUS}
-                        resizeMode="contain"
-                        style={{height: 28, width: 28}}
-                      />
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={styles.count}>
-                    <Text
-                      style={{
-                        fontSize: 21,
-                        fontWeight: 'bold',
-                        color: COLOR.BLACK,
-                      }}>
-                      {count}
-                    </Text>
-                  </View>
-                  <View style={styles.count}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setCount(count + 1);
-                      }}>
-                      <Image
-                        source={ImagePath.PLUS}
-                        resizeMode="contain"
-                        style={{height: 28, width: 28}}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
+            <Text
+              style={{
+                fontSize: 16,
+                color: colors.theme_black7,
+                fontFamily: fonts.futura_bold,
+              }}>
+              Total Capacity:
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+              }}>
+              <TouchableOpacity
+                disabled={count == 0}
+                onPress={() => {
+                  setCount(count - 1);
+                }}
+                style={{
+                  width: width * 0.09,
+                  height: width * 0.09,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: (width * 0.09) / 2,
+                  backgroundColor: colors.theme_yellow1,
+                }}>
+                <Text style={{fontSize: 22, color: colors.theme_white}}>-</Text>
+              </TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: colors.theme_black7,
+                  fontFamily: fonts.futura_medium,
+                }}>
+                {count}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setCount(count + 1);
+                }}
+                style={{
+                  width: width * 0.09,
+                  height: width * 0.09,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: (width * 0.09) / 2,
+                  backgroundColor: colors.theme_yellow1,
+                }}>
+                <Text style={{fontSize: 22, color: colors.theme_white}}>+</Text>
+              </TouchableOpacity>
             </View>
-          </View> */}
+          </View>
           <View
             style={{
               height: height * 0.13,
               width: width * 0.9,
               alignSelf: 'center',
-              // borderWidth: 1,
             }}>
             <TouchableOpacity
               onPress={updateKYC}

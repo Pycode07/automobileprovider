@@ -133,7 +133,7 @@ const CarReqest = props => {
         <View
           style={{
             flex: 0,
-            width: '85%',
+            width: '90%',
             alignSelf: 'center',
             flexDirection: 'row',
             justifyContent: 'flex-start',
@@ -155,19 +155,28 @@ const CarReqest = props => {
                     key={item.id}
                     style={{
                       flex: 0,
-                      width: '45%',
+                      width: '46%',
                       padding: 10,
                       justifyContent: 'center',
                       alignItems: 'center',
                       backgroundColor: colors.theme_white,
                       elevation: 8,
                       shadowColor: colors.theme_black5,
-                      marginRight: index % 2 == 0 ? width * 0.08 : 0,
+                      marginRight: index % 2 == 0 ? width * 0.07 : 0,
                       borderRadius: 5,
                       borderWidth: 1,
                       borderColor: colors.theme_yellow1,
                       marginBottom: 15,
                     }}>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        color: colors.theme_black7,
+                        fontFamily: fonts.futura_medium,
+                        textAlign: 'center',
+                      }}>
+                      {`ORDER ID: ${item.id}`}
+                    </Text>
                     <Image
                       source={{uri: item.car.image}}
                       style={{
@@ -177,13 +186,15 @@ const CarReqest = props => {
                       }}
                     />
                     <Text
+                      numberOfLines={1}
                       style={{
-                        fontSize: 14,
+                        fontSize: 13,
                         color: colors.theme_black7,
                         fontFamily: fonts.futura_bold,
                         textAlign: 'center',
                       }}>
-                      {`${item.car.brand_name} ${item.car.model}`}
+                      {`${item.car.brand_name} ${item.car.model}
+                      `}
                     </Text>
                     <Text
                       style={{
